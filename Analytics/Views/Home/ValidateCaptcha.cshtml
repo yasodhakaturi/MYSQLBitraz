@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ValidateCaptcha</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
+<body>
+    <div> 
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/home/validatecaptcha" method="POST">
+                <div class="g-recaptcha" data-sitekey="6LcVIxsUAAAAAMRUvBRHNe5szW-8MSfsNzWF3V6S"></div>
+
+                <br />
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>

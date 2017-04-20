@@ -1,0 +1,200 @@
+<div id="add_user">
+
+    <div class="content" animate-panel effect="zoomIn">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Short Url for a Campaign {{$ctrl.campaign.CampaignName}}</h3>
+        </div>
+        <ng-form class="form-horizontal" name="$ctrl.campaignForm" novalidate>
+            <div class="modal-body" id="modal-body">
+                <ul class="nav nav-tabs">
+                    <li  ng-class="{'active': $ctrl.activeTab == 'simple'}"><a data-toggle="tab" data-target="#simple" role="tab" ng-click="$ctrl.activeTab='simple'">Simple </a></li>
+                    <li  ng-class="{'active': $ctrl.activeTab == 'advanced'}"><a data-toggle="tab" data-target="#advanced" role="tab" ng-click="$ctrl.activeTab='advanced'">Advanced</a></li>
+                    <li  ng-class="{'active': $ctrl.activeTab == 'upload'}"><a data-toggle="tab" data-target="#upload" role="tab" ng-click="$ctrl.activeTab='upload'">Upload</a></li>
+                    <li  ng-class="{'active': $ctrl.activeTab == 'list'}"><a data-toggle="tab" data-target="#list" role="tab" ng-click="$ctrl.activeTab='list'">Download</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="list" class="tab-pane fade" ng-class="{'in active': $ctrl.activeTab == 'list'}">
+                        <h5>Requested list of bulk urls for this campaign.</h5>
+                        <div style="min-height: 250px;padding-top: 20px;">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-10 col-sm-12">
+                                    <div id="{{'batchList-'+$ctrl.campaign.Id}}" ui-grid="batchListOptions" class="grid" ng-if="$ctrl.activeTab == 'list'" ui-grid-auto-resize></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="simple" class="tab-pane fade"  ng-class="{'in active': $ctrl.activeTab == 'simple'}">
+                        <h5>Generate single short url by copy & paste multiple mobile numbers.</h5>
+                        <div style="min-height: 250px;padding-top: 20px;">
+                            <ng-form class="form-horizontal" name="$ctrl.campaignForm['simple']" novalidate>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Long Url</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="url" ng-required="true" name="longurl" placeholder="Long Url"
+                                               class="form-control" ng-model="$ctrl.campaign.generator['simple'].longurl"/>
+                                        <small class="form-text text-muted text-danger"
+                                               ng-if="$ctrl.campaignForm['simple'].longurl.$invalid && $ctrl.campaignForm['simple'].longurl.$touched">
+                                            <span ng-if="$ctrl.campaignForm['simple'].longurl.$error.required">Long Url is required</span>
+                                            <span ng-if="$ctrl.campaignForm['simple'].longurl.$error.url">Long Url is not valid.</span>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Mobile Number</label>
+
+                                    <div class="col-sm-9">
+                                <input type="text" ng-required="true" name="mobileNumber" type="number"
+                                       ng-minlength="10" ng-maxlength="12" placeholder="Mobile Number"
+                                          class="form-control" ng-model="$ctrl.campaign.generator['simple'].mobileNumbers"/>
+                                        <small>Note: mobile number with country code only, no '+' before number.</small>
+                                        <small class="form-text text-muted text-danger block" style="display: block"
+                                               ng-if="$ctrl.campaignForm['simple'].mobileNumber.$invalid && $ctrl.campaignForm['simple'].mobileNumber.$touched">
+                                            <span ng-if="$ctrl.campaignForm['simple'].mobileNumber.$error.required">mobile number are required</span>
+                                            <span ng-if="(($ctrl.campaignForm['simple'].mobileNumber.$error.minlength || $ctrl.campaignForm['simple'].mobileNumber.$error.maxlength)  &&
+                                                $ctrl.campaignForm['simple'].mobileNumber.$dirty)">mobile number is invalid</span>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="form-group" ng-show="$ctrl.campaignForm['simple'].ShortenUrl">
+                                    <div class="col-sm-9 text-center">
+                                        <h4 id="shortUrlmodal">
+                                            {{$ctrl.campaignForm['simple'].ShortenUrl}}
+                                        </h4>
+                                    </div>
+
+                                    <div class="col-sm-3 text-right">
+                                        <div class="btn btn-success btn-small right url-copy-button"  data-clipboard-action="copy" data-clipboard-target="#shortUrlmodal">Copy to Clipboard</div>
+                                    </div>
+
+                                </div>
+                            </ng-form>
+                        </div>
+                    </div>
+                    <div id="advanced" class="tab-pane fade"  ng-class="{'in active': $ctrl.activeTab == 'advanced'}">
+                        <h5>Generate multiple short urls by copy & paste multiple mobile numbers.</h5>
+                        <div style="min-height: 250px;padding-top: 20px;">
+                            <ng-form class="form-horizontal" name="$ctrl.campaignForm['advanced']" novalidate>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Long Url</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="url" ng-required="true" name="longurl" placeholder="Long Url"
+                                               class="form-control" ng-model="$ctrl.campaign.generator['advanced'].longurl"/>
+                                        <small class="form-text text-muted text-danger"
+                                               ng-if="$ctrl.campaignForm['advanced'].longurl.$invalid && $ctrl.campaignForm['advanced'].longurl.$touched">
+                                            <span ng-if="$ctrl.campaignForm['advanced'].longurl.$error.required">Long Url is required</span>
+                                            <span ng-if="$ctrl.campaignForm['advanced'].longurl.$error.url">Long Url is not valid.</span>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Mobile Numbers</label>
+
+                                    <div class="col-sm-9">
+                                <textarea ng-required="true" name="mobileNumbers" placeholder="Mobile Numbers"
+                                          class="form-control" ng-model="$ctrl.campaign.generator['advanced'].mobileNumbers"
+                                          rows="8" cols="11"/>
+                                        <small>Note: Mobile Numbers, one per line or comma separated</small>
+                                        <small class="form-text text-muted text-danger block" style="display: block"
+                                               ng-if="$ctrl.campaignForm['advanced'].mobileNumbers.$invalid && $ctrl.campaignForm['advanced'].mobileNumbers.$touched">
+                                            <span ng-if="$ctrl.campaignForm['advanced'].mobileNumbers.$error.required">mobile numbers are required</span>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="form-group" ng-show="$ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.BatchID">
+                                    <div class="col-sm-9 text-center">
+                                        <h5 ng-if="($ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status != 'Completed') || $ctrl.generation">
+                                            We're Processing Your Request. <span><i class="fa fa-spinner fa-spin"></i> </span>
+                                            <br/><small>You can close this modal if required, later you can download the generated xls file from the download tab.</small>
+                                        </h5>
+                                        <h5 ng-if="$ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status == 'Completed'">
+                                            Successfully Processed.
+                                        </h5>
+
+                                    </div>
+
+                                    <div class="col-sm-3 text-right">
+                                        <div class="btn btn-success btn-small right" ng-if="$ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status == 'Completed'" ng-click="$ctrl.campaignForm['advanced'].Batch.download()">Download</div>
+                                        <!--<div class="btn btn-success btn-small right" ng-if="($ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status != 'Completed')" ng-click="$ctrl.enableNotification()">Notify Me!</div>-->
+                                    </div>
+
+                                </div>
+                            </ng-form>
+                        </div>
+                    </div>
+                    <div id="upload" class="tab-pane fade" ng-class="{'in active': $ctrl.activeTab == 'upload'}">
+                        <h3>Upload</h3>
+                        <div style="min-height: 250px;padding-top: 20px;">
+                            <p>Generate Urls by a file upload.</p>
+                            <ng-form class="form-horizontal" name="$ctrl.campaignForm['upload']" novalidate>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Long Url</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="url" ng-required="true" name="longurl" placeholder="Long Url"
+                                               class="form-control" ng-model="$ctrl.campaign.generator['upload'].longurl"/>
+                                        <small class="form-text text-muted text-danger"
+                                               ng-if="$ctrl.campaignForm['upload'].longurl.$invalid && $ctrl.campaignForm['upload'].longurl.$touched">
+                                            <span ng-if="$ctrl.campaignForm['upload'].longurl.$error.required">Long Url is required</span>
+                                            <span ng-if="$ctrl.campaignForm['upload'].longurl.$error.url">Long Url is not valid.</span>
+                                        </small>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Upload File <br/><small>(txt, csv, tsv, xlx, xlsx)</small></label>
+
+                                    <div class="button btn btn-primary" ngf-select ng-model="$ctrl.campaignForm['upload'].file" name="file" ngf-pattern="'.csv,.tsv,.txt,.xls,.xlsx'"
+                                         ngf-accept="'.csv,.tsv,.txt,.xls,.xlsx'" ngf-max-size="5MB" ngf-min-height="100"
+                                         ngf-resize="{width: 100, height: 100}">click here to select a file</div> {{$ctrl.campaignForm['upload'].file.name }}
+
+                                    <small class="form-text text-muted text-danger block" style="display: block"
+                                           ng-if="$ctrl.campaignForm['upload'].$dirty && $ctrl.campaignForm['upload'].$invalid">
+                                        <span ng-if="$ctrl.campaignForm['upload'].$error.pattern">Invalid file type. accepts only txt, csv, tsv, xlx, xlsx files</span>
+                                        <span ng-if="$ctrl.campaignForm['upload'].$error.maxSize">File size exceeded. max file size allowed is 5MB</span>
+                                    </small>
+                                </div>
+                                <div class="form-group" ng-show="$ctrl.campaignForm['upload'].Batch && $ctrl.campaignForm['upload'].Batch.BatchID">
+                                    <div class="col-sm-9 text-center">
+                                        <h5 ng-if="($ctrl.campaignForm['upload'].Batch && $ctrl.campaignForm['upload'].Batch.Status != 'Completed') || $ctrl.generation">
+                                            We're Processing Your Request. <span><i class="fa fa-spinner fa-spin"></i> </span>
+                                            <br/><small>You can close this modal if required, later you can download the generated xls file from the download tab.</small>
+                                        </h5>
+                                        <h5 ng-if="$ctrl.campaignForm['upload'].Batch && $ctrl.campaignForm['upload'].Batch.Status == 'Completed'">
+                                            Successfully Processed.
+                                        </h5>
+
+                                    </div>
+
+                                    <div class="col-sm-3 text-right">
+                                        <div class="btn btn-success btn-small right" ng-if="$ctrl.campaignForm['upload'].Batch && $ctrl.campaignForm['upload'].Batch.Status == 'Completed'" ng-click="$ctrl.campaignForm['upload'].Batch.download()">Download</div>
+                                        <!--<div class="btn btn-success btn-small right" ng-if="($ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status != 'Completed')" ng-click="$ctrl.enableNotification()">Notify Me!</div>-->
+                                    </div>
+
+                                </div>
+                            </ng-form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" ng-show="$ctrl.activeTab == 'upload' || $ctrl.activeTab == 'simple' || $ctrl.activeTab == 'advanced'">
+                <small class="text-danger" ng-if="$ctrl.saveError">Error: {{$ctrl.saveError}}</small>
+                <button class="btn btn-default"  ng-click="cancel()">Cancel</button>
+                <button class="btn btn-primary" type="submit" ng-class="{'disabled': !$ctrl.campaignForm[$ctrl.activeTab].$valid}"
+                        ng-disabled="!$ctrl.campaignForm[$ctrl.activeTab].$valid || $ctrl.generation" ng-click="generate($ctrl.campaign.generator[$ctrl.activeTab], $ctrl.activeTab)">
+                        Generate <i class="fa fa-spinner fa-spin" ng-if="$ctrl.generation"></i>
+                </button>
+            </div>
+            <div class="modal-footer" ng-show="$ctrl.activeTab == 'list'">
+                <button class="btn btn-default" type="submit" ng-click="cancel()">Cancel</button>
+            </div>
+        </ng-form>
+    </div>
+</div>

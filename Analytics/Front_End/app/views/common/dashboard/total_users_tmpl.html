@@ -1,0 +1,44 @@
+<div class="hpanel stats">
+    <div class="panel-body h-200">
+        <div class="stats-title pull-left">
+            <h4>Total Users</h4>
+        </div>
+        <div class="stats-icon pull-right">
+            <i class="pe-7s-share fa-4x"></i>
+        </div>
+        <div class="m-t-xl">
+            <h3 class="m-b-xs text-success" ng-bind="$ctrl.data.total || 0 | number"></h3>
+                            <span class="font-bold no-margins" ng-if="$ctrl.isCampaign">
+                                Unique users in this campaign
+                            </span>
+                            <span class="font-bold no-margins" ng-if="!$ctrl.isCampaign">
+                                Unique users across all campaigns
+                            </span>
+
+            <div class="progress m-t-xs full progress-small">
+
+                <div style="width: {{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}"
+                     role="progressbar" class=" progress-bar progress-bar-success" tooltip-popup-delay='500' tooltip-placement="bottom" uib-tooltip="{{($ctrl.data.uniqueUsers + ' of ' + $ctrl.data.total + ' - ')}}{{((($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1)) * 100) | number}}%">
+                    <span class="sr-only">{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}% Unique Users</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <small class="stats-label">Today </small>
+                    <h6><span tooltip-popup-delay='500' tooltip-placement="bottom" uib-tooltip="{{($ctrl.data.uniqueUsersToday || 0)}} Unique Users of {{$ctrl.data.usersToday || 0}} total">{{$ctrl.data.uniqueUsersToday || 0}}/<span class="text-success">{{$ctrl.data.usersToday || 0}}</span> </span></h6>
+                </div>
+
+                <div class="col-xs-4">
+                    <small class="stats-label">Yesterday</small>
+                    <h6><span tooltip-popup-delay='500' tooltip-placement="bottom" uib-tooltip="{{($ctrl.data.usersYesterday || 0)}} Unique Users of {{$ctrl.data.usersYesterday || 0}} total">{{$ctrl.data.usersYesterday || 0}}/<span class="text-success">{{$ctrl.data.usersYesterday || 0}}</span></span></h6>
+                </div>
+
+                <div class="col-xs-4">
+                    <small class="stats-label">Last 7 Days</small>
+                    <h6><span tooltip-popup-delay='500' tooltip-placement="bottom" uib-tooltip="{{($ctrl.data.uniqueUsersLast7days || 0)}} Unique Users of {{$ctrl.data.usersLast7days || 0}} total">{{$ctrl.data.uniqueUsersLast7days || 0}}/<span class="text-success">{{$ctrl.data.usersLast7days || 0}}</span></span></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html ng-app="bitraz">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title set in pageTitle directive -->
+    <title page-title>biTRAZ :: trace your link</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css"/>
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css"/>
+    <link rel="stylesheet" href="bower_components/highcharts/css/highcharts.css"/>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp,app}) styles/style.css -->
+    <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"/>
+    <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/helper.css"/>
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- endbuild -->
+    <!--<script type="text/javascript">
+
+
+    </script>-->
+    <script type="text/javascript">
+        (function () {
+            window.appConfig = {
+                env:'local',
+                appUrl: {admin: '', analytics:'', landing: ''},
+                apiUrl: 'http://192.168.1.66:3301',
+                userInfo: {user_id: 1, UserName: '', isAdmin: false, isClient: false, isReadOnly: true}
+            }
+        })();
+    </script>
+</head>
+
+<!-- Body -->
+<!-- appCtrl controller with serveral data used in theme on diferent view -->
+<body ng-controller="appCtrl" class="{{$state.current.data.specialClass}} fixed-navbar hide-sidebar">
+
+<!-- Simple splash screen-->
+<div class="splash splash-screen" >
+    <!--<div class="color-line"></div>-->
+    <div class="splash-title">
+        <h1>biTraz</h1>
+        <p></p>
+        <img src="images/loading-bars.svg" width="64" height="64"/></div>
+</div>
+<!--[if lt IE 7]>
+<p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a
+        href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Page view wrapper -->
+<div class="uiview" ui-view></div>
+
+</body>
+
+<!-- build:js(.) scripts/vendor.js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/highcharts/highcharts.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-cache/dist/angular-cache.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="bower_components/metisMenu/dist/metisMenu.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/lodash/dist/lodash.js"></script>
+
+<script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+<script src="bower_components/highcharts/highcharts-more.js"></script>
+
+<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+<script src="bower_components/highcharts/modules/map.js"></script>
+<script src="bower_components/clipboard/dist/clipboard.js"></script>
+<script src="bower_components/angular-notify/dist/angular-notify.js"></script>
+<script src="bower_components/simple-web-notification/web-notification.js"></script>
+<script src="bower_components/angular-web-notification/angular-web-notification.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+<script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+<script src="bower_components/ngmap/testapp/scripts/markerclusterer.js"></script>
+<!-- endbuild -->
+<script>
+  MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_
+    = 'https://bitraz.com/dist/index/images/clusters/m';  //changed image path
+</script>
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/utils/utils.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers/admin/main.js"></script>
+<script src="scripts/admin_routes.js"></script>
+
+<script src="scripts/controllers/common/main.js"></script>
+
+<script src="scripts/models/admin/admin_models.js"></script>
+<script src="scripts/models/common/common_models.js"></script>
+
+<script src="scripts/directives/admin/admin_directives.js"></script>
+<script src="scripts/directives/common/common_directives.js"></script>
+
+<script src="scripts/services/admin/admin_services.js"></script>
+<script src="scripts/services/common/auth_service.js"></script>
+<script src="scripts/services/common/rid_service.js"></script>
+<script src="scripts/services/common/campaign_service.js"></script>
+<script src="scripts/directives/common/analytics/layout/analytics_layout.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/layout.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/urls_generated.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/total_users.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/total_visits.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/total_campaigns.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/logged_users.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/recent_campaigns.js"></script>
+<script src="scripts/directives/common/analytics/dashboard/activities.js"></script>
+
+<script src="scripts/utils/ext/world.js"></script>
+
+<!-- endbuild -->
+<script src="scripts/templates.js"></script>
+
+
+</html>

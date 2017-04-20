@@ -1,0 +1,40 @@
+<div class="hpanel">
+    <div class="panel-heading" ng-if="$ctrl.header">
+        <div class="panel-tools">
+        </div>
+        Activity
+    </div>
+    <div class="panel-body list">
+
+        <div class="pull-right">
+            <a ng-click="$ctrl.show('today')" class="btn btn-xs btn-default" ng-class="{'text-success': $ctrl.state == 'today'}">Today</a>
+            <a ng-click="$ctrl.show('last7days')" class="btn btn-xs btn-default " ng-class="{'text-success': $ctrl.state == 'last7days'}">Week</a>
+            <a ng-click="$ctrl.show('month')" class="btn btn-xs btn-default" ng-class="{'text-success': $ctrl.state == 'month'}">Month</a>
+        </div>
+        <div class="panel-title">Last Activity</div>
+        <div class="list-item-container" style="width: 100%">
+            <div class="list-item">
+                <h3 class="no-margins font-extra-bold text-success" ng-bind="$ctrl.activeData.urlTotal || 0 | number"></h3>
+                <small>Total Urls Generated</small>
+                <div class="pull-right font-bold">{{$ctrl.activeData.urlPercent || 0 | number}}% <i class="fa fa-level-up text-success"></i></div>
+            </div>
+            <div class="list-item">
+                <h3 class="no-margins font-extra-bold text-color3" ng-bind="$ctrl.activeData.visitsTotal || 0 | number"></h3>
+                <small>visited</small>
+                <div class="pull-right font-bold">{{$ctrl.activeData.visitsPercent || 0 | number}}% <i class="fa fa-level-down text-color3"></i></div>
+            </div>
+
+            <div class="list-item">
+                <h3 class="no-margins font-extra-bold text-info" ng-bind="$ctrl.activeData.revisitsTotal || 0 | number"></h3>
+                <small>Revisited</small>
+                <div class="pull-right font-bold">{{$ctrl.activeData.revisitsPercent || 0}}% <i class="fa fa-bolt text-color3"></i></div>
+            </div>
+            <div class="list-item" ng-if="$ctrl.header">
+                <h3 class="no-margins font-extra-bold text-warning" ng-bind="$ctrl.activeData.noVisitsTotal || 0 | number"></h3>
+                <small>Never Visited</small>
+                <div class="pull-right font-bold">{{$ctrl.activeData.noVisitsPercent || 0}}% <i class="fa fa-level-up text-success"></i></div>
+            </div>
+        </div>
+
+    </div>
+</div>

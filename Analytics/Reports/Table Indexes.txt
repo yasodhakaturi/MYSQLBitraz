@@ -1,0 +1,32 @@
+
+CREATE INDEX FK_ClientIDIndex ON BatchUploadData (FK_ClientID ASC);
+CREATE INDEX FK_RIDIndex ON BatchUploadData (FK_RID ASC);
+CREATE INDEX StatusIndex ON BatchUploadData (Status ASC);
+
+CREATE INDEX UserNameIndex ON Client (UserName);
+CREATE INDEX PasswordIndex ON Client (Password);
+CREATE INDEX RoleIndex ON Client (Role);
+
+CREATE INDEX Ipv4Index ON freeGeoipData (Ipv4);
+CREATE INDEX ip_numIndex ON freeGeoipData (ip_num);
+
+CREATE INDEX locIdIndex ON Locations_Data (locId);
+CREATE INDEX locIdIndex ON Master_Location (locId);
+
+CREATE INDEX ReferenceNumberIndex ON RIDDATA (ReferenceNumber);
+CREATE INDEX PwdIndex ON RIDDATA (Pwd);
+CREATE INDEX FK_ClientId_RID_Index ON RIDDATA (FK_ClientId);
+
+CREATE INDEX Ipv4Index ON SHORTURLDATA (Ipv4);
+CREATE INDEX ip_numIndex ON SHORTURLDATA (ip_num);
+CREATE INDEX FK_UidIndex ON SHORTURLDATA (FK_Uid);
+CREATE INDEX FK_RIDIndex ON SHORTURLDATA (FK_RID);
+CREATE INDEX FK_ClientIDIndex ON SHORTURLDATA (FK_ClientID);
+
+CREATE INDEX FK_RIDIndex ON UIDDATA (FK_RID);
+CREATE INDEX FK_ClientIDIndex ON UIDDATA (FK_ClientID);
+CREATE INDEX ReferenceNumberIndex ON UIDDATA (ReferenceNumber);
+CREATE INDEX LongurlIndex ON UIDDATA (Longurl);
+CREATE INDEX MobileNumberIndex ON UIDDATA (MobileNumber);
+CREATE INDEX UniqueNumberIndex ON UIDDATA (UniqueNumber);
+CREATE INDEX FK_BatchidIndex ON UIDDATA (FK_Batchid);

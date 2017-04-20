@@ -1,0 +1,47 @@
+<div class="login-container">
+    <div class="row" ng-if="!($root.userInfo && $root.userInfo.user_id)">
+        <div class="col-md-12">
+            <div class="text-center m-b-md" style="border: 1px solid transparent;">
+                <h3>LOGIN</h3>
+                <!-- <small> This is the best app ever!</small> -->
+            </div>
+            <div class="hpanel">
+
+                <div class="panel-body">
+                    <form name="loginForm" id="loginForm"  novalidate ng-submit="login(loginForm)">
+                        <div class="form-group">
+                            <label class="control-label" for="username">Username</label>
+                            <input type="text" placeholder="name@your_domain.com" title="Please enter you username"
+                                   ng-model="uname" ng-required="true" value="" name="username" id="username" class="form-control">
+                        </div>
+                        <span ng-if="loginForm.username.$touched && loginForm.username.$error.required" class="text-danger">Name is required</span>
+                        <div class="form-group">
+                            <label class="control-label" for="password">Password</label>
+                            <input type="password" title="Please enter your password" ng-required="true" ng-model="pswd"
+                                   name="password" id="password" class="form-control">
+                        </div>
+                        <span ng-if="loginForm.password.$touched && loginForm.password.$error.required" class="text-danger">Password is required</span>
+                        <button class="btn btn-success btn-block" type="submit"><span ng-show="!loading">Login</span><span ng-show="loading"><i class="fa fa-spinner fa-spin"></i> </span></button>
+                        <span class="text-danger" ng-if="loginError" class="text-danger">Error: {{loginError}} </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="$root.userInfo && $root.userInfo.user_id">
+        <div class="col-md-12" style="padding-top: 40px;">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div>
+                        <button class="btn btn-success btn-block" ng-click="redirectUser()" ng-if="$root.userInfo.isAdmin">Go to Admin</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-success btn-block" ng-click="redirectUser()" ng-if="!$root.userInfo.isAdmin">Go to Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,52 @@
+<div class="dashboard-container col-sm-12" ng-if="$ctrl.config && $ctrl.config.type == 'all'">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <urls-generated data="$ctrl.data.totalUrls" is-campaign="!!$ctrl.config.campaignId"></urls-generated>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <total-users data="$ctrl.data.users" is-campaign="!!$ctrl.config.campaignId"></total-users>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <total-visits data="$ctrl.data.visits" is-campaign="!!$ctrl.config.campaignId"></total-visits>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <total-campaigns data="$ctrl.data.campaigns" is-campaign="!!$ctrl.config.campaignId"></total-campaigns>
+        </div>
+
+
+    </div>
+    <div class="row">
+
+        <div class="col-lg-6">
+            <recent-campaigns data="$ctrl.data.recentCampaigns"></recent-campaigns>
+        </div>
+
+        <div class="col-lg-3">
+            <activities data="$ctrl.data.activities" header="true" is-campaign="!!$ctrl.config.campaignId"></activities>
+        </div>
+
+        <div class="col-lg-3">
+            <!--<logged-users data="$ctrl.data.loggedInUsers"></logged-users>-->
+        </div>
+
+    </div>
+</div>
+
+<div class="dashboard-container col-sm-12" ng-if="$ctrl.config && $ctrl.config.type == 'campaign'">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <urls-generated data="$ctrl.data.totalUrls" is-campaign="!!$ctrl.config.campaignId"></urls-generated>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <total-users data="$ctrl.data.users" is-campaign="!!$ctrl.config.campaignId"></total-users>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <total-visits data="$ctrl.data.visits" is-campaign="!!$ctrl.config.campaignId"></total-visits>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <activities data="$ctrl.data.activities" is-campaign="!!$ctrl.config.campaignId" header="false"></activities>
+        </div>
+
+    </div>
+</div>

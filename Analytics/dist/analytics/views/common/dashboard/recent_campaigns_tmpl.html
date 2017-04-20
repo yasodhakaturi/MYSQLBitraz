@@ -1,0 +1,38 @@
+<div class="hpanel">
+    <div class="panel-heading">
+        <div class="panel-tools">
+
+        </div>
+        Recent campaigns
+    </div>
+    <div class="panel-body list">
+        <div class="table-responsive project-list">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+
+                    <th colspan="1">Campaigns</th>
+                    <th>Urls</th>
+                    <th>Visits</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="$ctrl.data.length > 0" ng-repeat="campaign in $ctrl.data">
+                    <td><a class="text-success" ui-sref="bitraz.main.analytics({rid:campaign.rid})">{{campaign.title || "Campaign (" + campaign.rid + ")"}}</a>
+                        <br/>
+                        <small><i class="fa fa-clock-o"></i> Created {{campaign.createdOn | date: 'MM.dd.yyyy'}}</small>
+                        <small ng-if="campaign.endDate"><i class="fa fa-clock-o"></i> Ended {{campaign.endDate | date: 'MM.dd.yyyy'}}</small>
+                    </td>
+                    <td>
+                        <span class="pie">{{campaign.users}}</span>
+                    </td>
+                    <td><strong>{{(campaign.visits/campaign.users)*100 | number:0}}%</strong></td>
+                    <td><span>{{campaign.status ? 'Active':'InActive'}}</span></td>
+                </tr>
+                <tr ng-if="!$ctrl.data"><td colspan="4" class="text-center">No Campaigns</td> </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

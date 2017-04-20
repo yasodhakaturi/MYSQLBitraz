@@ -1,0 +1,28 @@
+<div id="wrapper">
+    <div class="content" animate-panel effect="zoomIn">
+        <div class="row" ng-show="isLoaded">
+            <div ng-if="!isAuthorized">
+                <form novalidate name="ridRequest">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <label>Reference Id:
+                            <input type="text" name="referenceId" ng-model="rid.id" ng-required="true" ng-change=""/></label>
+                        </div>
+                        <div class="row" ng-if="hasAuthentication">
+                            <label>Password:
+                            <input type="password" name="referencePswd" ng-model="rid.password" ng-required="true" /></label>
+                        </div>
+                        <div class="row">
+                            <label><input type="submit" ng-click="validateRid(rid)" value="Verify" /></label>
+
+                        </div>
+                        <span class="text-danger" ng-if="error"> error: {{error}}</span>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="isAuthorized">
+                <analytics-layout campaign-id="rid.id" ></analytics-layout>
+            </div>
+        </div>
+    </div>
+</div>

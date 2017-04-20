@@ -1,0 +1,39 @@
+<div class="hpanel">
+    <div class="panel-heading">
+        <div class="panel-tools">
+
+        </div>
+        Members
+    </div>
+    <div class="panel-body h-200">
+        <div class="stats-title pull-left">
+            <h4>Logged Into Analytics Page</h4>
+        </div>
+        <div class="stats-icon pull-right">
+            <i class="pe-7s-graph2 fa-4x"></i>
+        </div>
+
+        <div class="m-t-xl">
+            <h1 class="text-success">{{$ctrl.data.total || 0}}</h1>
+                                <span class="font-bold no-margins">
+
+                                </span>
+            <div class="row">
+                <div class="col-xs-4">
+                    <small class="stats-label">Today </small>
+                    <h4>{{$ctrl.data.totalToday || 0}}</h4>
+                </div>
+
+                <div class="col-xs-4">
+                    <small class="stats-label">Yesterday</small>
+                    <h4>{{$ctrl.data.totalYesterday || 0}}</h4>
+                </div>
+
+                <div class="col-xs-4">
+                    <small class="stats-label">This Week</small>
+                    <h4>{{$ctrl.data.totalWeek || 0}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

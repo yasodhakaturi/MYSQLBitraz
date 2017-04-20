@@ -1,0 +1,50 @@
+﻿USE [shortenURL]
+GO
+/****** Object:  UserDefinedFunction [dbo].[fnSplitStringAsTable]    Script Date: 3/1/2017 12:59:46 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER FUNCTION [dbo].[fnSplitStringAsTable] 
+(
+    @inputString varchar(MAX),
+    @delimiter char(1) = ','
+)
+RETURNS 
+@Result TABLE 
+(
+    Value varchar(MAX)
+)
+AS
+BEGIN
+    DECLARE @chIndex int
+    DECLARE @item varchar(100)
+
+    -- While there are more delimiters...
+    WHILE CHARINDEX(@delimiter, @inputString, 0) <> 0
+        BEGIN
+            -- Get the index of the first delimiter.
+            SET @chIndex = CHARINDEX(@delimiter, @inputString, 0)
+
+            -- Get all of the characters prior to the delimiter and insert the string into the table.
+            SELECT @item = SUBSTRING(@inputString, 1, @chIndex - 1)
+
+            IF LEN(@item) > 0
+                BEGIN
+                    INSERT INTO @Result(Value)
+                    VALUES (@item)
+                END
+
+            -- Get the remainder of the string.
+            SELECT @inputString = SUBSTRING(@inputString, @chIndex + 1, LEN(@inputString))
+        END
+
+    -- If there are still characters remaining in the string, insert them into the table.
+    IF LEN(@inputString) > 0
+        BEGIN
+            INSERT INTO @Result(Value)
+            VALUES (@inputString)
+        END
+
+    RETURN 
+END

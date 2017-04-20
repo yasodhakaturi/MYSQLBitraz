@@ -1,0 +1,147 @@
+<section class="anlaytics-layout-container " style="padding-top:0px;">
+    <div ng-show="!$ctrl.loading">
+        <div class="row" style="padding-bottom: 5px;">
+            <div class="col-lg-12 refresh-block">
+            <span class="pull-right">
+                <!--View Refreshes in {{$ctrl.timeLeft}} Seconds <a ng-click="$ctrl.resetTime()"><i class="fa fa-refresh"></i></a>-->
+                Refresh View <a ng-click="$ctrl.resetTime()"><i class="fa fa-refresh"></i></a>
+            </span>
+
+            </div>
+        </div>
+        <div class="row">
+            <dashboard-layout config="$ctrl.dashboardConfig"></dashboard-layout>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph">
+
+                                <div class="row x_title">
+                                    <div class="col-md-8">
+                                        <h3>User Activities<small style="padding-left: 10px">timeline presentation</small></h3>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 0px solid #ccc; width: 100%;">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                        <span style="display: inline-block;width: calc(100% - 40px);"><input date-range-picker id="daterange3" name="daterange3" class="form-control date-picker" type="text"
+                                                                                                             ng-model="date" options="opts" required/></span> <b class="caret"></b>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                                    <div style="width: 100%;">
+                                        <highchart id="canvas_dahs" config="chartConfig" class="demo-placeholder" style="width: 100%; height:270px;"></highchart>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph">
+
+                                <div class="row x_title">
+                                    <div class="col-md-6">
+                                        <h3>Visitors location <small>geo-presentation</small></h3>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div style="width: 100%;">
+                                        <highchart id="world-map-gdp" config="locationConfig" class="columnscol-md-12 col-sm-12 col-xs-12" style="height: 400px">
+
+                                        </highchart>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{$ctrl.googleMapsUrl}}">
+                    <ng-map center="24.1009901,54.1816353" zoom="3" min-zoom="2" max-zoom="12" style="height: 450px;" zoom-to-include-markers="true" pan-control="true"
+                                map-type-control="true"
+                                map-type-control-options="{style:'DROPDOWN_MENU'}"
+                                zoom-control="true"
+                                zoom-control-options="{style:'SMALL'}" street-view-control="false"></ng-map>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph ">
+
+                                <div class="row x_title">
+                                    <div class="col-md-12 text-center">
+                                        <h3>Devices</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <!--<div id="placeholder33" style="height: 360px; display: none" class="demo-placeholder"></div>-->
+                                        <div style="width: 100%;">
+                                            <highchart id="devices-chart" config="deviceConfig"  style="height:300px;"></highchart>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph ">
+
+                                <div class="row x_title">
+                                    <div class="col-md-12 text-center">
+                                        <h3>Platforms</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <!--<div id="placeholder33" style="height: 360px; display: none" class="demo-placeholder"></div>-->
+                                        <div style="width: 100%;">
+                                            <highchart id="platform-chart" config="platformConfig" style="height:300px;"></highchart>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="row" ng-hide="$ctrl.loading">-->
+        <!--<div class="splash-title">-->
+            <!--<h1>Loading..</h1>-->
+            <!--<p></p>-->
+            <!--<img src="images/loading-bars.svg" width="64" height="64"/></div>-->
+    <!--</div>-->
+
+</section>

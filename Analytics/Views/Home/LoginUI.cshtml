@@ -1,0 +1,45 @@
+﻿
+
+
+
+<!DOCTYPE html>
+<html ng-app="bitraz">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Page title set in pageTitle directive -->
+    <title page-title>biTRAZ :: trace your link</title> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
+    <link rel="stylesheet" href="../dist/index/styles/vendor.css">
+    <link rel="stylesheet" href="../dist/index/styles/style.css">  <!-- Body --> <!-- appCtrl controller with serveral data used in theme on diferent view -->
+    <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/5078507E-87DB-C440-AF8E-2A3929120353/main.js" charset="UTF-8"></script>
+    @*<script type="application/javascript">
+        (function () {
+            window.appConfig = {
+                env:'local',
+                appPath: '',
+                apiUrl: 'http://localhost:3000',
+                userInfo: {Id: null, UserName: '', isAdmin: false, isclient: false, isReadOnly: true}
+            }
+        })();
+    </script>*@
+
+</head>
+<body ng-controller="appCtrl" class="{{$state.current.data.specialClass}} fixed-navbar hide-sidebar">
+    <!-- Simple splash screen--> <div class="splash"> <div class="color-line"></div> <div class="splash-title"> <h1>Bitraz</h1> <p></p> <img src="../dist/index/images/loading-bars.svg" width="64" height="64"></div> </div>
+    <!--[if lt IE 7]>
+    <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a
+            href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div ui-view></div>
+    <script src="../dist/index/scripts/vendor.js"></script>
+    <script src="../dist/index/scripts/scripts.js"></script>
+    <script src="../dist/index/scripts/templates.js"></script>
+
+    <!-- Visual Studio Browser Link -->
+    <script type="application/json" id="__browserLink_initializationData">
+        {"appName":"Chrome","requestId":"de37daaaa1ed416bb7429ece40808022"}
+    </script>
+    <script type="text/javascript" src="http://localhost:63079/1b24a879fae74391a2dce85b73aa38f2/browserLink" async="async"></script>
+    <!-- End Browser Link -->
+
+</body>
+</html>

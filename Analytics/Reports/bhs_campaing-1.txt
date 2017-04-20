@@ -1,0 +1,283 @@
+PK_Shorturl	Ipv4	Ipv6	ip_num	Browser	Browser_version	City	Region	Country	CountryCode	PostalCode	City_Latitude	City_Longitude	Latitude	Longitude	MetroCode	Req_url	UserAgent	Hostname	DeviceName	DeviceBrand	OS_Name	OS_Version	IsMobileDevice	CreatedDate	FK_Uid	FK_RID	FK_ClientID	FK_City_Master_id
+126	83.110.8.194	172.31.21.236	1399720130	Chrome	56.0	Dubai	03	United Arab Emirates	AE		25.2639	55.3081	25.116546099999997	55.384415499999996	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36	172.31.21.236	Mac OS X		Mac OS X	10	False	2017-03-01 10:30:16.737	7	7	9	1270562
+127	99.25.39.48	172.31.14.147	1662592816	Chrome	56.0	Union City	CA	United States	US	94587	37.5963	-122.0657	37.5907482	-122.02130729999999	807,510	https://g0.pe/Mdjvd	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36	172.31.14.147	Mac OS X		Mac OS X	10	False	2017-03-01 10:30:48.007	7	7	9	911967
+128	83.110.8.194	172.31.14.147	1399720130	Chrome	56.0	Dubai	03	United Arab Emirates	AE		25.2639	55.3081	25.1143586	55.3813313	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Linux; Android 6.0.1; SM-N920C Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36	172.31.14.147	SM-N920C	Samsung	Android	6	True	2017-03-01 10:31:12.913	7	7	9	1270562
+132	83.110.8.194	172.31.14.147	1399720130	Chrome	56.0	Dubai	03	United Arab Emirates	AE		25.2639	55.3081	25.1143586	55.3813313	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Linux; Android 6.0.1; SM-N920C Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36	172.31.14.147	SM-N920C	Samsung	Android	6	True	2017-03-01 11:18:39.407	7	7	9	1270562
+150	5.31.179.94	172.31.14.147	85963614	Chrome	56.0	Dubai	03	United Arab Emirates	AE		25.2639	55.3081	25.2733541	55.3713503	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Linux; Android 6.0.1; SM-N920C Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36	172.31.14.147	SM-N920C	Samsung	Android	6	True	2017-03-01 12:28:53.193	7	7	9	72175
+151	83.110.201.99	172.31.21.236	1399769443	Chrome	56.0	Dubai	03	United Arab Emirates	AE		25.2639	55.3081	25.2727943	55.3714351	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Linux; Android 6.0.1; SM-N920C Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36	172.31.21.236	SM-N920C	Samsung	Android	6	True	2017-03-01 12:29:20.280	7	7	9	1270612
+160	2.49.213.82	172.31.14.147	36820306	Chrome	56.0	Deira	03	United Arab Emirates	AE		25.2731	55.3064	25.2953963	55.4401957	,	https://g0.pe/Mdjvd	Mozilla/5.0 (Linux; Android 6.0.1; SM-N920C Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36	172.31.14.147	SM-N920C	Samsung	Android	6	True	2017-03-01 13:52:29.570	7	7	9	33879
+
+
+
+
+
+ipv4--in freegeoip--nvarchar(450)
+Pwd--in riddata--nvarchar(100)
+ipv4,ipv6--in shorturldata--nvarchar(450)
+referencenumber,longurl,uniquenumber--in uiddata--nvarchar(450)
+
+
+CREATE INDEX FK_ClientIDIndex ON BatchUploadData (FK_ClientID ASC);
+CREATE INDEX FK_RIDIndex ON BatchUploadData (FK_RID ASC);
+CREATE INDEX StatusIndex ON BatchUploadData (Status ASC);
+
+CREATE INDEX UserNameIndex ON Client (UserName);
+CREATE INDEX PasswordIndex ON Client (Password);
+CREATE INDEX RoleIndex ON Client (Role);
+
+CREATE INDEX Ipv4Index ON freeGeoipData (Ipv4);
+CREATE INDEX ip_numIndex ON freeGeoipData (ip_num);
+
+CREATE INDEX locIdIndex ON Locations_Data (locId);
+CREATE INDEX locIdIndex ON Master_Location (locId);
+
+CREATE INDEX ReferenceNumberIndex ON RIDDATA (ReferenceNumber);
+CREATE INDEX PwdIndex ON RIDDATA (Pwd);
+CREATE INDEX FK_ClientIdIndex ON RIDDATA (FK_ClientId);
+
+CREATE INDEX Ipv4Index ON SHORTURLDATA (Ipv4);
+CREATE INDEX ip_numIndex ON SHORTURLDATA (ip_num);
+CREATE INDEX FK_UidIndex ON SHORTURLDATA (FK_Uid);
+CREATE INDEX FK_RIDIndex ON SHORTURLDATA (FK_RID);
+CREATE INDEX FK_ClientIDIndex ON SHORTURLDATA (FK_ClientID);
+
+CREATE INDEX FK_RIDIndex ON UIDDATA (FK_RID);
+CREATE INDEX FK_ClientIDIndex ON UIDDATA (FK_ClientID);
+CREATE INDEX ReferenceNumberIndex ON UIDDATA (ReferenceNumber);
+CREATE INDEX LongurlIndex ON UIDDATA (Longurl);
+CREATE INDEX MobileNumberIndex ON UIDDATA (MobileNumber);
+CREATE INDEX UniqueNumberIndex ON UIDDATA (UniqueNumber);
+CREATE INDEX FK_BatchidIndex ON UIDDATA (FK_Batchid);
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+USE [shortenURL]
+GO
+/****** Object:  StoredProcedure [dbo].[spGetDashBoardSummary]    Script Date: 3/1/2017 1:08:42 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [dbo].[spGetDashBoardSummary]   
+(
+@FkClientId int
+)
+As    
+Begin 
+--WHERE DATEDIFF( ww, CreateDate, GETDATE() ) = 0  this week  WHERE DATEDIFF( yy, CreateDate, GETDATE() ) = 0 -- this year
+if(@FkClientId !='0')
+begin
+select count(*) as count from UIDDATA where FK_ClientID=@FkClientId
+
+--users
+select distinct
+(select COUNT(MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId) as total,
+(select COUNT(distinct MobileNumber) from UIDDATA where FK_ClientID=@FkClientId) as uniqueUsers,
+(select COUNT(distinct MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)  ) as uniqueUsersToday,
+(select COUNT(MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)  ) as usersToday,
+(select COUNT(distinct MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1   ) as uniqueUsersYesterday,
+(select COUNT(MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1   ) as usersYesterday,
+(select COUNT(distinct MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())) as uniqueUsersLast7days,
+(select COUNT(MobileNumber)  from UIDDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())   ) as usersLast7days
+
+--visits
+select distinct
+(select COUNT(FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId) as total,
+(select COUNT(distinct FK_Uid) from SHORTURLDATA where FK_ClientID=@FkClientId) as uniqueVisits,
+(select COUNT(FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)  ) as visitsToday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)  ) as uniqueVisitsToday,
+(select COUNT(FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1  ) as visitsYesterday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1 ) as uniqueVisitsYesterday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())   ) as uniqueVisitsLast7day,
+(select COUNT(FK_Uid)  from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())    ) as visitsLast7days
+
+--campaigns
+select distinct
+(select COUNT(ReferenceNumber)  from RIDDATA where FK_ClientID=@FkClientId) as total,
+(select COUNT(ReferenceNumber)  from RIDDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())  ) as campaignsLast7days,
+(select COUNT(ReferenceNumber)  from RIDDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 0  ) as campaignsMonth
+
+--recentCampaigns
+select ROW_NUMBER() over(order by A.CreatedDate) as id,A.ReferenceNumber as rid,A.CreatedDate as crd,A.EndDate as endd,B.visits as visits,A.urls as users,A.status as status from
+ (select r.ReferenceNumber,r.CreatedDate,r.EndDate,COUNT(u.FK_RID) as urls,r.IsActive as status from RIDDATA r,UIDDATA u 
+ where r.PK_Rid=u.FK_RID and r.FK_ClientId=@FkClientId and u.FK_ClientId=@FkClientId 
+ group by r.ReferenceNumber,r.CreatedDate,r.EndDate,r.IsActive) as A 
+  JOIN
+ (select r.ReferenceNumber,COUNT(distinct s.FK_Uid) as visits from UIDDATA u,SHORTURLDATA s ,RIDDATA r
+ where r.PK_Rid=u.FK_RID and  u.PK_Uid=s.FK_Uid and r.FK_ClientId=@FkClientId and s.FK_ClientId=@FkClientId 
+ group by r.ReferenceNumber ) as B on A.ReferenceNumber=B.ReferenceNumber
+ 
+ 
+ --activities --today
+ select  Todays_UrlsCount.count as urlTotal,(ISNULL(round((Todays_UrlsCount.count-Yesterdays_UrlsCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as urlPercent,
+ Todays_VisitCount.count as visitsTotal,(ISNULL(round((Todays_VisitCount.count-Yesterdays_VisitCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ Todays_ReVisitCount.count as revisitsTotal, (ISNULL(round((Todays_ReVisitCount.count-Yesterdays_ReVisitCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  Today_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((Today_NeverVisitedCount.count-Yesterday_NeverVisitedCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date) )  as Todays_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)) as Todays_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date)) as Todays_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and cast(CreatedDate as date)=CAST(getdate() as date) and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as Today_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE() and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as Yesterday_NeverVisitedCount
+
+
+ --activities --week
+select  Last7days_UrlsCount.count as urlTotal,(ISNULL(round((Last7days_UrlsCount.count-Last7to14days_UrlsCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as urlPercent,
+ Last7days_VisitCount.count as visitsTotal,(ISNULL(round((Last7days_VisitCount.count-Last7to14days_VisitCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ Last7days_ReVisitCount.count as revisitsTotal, (ISNULL(round((Last7days_ReVisitCount.count-Last7to14days_ReVisitCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  Last7days_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((Last7days_NeverVisitedCount.count-Last7to14days_NeverVisitedCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE()) )  as Last7days_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where FK_ClientID=@FkClientId and CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())) as Last7days_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE())) as Last7days_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where FK_ClientID=@FkClientId and CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and CreatedDate >= DATEADD(day,-7, GETDATE()) and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as Last7days_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE()) and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as Last7to14days_NeverVisitedCount
+
+
+ --activities --month
+ select  ThisMonth_UrlsCount.count as urlTotal,(ISNULL(round((ThisMonth_UrlsCount.count-LastMonth_UrlsCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as urlPercent,
+ ThisMonth_VisitCount.count as visitsTotal,(ISNULL(round((ThisMonth_VisitCount.count-LastMonth_VisitCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ ThisMonth_ReVisitCount.count as revisitsTotal, (ISNULL(round((ThisMonth_ReVisitCount.count-LastMonth_ReVisitCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  ThisMonth_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((ThisMonth_NeverVisitedCount.count-LastMonth_NeverVisitedCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 0 )  as ThisMonth_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 1 ) as LastMonth_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 0) as ThisMonth_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 1) as LastMonth_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 0) as ThisMonth_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 1) as LastMonth_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 0 and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as ThisMonth_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and DATEDIFF( m, CreatedDate, GETDATE() ) = 1 and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId) ) as LastMonth_NeverVisitedCount
+end
+
+else if(@FkClientId = '0')
+begin
+
+select count(*) as count from UIDDATA 
+
+--users
+select distinct
+(select COUNT(MobileNumber)  from UIDDATA ) as total,
+(select COUNT(distinct MobileNumber) from UIDDATA ) as uniqueUsers,
+(select COUNT(distinct MobileNumber)  from UIDDATA where cast(CreatedDate as date)=CAST(getdate() as date)  ) as uniqueUsersToday,
+(select COUNT(MobileNumber)  from UIDDATA where  cast(CreatedDate as date)=CAST(getdate() as date)  ) as usersToday,
+(select COUNT(distinct MobileNumber)  from UIDDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1   ) as uniqueUsersYesterday,
+(select COUNT(MobileNumber)  from UIDDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1   ) as usersYesterday,
+(select COUNT(distinct MobileNumber)  from UIDDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())) as uniqueUsersLast7days,
+(select COUNT(MobileNumber)  from UIDDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())   ) as usersLast7days
+
+--visits
+select distinct
+(select COUNT(FK_Uid)  from SHORTURLDATA ) as total,
+(select COUNT(distinct FK_Uid) from SHORTURLDATA ) as uniqueVisits,
+(select COUNT(FK_Uid)  from SHORTURLDATA where  cast(CreatedDate as date)=CAST(getdate() as date)  ) as visitsToday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where  cast(CreatedDate as date)=CAST(getdate() as date)  ) as uniqueVisitsToday,
+(select COUNT(FK_Uid)  from SHORTURLDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1  ) as visitsYesterday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1 ) as uniqueVisitsYesterday,
+(select COUNT(distinct FK_Uid)  from SHORTURLDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())   ) as uniqueVisitsLast7day,
+(select COUNT(FK_Uid)  from SHORTURLDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())    ) as visitsLast7days
+
+--campaigns
+select distinct
+(select COUNT(ReferenceNumber)  from RIDDATA ) as total,
+(select COUNT(ReferenceNumber)  from RIDDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())  ) as campaignsLast7days,
+(select COUNT(ReferenceNumber)  from RIDDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 0  ) as campaignsMonth
+
+--recentCampaigns
+select ROW_NUMBER() over(order by A.CreatedDate) as id,A.ReferenceNumber as rid,A.CreatedDate as crd,A.EndDate as endd,B.visits as visits,A.urls as users,A.status as status from
+ (select r.ReferenceNumber,r.CreatedDate,r.EndDate,COUNT(u.FK_RID) as urls,r.IsActive as status from RIDDATA r,UIDDATA u 
+ where r.PK_Rid=u.FK_RID  
+ group by r.ReferenceNumber,r.CreatedDate,r.EndDate,r.IsActive) as A 
+  JOIN
+ (select r.ReferenceNumber,COUNT(distinct s.FK_Uid) as visits from UIDDATA u,SHORTURLDATA s ,RIDDATA r
+ where r.PK_Rid=u.FK_RID and  u.PK_Uid=s.FK_Uid  
+ group by r.ReferenceNumber ) as B on A.ReferenceNumber=B.ReferenceNumber
+ 
+ 
+ --activities --today
+ select  Todays_UrlsCount.count as urlTotal,(ISNULL(round((Todays_UrlsCount.count-Yesterdays_UrlsCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as urlPercent,
+ Todays_VisitCount.count as visitsTotal,(ISNULL(round((Todays_VisitCount.count-Yesterdays_VisitCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ Todays_ReVisitCount.count as revisitsTotal, (ISNULL(round((Todays_ReVisitCount.count-Yesterdays_ReVisitCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  Today_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((Today_NeverVisitedCount.count-Yesterday_NeverVisitedCount.count)/NULLIF(cast(Yesterdays_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where  cast(CreatedDate as date)=CAST(getdate() as date) )  as Todays_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  cast(CreatedDate as date)=CAST(getdate() as date)) as Todays_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where  cast(CreatedDate as date)=CAST(getdate() as date)) as Todays_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE()) as Yesterdays_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  cast(CreatedDate as date)=CAST(getdate() as date) and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as Today_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  DATEDIFF( d, CreatedDate, GETDATE() ) = 1 AND CreatedDate < GETDATE() and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as Yesterday_NeverVisitedCount
+
+
+ --activities --week
+select  Last7days_UrlsCount.count as urlTotal,(ISNULL(round((Last7days_UrlsCount.count-Last7to14days_UrlsCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as urlPercent,
+ Last7days_VisitCount.count as visitsTotal,(ISNULL(round((Last7days_VisitCount.count-Last7to14days_VisitCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ Last7days_ReVisitCount.count as revisitsTotal, (ISNULL(round((Last7days_ReVisitCount.count-Last7to14days_ReVisitCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  Last7days_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((Last7days_NeverVisitedCount.count-Last7to14days_NeverVisitedCount.count)/NULLIF(cast(Last7to14days_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where  CreatedDate >= DATEADD(day,-7, GETDATE()) )  as Last7days_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where  CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())) as Last7days_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where  CreatedDate >= DATEADD(day,-7, GETDATE())) as Last7days_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where  CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE())) as Last7to14days_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  CreatedDate >= DATEADD(day,-7, GETDATE()) and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as Last7days_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  CreatedDate between DATEADD(day,-14, GETDATE()) and DATEADD(day,-7, GETDATE()) and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as Last7to14days_NeverVisitedCount
+
+
+ --activities --month
+ select  ThisMonth_UrlsCount.count as urlTotal,(ISNULL(round((ThisMonth_UrlsCount.count-LastMonth_UrlsCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as urlPercent,
+ ThisMonth_VisitCount.count as visitsTotal,(ISNULL(round((ThisMonth_VisitCount.count-LastMonth_VisitCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as visitsPercent,
+ ThisMonth_ReVisitCount.count as revisitsTotal, (ISNULL(round((ThisMonth_ReVisitCount.count-LastMonth_ReVisitCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as revisitsPercent,
+  ThisMonth_NeverVisitedCount.count as noVisitsTotal, (ISNULL(round((ThisMonth_NeverVisitedCount.count-LastMonth_NeverVisitedCount.count)/NULLIF(cast(LastMonth_UrlsCount.count as float),0),2),0)) as noVisitsPercent
+from
+ --(select COUNT(MobileNumber) as count  from UIDDATA where FK_ClientID=@FkClientId) as Total_UrlsCount,
+(select COUNT(MobileNumber) as count   from UIDDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 0 )  as ThisMonth_UrlsCount,
+(select COUNT(MobileNumber) as count from UIDDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 1 ) as LastMonth_UrlsCount,
+--(select COUNT(FK_Uid) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 0) as ThisMonth_VisitCount,
+(select COUNT(FK_Uid) as count from SHORTURLDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 1) as LastMonth_VisitCount,
+--(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where FK_ClientID=@FkClientId) as Total_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count from SHORTURLDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 0) as ThisMonth_ReVisitCount,
+(select (COUNT(FK_Uid)-COUNT(distinct FK_Uid)) as count  from SHORTURLDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 1) as LastMonth_ReVisitCount,
+--(select COUNT(PK_Uid) as count from UIDDATA where FK_ClientID=@FkClientId and PK_Uid not in (select FK_Uid from SHORTURLDATA where FK_ClientID=@FkClientId)) as Total_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 0 and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as ThisMonth_NeverVisitedCount,
+(select COUNT(PK_Uid) as count from UIDDATA where  DATEDIFF( m, CreatedDate, GETDATE() ) = 1 and PK_Uid not in (select FK_Uid from SHORTURLDATA ) ) as LastMonth_NeverVisitedCount
+end
+
+ 
+
+End 
+
+
+
+
+

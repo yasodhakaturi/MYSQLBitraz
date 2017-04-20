@@ -1,0 +1,51 @@
+﻿USE [shortenURL]
+GO
+/****** Object:  Trigger [dbo].[tgBatchUpload]    Script Date: 2/28/2017 10:31:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER TRIGGER [dbo].[tgBatchUpload]    
+ON [dbo].[batchuploaddata]    
+FOR INSERT    
+AS 
+
+Declare @Batchid int       
+Declare @ReferenceNumber nvarchar(max) 
+Declare @Longurl nvarchar(max)
+Declare @MobileNumber nvarchar(max)
+Declare @FK_RID int
+Declare @FK_ClientID int
+Declare @CreatedBy nvarchar(max) 
+Declare @F_MobileNumber nvarchar(max)
+DECLARE @tmp_MobileNumber TABLE (
+    [MobileNumber] nvarchar(max) NULL
+    ) 
+ select @Batchid = PK_Batchid,@ReferenceNumber = ReferenceNumber,@Longurl=Longurl,@MobileNumber=MobileNumber,@FK_RID=FK_RID,@FK_ClientID=FK_ClientID,@CreatedBy=CreatedBy from batchuploaddata where Status='Not Started'   
+ 
+ INSERT INTO @tmp_MobileNumber(MobileNumber)
+    SELECT *
+    FROM dbo.fnSplitStringAsTable(@MobileNumber, ',')
+	option (maxrecursion 0);
+     declare tempCursor cursor dynamic for    
+ select MobileNumber from @tmp_MobileNumber 
+ update batchuploaddata set Status='In Progress' where PK_Batchid=@Batchid
+  open tempCursor    
+ fetch first from tempCursor into @F_MobileNumber    
+While @@FETCH_STATUS = 0    
+ Begin  
+  print 'beginloop'    
+
+ if not Exists(select * from uiddata where ReferenceNumber=@ReferenceNumber and MobileNumber=@F_MobileNumber and Longurl=@Longurl and FK_ClientID=@FK_ClientID and @FK_RID=@FK_RID)
+ begin
+ insert into uiddata(ReferenceNumber,MobileNumber,Longurl,FK_ClientID,FK_RID,CreatedDate,CreatedBy,FK_Batchid) 
+ values(@ReferenceNumber,@F_MobileNumber,@Longurl,@FK_ClientID,@FK_RID,GETUTCDATE(),@CreatedBy,@Batchid)
+end
+   fetch next from tempCursor into @F_MobileNumber    
+
+  End -- End of TempCursor    
+  close tempCursor    
+  deallocate tempCursor    
+   print 'Upload Completed'    
+
+  update batchuploaddata set Status='Insertion Completed' where PK_Batchid=@Batchid

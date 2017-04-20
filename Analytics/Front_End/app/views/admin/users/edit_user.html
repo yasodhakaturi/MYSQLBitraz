@@ -1,0 +1,49 @@
+<div id="edit_user">
+
+    <div class="content" animate-panel effect="zoomIn">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Edit a User</h3>
+        </div>
+
+        <ng-form class="form-horizontal" name="$ctrl.userForm" novalidate >
+            <div class="modal-body" id="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">User Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" ng-required="true" name="username" placeholder="User Name" class="form-control" ng-model="$ctrl.user.UserName" />
+                        <small  class="form-text text-muted text-danger" ng-if="$ctrl.userForm.username.$invalid && $ctrl.userForm.username.$touched">
+                            <span ng-if="$ctrl.userForm.username.$error.required">Name is required</span>
+                        </small>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Email</label>
+
+                    <div class="col-sm-10">
+                        {{$ctrl.user.Email}}
+                        <!--<input type="email" ng-required="true" name="email" placeholder="Email" class="form-control" ng-model="$ctrl.user.Email" />-->
+                        <!--<small  class="form-text text-muted text-danger" ng-if="$ctrl.userForm.email.$invalid && $ctrl.userForm.email.$touched">-->
+                            <!--<span ng-if="$ctrl.userForm.email.$error.required">Email is required</span>-->
+                            <!--<span ng-if="!$ctrl.userForm.email.$error.required && $ctrl.userForm.email.$error.email">Invalid Email</span>-->
+                        <!--</small>-->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Active</label>
+
+                    <div class="col-sm-10">
+                        <input type="checkbox" name="isActive"  class="form-control" ng-model="$ctrl.user.IsActive" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <small class="text-danger" ng-if="$ctrl.saveError">Error: {{$ctrl.saveError}} </small>
+                <button class="btn btn-default" type="submit" ng-click="cancel()">Cancel</button>
+                <button class="btn btn-primary" type="submit" ng-class="{'disabled': !$ctrl.userForm.$valid}" ng-disabled="!$ctrl.userForm.$valid"  ng-click="save($ctrl.user)">Save changes</button>
+            </div>
+        </ng-form>
+    </div>
+</div>

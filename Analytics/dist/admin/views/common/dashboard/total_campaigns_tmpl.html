@@ -1,0 +1,27 @@
+<div class="hpanel stats">
+    <div class="panel-body h-200">
+        <div class="stats-title pull-left">
+            <h4>Total Campaigns</h4>
+        </div>
+        <div class="stats-icon pull-right">
+            <i class="pe-7s-science fa-4x"></i>
+        </div>
+        <div class="m-t-xl">
+            <h3 class="m-b-xs">{{$ctrl.data.total || 0}}</h3>
+                    <span class="font-bold no-margins">
+                        Active Campaigns
+                    </span>
+            <div class="row">
+                <div class="col-xs-6">
+                    <small class="stats-label">This Week</small>
+                    <h4>{{$ctrl.data.campaignsLast7days || 0}}</h4>
+                </div>
+
+                <div class="col-xs-6">
+                    <small class="stats-label">This Month</small>
+                    <h4>{{$ctrl.data.campaignsMonth || 0}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

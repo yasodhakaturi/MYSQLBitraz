@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script language="JavaScript" type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+    <title></title>
+    <script>
+        $(document).ready(function () {
+          
+                var username = prompt('Please enter a username:');
+             
+                 var uri = 'ws://' + window.location.hostname + window.location.pathname.replace('chat.html', 'api/Chat') + '?username=' + username;
+                //var uri = 'ws://localhost:64337/api/Chat?username=yasodha';
+                //alert(uri);
+                 websocket = new WebSocket(uri);
+              
+                 websocket.onopen = function () {
+                       $('#messages').prepend('<div>Connected.</div>');
+                  
+                         $('#chatform').submit(function (event) {
+                                websocket.send($('#inputbox').val());
+                                 $('#inputbox').val('');
+                                 event.preventDefault();
+                            });
+                   };
+             
+                websocket.onerror = function (event) {
+                         $('#messages').prepend('<div>ERROR</div>');
+                   };
+              
+                 websocket.onmessage = function (event) {
+                         $('#messages').prepend('<div>' + event.data + '</div>');
+                    };
+            });
+    </script>
+</head>
+<body>
+    <form id="chatform" action="">
+    <input id="inputbox" />
+    
+    </form>
+    <div id="messages" />
+</body>
+</html>

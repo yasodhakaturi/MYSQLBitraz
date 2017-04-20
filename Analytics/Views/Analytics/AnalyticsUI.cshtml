@@ -1,0 +1,16 @@
+﻿
+     <!-- Body --> <!-- appCtrl controller with serveral data used in theme on diferent view -->
+    <body ng-controller="appCtrl" class="{{$state.current.data.specialClass}} fixed-navbar hide-sidebar">
+        <!-- Simple splash screen--> <div class="splash splash-screen">  <div class="splash-title"> <h1>Bitraz</h1> <p></p> <img src="../dist/analytics/images/loading-bars.svg" width="64" height="64"></div> </div>
+        <!--[if lt IE 7]>
+        <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a
+                href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- Page view wrapper --> <div class="uiview" ui-view></div>
+        <script src="../dist/analytics/scripts/vendor.js"></script>
+
+        <script>
+            MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_
+                = "../dist/index/images/clusters/m";  //changed image path</script>
+        <script src="../dist/analytics/scripts/scripts.js"></script>
+        <script src="../dist/analytics/scripts/templates.js"></script>
