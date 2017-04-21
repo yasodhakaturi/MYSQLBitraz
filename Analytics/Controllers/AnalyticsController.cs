@@ -78,52 +78,53 @@ namespace Analytics.Controllers
                             lSQLCmd.Connection = lSQLConn;
                         }
                         myReader = lSQLCmd.ExecuteReader();
-
-                            totalUrls totalUrls = ((IObjectContextAdapter)dc)
+                       
+                        totalUrls totalUrls = ((IObjectContextAdapter)dc)
                               .ObjectContext
-                              .Translate<totalUrls>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
-
-                            // Move to locations result 
+                              .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                        
+                         
+                        // Move to locations result 
                             myReader.NextResult();
                             users users = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<users>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             visits visits = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<visits>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             campaigns campaigns = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<campaigns>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<campaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<recentCampaigns1>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).ToList();
+                           .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
                             // Move to locations result 
                             myReader.NextResult();
                             today today = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<today>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             last7days last7days = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<last7days>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             month month = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<month>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<month>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             List<recentCampaigns> objr = (from r in recentCampaigns
                                                           select new recentCampaigns()
@@ -170,7 +171,7 @@ namespace Analytics.Controllers
                         if(role.ToLower()=="admin")
                          objr = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(y => y).SingleOrDefault();
                         else
-                         objr = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.FK_ClientID == cid).Select(y => y).SingleOrDefault();
+                            objr = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.FK_ClientId == cid).Select(y => y).SingleOrDefault();
 
 
                         if (objr != null)
@@ -191,19 +192,19 @@ namespace Analytics.Controllers
 
                             totalUrls totalUrls = ((IObjectContextAdapter)dc)
                               .ObjectContext
-                              .Translate<totalUrls>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                              .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             users users = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<users>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             visits visits = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<visits>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // // Move to locations result 
                             // myReader.NextResult();
@@ -215,19 +216,19 @@ namespace Analytics.Controllers
                             myReader.NextResult();
                             today today = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<today>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             last7days last7days = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<last7days>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
                             // Move to locations result 
                             myReader.NextResult();
                             month month = ((IObjectContextAdapter)dc)
                            .ObjectContext
-                           .Translate<month>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).SingleOrDefault();
+                           .Translate<month>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
                             activities obj_act = new activities();
                             objc.totalUrls = totalUrls;
                             objc.users = users;
@@ -300,7 +301,7 @@ namespace Analytics.Controllers
 
                         //        }).OrderByDescending(x=>x.createdOn).ToList();
                         List<CampaignsList1> objc1 = (from r in dc.riddatas
-                                                      where r.FK_ClientID == c_id
+                                                      where r.FK_ClientId == c_id
                                                       select new CampaignsList1()
                                                       {
                                                           id = r.PK_Rid,
@@ -477,34 +478,35 @@ namespace Analytics.Controllers
 
                         List<DayWiseData1> activity = ((IObjectContextAdapter)dc)
                           .ObjectContext
-                          .Translate<DayWiseData1>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).ToList();
+                          .Translate<DayWiseData1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
 
                         // Move to locations result 
                         myReader.NextResult();
                         List<CountryWiseData> locations = ((IObjectContextAdapter)dc)
                        .ObjectContext
-                       .Translate<CountryWiseData>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).ToList();
+                       .Translate<CountryWiseData>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
                         // Move to devices result 
                         myReader.NextResult();
                         List<DeviceWiseData> devices = ((IObjectContextAdapter)dc)
                       .ObjectContext
-                      .Translate<DeviceWiseData>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).ToList();
+                      .Translate<DeviceWiseData>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
                         // Move to platforms result 
                         myReader.NextResult();
                         List<BrowserWiseData> platforms = ((IObjectContextAdapter)dc)
                       .ObjectContext
-                      .Translate<BrowserWiseData>(myReader, "SHORTURLDATAs", MergeOption.AppendOnly).ToList();
+                      .Translate<BrowserWiseData>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
                         List<DayWiseData> objr = new List<DayWiseData>();
                         if (activity != null)
                         {
+                            
                             objr = (from r in activity
                                     select new DayWiseData()
                                     {
-                                        RequestedDate = r.RequestedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss"),
+                                        RequestedDate =(r.RequestedDate==null) ? null: r.RequestedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss"),
                                         RequestCount = r.RequestCount
                                         //r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
 

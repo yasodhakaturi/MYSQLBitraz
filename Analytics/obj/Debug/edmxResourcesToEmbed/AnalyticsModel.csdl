@@ -65,34 +65,6 @@
     <Property Name="FK_ShorturlId" Type="Int32" />
     <NavigationProperty Name="shorturldata" Relationship="Self.FK_CookieTable_SHORTURLDATA" FromRole="cookietable" ToRole="shorturldata" />
   </EntityType>
-  <EntityType Name="countrydata">
-    <Key>
-      <PropertyRef Name="PK_Country_ID" />
-    </Key>
-    <Property Name="PK_Country_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Start_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="End_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="Start_IP_num" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="End_IP_num" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="Country_code" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="Country_name" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <EntityType Name="countrydata_ipv4_geolite2">
-    <Key>
-      <PropertyRef Name="PK_Country_ID_IPV4" />
-    </Key>
-    <Property Name="PK_Country_ID_IPV4" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="network" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Start_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="End_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="Start_IP_num" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="End_IP_num" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="registered_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="represented_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="is_anonymous_proxy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="is_satellite_provider" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="errorlog">
     <Key>
       <PropertyRef Name="PKErrorLogId" />
@@ -172,7 +144,7 @@
     <Property Name="CreatedDate" Type="DateTime" />
     <Property Name="EndDate" Type="DateTime" />
     <Property Name="UpdatedDate" Type="DateTime" />
-    <Property Name="FK_ClientID" Type="Int32" Nullable="false" />
+    <Property Name="FK_ClientId" Type="Int32" Nullable="false" />
     <Property Name="CreatedBy" Type="Int32" />
     <NavigationProperty Name="client" Relationship="Self.FK_RIDDATA_Client" FromRole="riddata" ToRole="client" />
     <NavigationProperty Name="shorturldatas" Relationship="Self.FK_SHORTURLDATA_RIDDATA" FromRole="riddata" ToRole="shorturldata" />
@@ -271,18 +243,6 @@
     <Property Name="metro_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="time_zone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="countrydata_geolite2">
-    <Key>
-      <PropertyRef Name="PK_Country_ID_GeoLite" />
-    </Key>
-    <Property Name="PK_Country_ID_GeoLite" Type="Int32" Nullable="false" />
-    <Property Name="geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="locale_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="continent_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="continent_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="country_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="country_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-  </EntityType>
   <Association Name="FK_RIDDATA_Client">
     <End Role="client" Type="Self.client" Multiplicity="1" />
     <End Role="riddata" Type="Self.riddata" Multiplicity="*" />
@@ -291,7 +251,7 @@
         <PropertyRef Name="PK_ClientID" />
       </Principal>
       <Dependent Role="riddata">
-        <PropertyRef Name="FK_ClientID" />
+        <PropertyRef Name="FK_ClientId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -372,8 +332,6 @@
     <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="Self.city_blocks_ipv4_geolite2" />
     <EntitySet Name="clients" EntityType="Self.client" />
     <EntitySet Name="cookietables" EntityType="Self.cookietable" />
-    <EntitySet Name="countrydatas" EntityType="Self.countrydata" />
-    <EntitySet Name="countrydata_ipv4_geolite2" EntityType="Self.countrydata_ipv4_geolite2" />
     <EntitySet Name="errorlogs" EntityType="Self.errorlog" />
     <EntitySet Name="freegeoipdatas" EntityType="Self.freegeoipdata" />
     <EntitySet Name="hashidlists" EntityType="Self.hashidlist" />
@@ -386,7 +344,6 @@
     <EntitySet Name="tmp_rownum_update" EntityType="Self.tmp_rownum_update" />
     <EntitySet Name="uiddatas" EntityType="Self.uiddata" />
     <EntitySet Name="city_locations_geolite2" EntityType="Self.city_locations_geolite2" />
-    <EntitySet Name="countrydata_geolite2" EntityType="Self.countrydata_geolite2" />
     <AssociationSet Name="FK_RIDDATA_Client" Association="Self.FK_RIDDATA_Client">
       <End Role="client" EntitySet="clients" />
       <End Role="riddata" EntitySet="riddatas" />
@@ -415,5 +372,41 @@
       <End Role="uiddata" EntitySet="uiddatas" />
       <End Role="shorturldata" EntitySet="shorturldatas" />
     </AssociationSet>
+    <FunctionImport Name="InsertRIDData">
+      <Parameter Name="CampaignName" Mode="In" Type="String" />
+      <Parameter Name="referencenumber" Mode="In" Type="String" />
+      <Parameter Name="pwd" Mode="In" Type="String" />
+      <Parameter Name="clientid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertSHORTURLData">
+      <Parameter Name="ipv4" Mode="In" Type="String" />
+      <Parameter Name="ipv6" Mode="In" Type="String" />
+      <Parameter Name="browser" Mode="In" Type="String" />
+      <Parameter Name="browser_version" Mode="In" Type="String" />
+      <Parameter Name="latitude" Mode="In" Type="String" />
+      <Parameter Name="longitude" Mode="In" Type="String" />
+      <Parameter Name="ipnum" Mode="In" Type="String" />
+      <Parameter Name="req_url" Mode="In" Type="String" />
+      <Parameter Name="useragent" Mode="In" Type="String" />
+      <Parameter Name="hostname" Mode="In" Type="String" />
+      <Parameter Name="IsMobiledevice" Mode="In" Type="String" />
+      <Parameter Name="fk_uid" Mode="In" Type="Int32" />
+      <Parameter Name="fk_rid" Mode="In" Type="Int32" />
+      <Parameter Name="FK_clientid" Mode="In" Type="Int32" />
+      <Parameter Name="cookievalue" Mode="In" Type="String" />
+      <Parameter Name="mobilenumber" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertUIDData">
+      <Parameter Name="fk_rid" Mode="In" Type="Int32" />
+      <Parameter Name="fk_clientid" Mode="In" Type="Int32" />
+      <Parameter Name="referencenumber" Mode="In" Type="String" />
+      <Parameter Name="longurl" Mode="In" Type="String" />
+      <Parameter Name="mobilenumber" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spGetALLCOUNTS1">
+      <Parameter Name="DateFrom" Mode="In" Type="DateTime" />
+      <Parameter Name="DateTo" Mode="In" Type="DateTime" />
+      <Parameter Name="rid" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
 </Schema>

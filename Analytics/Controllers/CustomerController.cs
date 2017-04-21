@@ -169,7 +169,7 @@ namespace Analytics.Controllers
                 //string Email = (string)jObject["Email"];
                 //string Password = (string)jObject["Password"];
                 //bool IsActive = (bool)jObject["IsActive"];
-                client isEmailExists = new OperationsBO().CheckclientEmail(Email);
+                client isEmailExists = new OperationsBO().CheckclientEmail(Email, Password);
                 //client obj1 = new client();
                 if (Session["id"] != null)
                 {
@@ -227,8 +227,8 @@ namespace Analytics.Controllers
             }
         }
         //public JsonResult Updateclient([FromBody]JToken jObject)
-        [System.Web.Mvc.HttpPost]
-        public JsonResult Updateclient(string UserName, string Email, bool IsActive)
+        //[System.Web.Mvc.HttpPost]
+        public JsonResult Updateclient(int id, string UserName, string Email, bool? IsActive, string Password)
         {
             client obj1 = new client();
             try
@@ -243,11 +243,23 @@ namespace Analytics.Controllers
                 //client isEmailExists = new OperationsBO().CheckclientEmail(Email);
                 if (Session["id"] != null)
                 {
-                    client obj = dc.clients.Where(c => c.Email == Email).SingleOrDefault();
-                    if (obj != null && Session["id"] != null)
-                        new OperationsBO().Updateclient(UserName, Email, IsActive);
-                    else
-                        obj = obj1;
+                    client obj = new client();
+                    if (Email != null)
+                    {
+                         obj = dc.clients.Where(c => c.Email == Email).SingleOrDefault();
+                        if (obj != null && Session["id"] != null)
+                            new OperationsBO().Updateclient(UserName, Email, IsActive,"");
+                        else
+                            obj = obj1;
+                    }
+                    if(Password!=null)
+                    {
+                         obj = dc.clients.Where(c => c.PK_ClientID == id).SingleOrDefault();
+                        if (obj != null && Session["id"] != null)
+                            new OperationsBO().Updateclient("", obj.Email, IsActive,Password);
+                        else
+                            obj = obj1;
+                    }
                     return Json(obj, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -274,7 +286,7 @@ namespace Analytics.Controllers
 
         // public JsonResult Deleteclient([FromBody]JToken jObject)
         [System.Web.Mvc.HttpPost]
-        public JsonResult Deleteclient(string Email)
+        public JsonResult Deleteclient(string Email,string Password)
         {
             client obj1 = new client();
             try
@@ -288,7 +300,7 @@ namespace Analytics.Controllers
                 //string fields = "UserName,Email,IsActive";
                 if (Session["id"] != null)
                 {
-                    client obj = new OperationsBO().CheckclientEmail(Email);
+                    client obj = new OperationsBO().CheckclientEmail(Email,Password);
                     //client obj = dc.clients.Where(c => c.PK_ClientID == isEmailExists.PK_ClientID).Select(c1 => c1).SingleOrDefault();
                     if (obj != null && Session["id"] != null)
                     {

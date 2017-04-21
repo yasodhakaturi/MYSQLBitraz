@@ -12,11 +12,13 @@ namespace Analytics.Helpers.Utility
         {
             try
             {
+                string utcdatetime = Helper.GetUTCTime();
+                DateTime? utcdt = Convert.ToDateTime(utcdatetime);
                 shortenurlEntities dc = new shortenurlEntities();
                 errorlog objErrorLog = new errorlog();
                 objErrorLog.StackTrace = stackTraceInfo;
                 objErrorLog.ErrorMessage = message;
-                objErrorLog.DateCreated = System.DateTime.Now;
+                objErrorLog.DateCreated = utcdt;
                 dc.errorlogs.Add(objErrorLog);
                 dc.SaveChanges();
                 string err = "";

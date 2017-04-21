@@ -90,7 +90,7 @@ namespace Analytics.Controllers
                         if (Helper.CurrentUserRole.ToLower() == "admin")
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
                                           where c.ReferenceNumber.Contains(referencenumber.ToString()) && c.CampaignName.ToString() != null && c.CampaignName.ToString() != ""
                                           select new CampaignView1()
                                           {
@@ -110,8 +110,8 @@ namespace Analytics.Controllers
                         else
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
-                                          where c.ReferenceNumber.Contains(referencenumber.ToString()) && c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientID==Helper.CurrentUserId
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
+                                          where c.ReferenceNumber.Contains(referencenumber.ToString()) && c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientId == Helper.CurrentUserId
                                           select new CampaignView1()
                                           {
                                               Id = c.PK_Rid,
@@ -150,7 +150,7 @@ namespace Analytics.Controllers
                         if (Helper.CurrentUserRole.ToLower() == "admin")
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
                                           where c.IsActive == isactive && c.CampaignName.ToString() != null && c.CampaignName.ToString() != ""
                                           select new CampaignView1()
                                           {
@@ -170,8 +170,8 @@ namespace Analytics.Controllers
                         else
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
-                                          where c.IsActive == isactive && c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientID==Helper.CurrentUserId
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
+                                          where c.IsActive == isactive && c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientId == Helper.CurrentUserId
                                           select new CampaignView1()
                                           {
                                               Id = c.PK_Rid,
@@ -209,7 +209,7 @@ namespace Analytics.Controllers
                         if (Helper.CurrentUserRole.ToLower() == "admin")
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
                                           where c.CampaignName.ToString() != null && c.CampaignName.ToString() != ""
                                           select new CampaignView1()
                                           {
@@ -230,8 +230,8 @@ namespace Analytics.Controllers
                         else
                         {
                             obj_search = (from c in dc.riddatas
-                                          join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
-                                          where c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientID==Helper.CurrentUserId
+                                          join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
+                                          where c.CampaignName.ToString() != null && c.CampaignName.ToString() != "" && c.FK_ClientId == Helper.CurrentUserId
                                           select new CampaignView1()
                                           {
                                               Id = c.PK_Rid,
@@ -313,7 +313,7 @@ namespace Analytics.Controllers
                 // riddata objc = dc.riddatas.Where(x => x.ReferenceNumber== ReferenceNumber).SingleOrDefault();
                 //int FK_ClientID = (int)jObject["clientId"];
                 //bool isclientExists = new OperationsBO().CheckclientId(FK_ClientID);
-                riddata objr = dc.riddatas.Where(r1 => r1.FK_ClientID == cid && r1.CampaignName == CampaignName).SingleOrDefault();
+                riddata objr = dc.riddatas.Where(r1 => r1.FK_ClientId == cid && r1.CampaignName == CampaignName).SingleOrDefault();
                 if (Session["id"] != null && objr == null && CampaignName != "" && CampaignName != null)
                 {
                     //if (Session["id"] != null && CampaignName != "" && CampaignName != null)
@@ -327,12 +327,12 @@ namespace Analytics.Controllers
                             obj.IsActive = IsActive;
                             obj.CreatedDate = DateTime.UtcNow;
                             obj.CreatedBy = Helper.CurrentUserId;
-                            obj.FK_ClientID = cid;
+                            obj.FK_ClientId = cid;
                             dc.riddatas.Add(obj);
                             dc.SaveChanges();
                         
                         obj_search = (from c in dc.riddatas
-                                      join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
+                                      join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
                                       where c.ReferenceNumber == ReferenceNumber
                                       select new CampaignView1()
                                       {
@@ -430,14 +430,14 @@ namespace Analytics.Controllers
                     if (obj != null)
                     {
                         riddata objr=new riddata();
-                        if (obj.FK_ClientID == CreatedUserId)
+                        if (obj.FK_ClientId == CreatedUserId)
                         {
                             objbo.UpdateCampaign(CreatedUserId, ReferenceNumber, CampaignName, Pwd, IsActive);
 
                         }
-                        else if (obj.FK_ClientID != CreatedUserId)
+                        else if (obj.FK_ClientId != CreatedUserId)
                         {
-                            objr = dc.riddatas.Where(r => r.CampaignName == CampaignName && r.FK_ClientID == CreatedUserId).SingleOrDefault();
+                            objr = dc.riddatas.Where(r => r.CampaignName == CampaignName && r.FK_ClientId == CreatedUserId).SingleOrDefault();
                             if (objr == null)
                                 objbo.UpdateCampaign(CreatedUserId, ReferenceNumber, CampaignName, Pwd, IsActive);
                             else
@@ -456,7 +456,7 @@ namespace Analytics.Controllers
                        
                    
                     objc = (from c in dc.riddatas
-                            join c1 in dc.clients on c.FK_ClientID equals c1.PK_ClientID
+                            join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
                             where c.ReferenceNumber == ReferenceNumber
                             select new CampaignView1()
                             {
@@ -630,8 +630,8 @@ namespace Analytics.Controllers
                 List<ExportAnalyticsData> objexport = (from s in dc.shorturldatas
                                                        join u in dc.uiddatas on s.FK_Uid equals u.PK_Uid
                                                        join r in dc.riddatas on u.FK_RID equals r.PK_Rid
-                                                       join c in dc.clients on r.FK_ClientID equals c.PK_ClientID
-                                                       where s.FK_RID == objr.PK_Rid && s.FK_ClientID == objr.FK_ClientID
+                                                       join c in dc.clients on r.FK_ClientId equals c.PK_ClientID
+                                                       where s.FK_RID == objr.PK_Rid && s.FK_ClientID == objr.FK_ClientId
                                                        select new ExportAnalyticsData()
                                                        {
                                           CampaignName=r.CampaignName,
@@ -744,39 +744,81 @@ namespace Analytics.Controllers
                 MaxJsonLength = Int32.MaxValue
             };
         }
-        //public void FillHashId(int from, int to)
-        //{
-        //    DataTable dt = new DataTable();
-        //    dt.Columns.Add(new DataColumn("PK_Hash_ID", typeof(int)));
-        //    dt.Columns.Add(new DataColumn("HashID", typeof(string)));
-        //    if (from < to)
-        //    {
-        //        for (int i = from; i < to; i++)
-        //        {
+        public void FillHashId(int from, int to)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("PK_Hash_ID", typeof(int)));
+            dt.Columns.Add(new DataColumn("HashID", typeof(string)));
+            if (from < to)
+            {
+                for (int i = from; i < to; i++)
+                {
 
-        //            string referencenumber = Helper.GetHashID(i);
-        //            DataRow dr = dt.NewRow();
-        //            dr["PK_Hash_ID"] = i;
-        //            dr["HashID"] = referencenumber;
-        //            dt.Rows.Add(dr);
-        //            //HashIDList hs = new HashIDList();
-        //            //hs.HashID = referencenumber;
-        //            //dc.HashIDLists.Add(hs);
-        //            //dc.SaveChanges();
-        //        }
+                    string referencenumber = Helper.GetHashID(i);
+                    DataRow dr = dt.NewRow();
+                    dr["PK_Hash_ID"] = i;
+                    dr["HashID"] = referencenumber;
+                    dt.Rows.Add(dr);
+                    //HashIDList hs = new HashIDList();
+                    //hs.HashID = referencenumber;
+                    //dc.HashIDLists.Add(hs);
+                    //dc.SaveChanges();
+                }
 
-        //        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                //string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
 
-        //        MySqlConnection conn = new MySqlConnection(connStr);
-        //        MySqlBulkLoader bulkCopy = new MySqlBulkLoader(conn);
+                //MySqlConnection conn = new MySqlConnection(connStr);
+                //MySqlBulkLoader bulkCopy = new MySqlBulkLoader(conn);
 
-        //        bulkCopy.Timeout = 10000; // in seconds
-        //        bulkCopy.TableName = "HashIDList";
-        //        bulkCopy.Load();    
-        //        //bulkCopy.WriteToServer(dt);
+                //bulkCopy.Timeout = 10000; // in seconds
+                //bulkCopy.TableName = "HashIDList";
+                //bulkCopy.Load();
+                //bulkCopy.WriteToServer(dt);
+                string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                       "tmp_mysqluploader.txt");
+                // + Path.GetExtension(UploadFile.FileName)
+               System.IO.File.Create(path_tmp).Dispose();
+                StreamWriter swExtLogFile = new StreamWriter(path_tmp);
+                int i1;
+                //swExtLogFile.Write(Environment.NewLine);
+                List<string> columnslist=new List<string>();
+                columnslist.Add("PK_Hash_ID");
+                swExtLogFile.Write("PK_Hash_ID");
+                swExtLogFile.Write(",");
+                swExtLogFile.Write("HashID");
+                swExtLogFile.Write(Environment.NewLine);
+                foreach (DataRow row in dt.Rows)
+                {
+                    object[] array = row.ItemArray;
+                    for (i1 = 0; i1 < array.Length - 1; i1++)
+                    {
+                        swExtLogFile.Write(array[i1].ToString() + " , ");
+                        
+                    }
+                    swExtLogFile.WriteLine(array[i1].ToString());
+                }
+                //swExtLogFile.Write("*****END OF DATA****" + DateTime.Now.ToString());
+                swExtLogFile.Flush();
+                swExtLogFile.Close();
+                
+                //string strFile = @"C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\mysqlproj\surl2\Analytics\UploadFiles\tmp_mysqluploader.txt";
                
-        //    }
-        //}
+                MySqlConnection connection = new MySqlConnection(connStr);
+                MySqlBulkLoader bl = new MySqlBulkLoader(connection);
+                //var connection = myConnection as MySqlConnection;
+                //var bl = new MySqlBulkLoader(connection);
+                bl.TableName = "hashidlist";
+                bl.FieldTerminator = ",";
+                bl.LineTerminator = swExtLogFile.NewLine;
+                bl.FileName = path_tmp;
+                bl.NumberOfLinesToSkip = 1;
+                bl.Columns.Add("PK_Hash_ID");
+                bl.Columns.Add("HashID");
+                var inserted = bl.Load();
+
+            }
+        }
        
         [System.Web.Http.HttpPost]
         public JsonResult UploadData(string[] MobileNumbers, string LongURL, string ReferenceNumber, string type, HttpPostedFileBase UploadFile)
@@ -794,9 +836,8 @@ namespace Analytics.Controllers
                 List<string> outputdat = new List<string>();
                 List<int> pkuids = new List<int>();
                 string Hashid;
-                //FillHashId(1, 100000);
-                //FillHashId(100000, 200000);
-                //FillHashId(8000000,10000000);
+                //FillHashId(1, 10);
+                // FillHashId(8000000,10000000);
 
 
 
@@ -810,10 +851,10 @@ namespace Analytics.Controllers
                     uiddata objc1 = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.Longurl == LongURL).SingleOrDefault();
                     if (objc1 == null)
                     {
-                        objc.MobileNumber = mobilenumber;
+                        objc.MobileNumber= mobilenumber;
                         objc.ReferenceNumber = ReferenceNumber;
                         objc.Longurl = LongURL;
-                        objc.FK_ClientID = objrid.FK_ClientID;
+                        objc.FK_ClientID = objrid.FK_ClientId;
                         objc.FK_RID = objrid.PK_Rid;
                         objc.CreatedDate = DateTime.UtcNow;
                         objc.CreatedBy = Helper.CurrentUserId;
@@ -851,7 +892,7 @@ namespace Analytics.Controllers
                         objb.ReferenceNumber = ReferenceNumber;
                         objb.MobileNumber = formated_mobilenumbers;
                         objb.Longurl = LongURL;
-                        objb.FK_ClientID = objrid.FK_ClientID;
+                        objb.FK_ClientID = objrid.FK_ClientId;
                         objb.FK_RID = objrid.PK_Rid;
                         objb.CreatedDate = DateTime.UtcNow;
                         objb.CreatedBy = Helper.CurrentUserId.ToString();
@@ -861,7 +902,7 @@ namespace Analytics.Controllers
                         dc.batchuploaddatas.Add(objb);
                         dc.SaveChanges();
                     batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
-                    string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, MobileNumbers_List);
+                    string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, MobileNumbers_List,"");
                     if (result != null)
                     {
                         objo.Status = "Completed";
@@ -886,7 +927,7 @@ namespace Analytics.Controllers
                     string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
                                        "tmp_mysqluploader.txt");
                     // + Path.GetExtension(UploadFile.FileName)
-                    UploadFile.SaveAs(path_tmp);
+                    System.IO.File.Create(path_tmp).Dispose();
                     //string path = Server.MapPath("~/UploadFiles/971505878339_5K_MANGED1.txt");
                     FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
                     byte[] data = new byte[fs.Length];
@@ -915,7 +956,7 @@ namespace Analytics.Controllers
                             objb.ReferenceNumber = ReferenceNumber;
                             objb.MobileNumber = mobilenumbersstr;
                             objb.Longurl = LongURL;
-                            objb.FK_ClientID = objrid.FK_ClientID;
+                            objb.FK_ClientID = objrid.FK_ClientId;
                             objb.FK_RID = objrid.PK_Rid;
                             objb.CreatedDate = DateTime.UtcNow;
                             objb.CreatedBy = Helper.CurrentUserId.ToString();
@@ -925,7 +966,7 @@ namespace Analytics.Controllers
                             dc.batchuploaddatas.Add(objb);
                             dc.SaveChanges();
                             batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
-                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, SplitedData);
+                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, SplitedData, path_tmp);
                             if (result == "Successfully Uploaded.")
                             {
                                 objo.Status = "Completed";
@@ -963,12 +1004,20 @@ namespace Analytics.Controllers
                             {
                                 System.IO.File.Delete(path);
                             }
+                            if ((System.IO.File.Exists(path_tmp)))
+                            {
+                                System.IO.File.Delete(path_tmp);
+                            }
                         }
                         else
                         {
                             if ((System.IO.File.Exists(path)))
                             {
                                 System.IO.File.Delete(path);
+                            }
+                            if ((System.IO.File.Exists(path_tmp)))
+                            {
+                                System.IO.File.Delete(path_tmp);
                             }
                             Error erobj = new Error();
                             Errormessage ermessage = new Errormessage();
@@ -982,6 +1031,10 @@ namespace Analytics.Controllers
                         if ((System.IO.File.Exists(path)))
                         {
                             System.IO.File.Delete(path);
+                        }
+                        if ((System.IO.File.Exists(path_tmp)))
+                        {
+                            System.IO.File.Delete(path_tmp);
                         }
                         Error erobj = new Error();
                         Errormessage ermessage = new Errormessage();
@@ -1029,7 +1082,7 @@ namespace Analytics.Controllers
                               select registree).SingleOrDefault();
             if (objrid != null)
             {
-                clientid = objrid.FK_ClientID;
+                clientid = objrid.FK_ClientId;
                 rid = objrid.PK_Rid;
                 List<string> mobilenumberdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.Longurl == LongURL).Select(r=>r.MobileNumber).ToList();
                 if (mobilenumberdata.Count != 0)

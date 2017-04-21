@@ -263,7 +263,7 @@ namespace Analytics.Helpers.BO
                                    select u.FK_RID).SingleOrDefault();
                     int? FK_ClientID = (from r in dc.riddatas
                                         where r.PK_Rid == FK_RID
-                                        select r.FK_ClientID).SingleOrDefault();
+                                        select r.FK_ClientId).SingleOrDefault();
                     //retrive ipaddress and browser
                     //string ipv4 = new ConvertionBO().GetIP4Address();
                     string ipv4 = IpAddress();
@@ -351,16 +351,16 @@ namespace Analytics.Helpers.BO
         }
         public riddata CheckCampaignNameExistance(client obj,string CamapignName)
         {
-            riddata checkCampaign = new riddata(); 
-             checkCampaign = dc.riddatas.Where(r => r.FK_ClientID == obj.PK_ClientID && r.CampaignName == CamapignName).Select(s => s).SingleOrDefault();
+            riddata checkCampaign = new riddata();
+            checkCampaign = dc.riddatas.Where(r => r.FK_ClientId == obj.PK_ClientID && r.CampaignName == CamapignName).Select(s => s).SingleOrDefault();
            
        return checkCampaign;
 
         }
-        public client CheckclientEmail(string email)
+        public client CheckclientEmail(string email,string password)
         {
             client obj = new client();
-            obj = dc.clients.Where(c => c.Email == email).Select(x => x).SingleOrDefault();
+            obj = dc.clients.Where(c => c.Email == email && c.Password==password).Select(x => x).SingleOrDefault();
             //if (obj != null)
             //    check = true;
             //else
@@ -390,13 +390,21 @@ namespace Analytics.Helpers.BO
             return check;
         }
        
-        public void Updateclient(string username,string email,bool? isactive)
+        public void Updateclient(string username,string email,bool? isactive,string password)
         {
             try
             {
+                int int_isactive=0;
+                if (isactive == true)
+                    int_isactive = 1;
                 //string strQuery = "Update MMPersonMessage set Status = 'R' where FKMessageId = (" + messageid + ") and FKToPersonId = (" + personid + ")";
-                DateTime utcdt = DateTime.UtcNow;
-                string strQuery = "Update client set UserName = '" + username + "' ,IsActive='" + isactive + "',UpdatedDate='" + utcdt + "' where Email ='" + email + "'";
+                string utcdt = Helper.GetUTCTime();
+                string strQuery = "";
+                if(email!=null && password=="")
+                strQuery = "Update client set UserName = '" + username + "' ,IsActive='" + int_isactive + "',UpdatedDate='" + utcdt + "' where Email ='" + email + "'";
+                else if(password!=null && password!="")
+                    strQuery = "Update client set Password = '" + password + "' ,UpdatedDate='" + utcdt + "' where Email ='" + email + "'";
+
                 SqlHelper.ExecuteNonQuery(Helper.ConnectionString, CommandType.Text, strQuery);
             }
             catch (Exception ex)
@@ -455,13 +463,17 @@ namespace Analytics.Helpers.BO
             try
             {
                 string strQuery="";
-                DateTime dt = DateTime.UtcNow;
+                string dt = Helper.GetUTCTime();
+                int int_isactive=0;
+                if (isactive == true)
+                    int_isactive = 1;
+                
                 if (password != null && CampaignName!=null)
-                    strQuery = "Update riddata set CampaignName='" + CampaignName + "',Pwd='" + password + "',IsActive='" + isactive + "',UpdatedDate='" + dt + "',FK_ClientID='"+CreatedUserId+"' where ReferenceNumber ='" + referencenumber + "'";
+                    strQuery = "Update riddata set CampaignName='" + CampaignName + "',Pwd='" + password + "',IsActive='" + int_isactive + "',UpdatedDate='" + dt + "',FK_ClientID='" + CreatedUserId + "' where ReferenceNumber ='" + referencenumber + "'";
                 else if(CampaignName!=null && password==null)
-                    strQuery = "Update riddata set CampaignName='" + CampaignName + "',IsActive='" + isactive + "',UpdatedDate='" + dt + "',FK_ClientID='" + CreatedUserId + "' where ReferenceNumber ='" + referencenumber + "'";
+                    strQuery = "Update riddata set CampaignName='" + CampaignName + "',IsActive='" + int_isactive + "',UpdatedDate='" + dt + "',FK_ClientID='" + CreatedUserId + "' where ReferenceNumber ='" + referencenumber + "'";
                 else if (CampaignName == null && password != null)
-                    strQuery = "Update riddata set Pwd='" + password + "',IsActive='" + isactive + "',UpdatedDate='" + dt + "',FK_ClientID='" + CreatedUserId + "' where ReferenceNumber ='" + referencenumber + "'";
+                    strQuery = "Update riddata set Pwd='" + password + "',IsActive='" + int_isactive + "',UpdatedDate='" + dt + "',FK_ClientID='" + CreatedUserId + "' where ReferenceNumber ='" + referencenumber + "'";
                 SqlHelper.ExecuteNonQuery(Helper.ConnectionString, CommandType.Text, strQuery);
             }
             catch (Exception ex)
@@ -501,7 +513,9 @@ namespace Analytics.Helpers.BO
         }
        public int GetNEXTAutoIncrementedID()
         {
-            string strQuery = "select IDENT_CURRENT('uiddata')";
+            //string strQuery = "select IDENT_CURRENT('uiddata')";
+           //string strQuery="SELECT AUTO_INCREMENT FROM uiddata";
+            string strQuery = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'shortenurl' AND TABLE_NAME   = 'uiddata';";
             int id = 0;
             using (MySqlConnection conn = new MySqlConnection(Helper.ConnectionString))
             {
@@ -524,7 +538,9 @@ namespace Analytics.Helpers.BO
        {
            StringBuilder stringBuilder = new StringBuilder();
            AddComma_Download(person.Mobilenumber, stringBuilder);
-           AddComma_Download(person.ShortUrl, stringBuilder);
+           if (person.ShortUrl!=null)
+               stringBuilder.Append(person.ShortUrl.Replace(',', ' '));
+           //AddComma_Download(person.ShortUrl, stringBuilder);
            HttpContext.Current.Response.Write(stringBuilder.ToString());
            HttpContext.Current.Response.Write(Environment.NewLine);
        }
@@ -591,7 +607,7 @@ namespace Analytics.Helpers.BO
        }
 
 
-        public string BulkUploaduiddata(string ReferenceNumber, string LongUrl, int batchid, riddata objrid, List<string> MobileNumbers)
+       public string BulkUploaduiddata(string ReferenceNumber, string LongUrl, int batchid, riddata objrid, List<string> MobileNumbers, string path_tmp)
         {
             try
             {
@@ -606,7 +622,7 @@ namespace Analytics.Helpers.BO
                 objc = (from u in dc.uiddatas
                         where u.ReferenceNumber == ReferenceNumber
                         && u.Longurl == LongUrl
-                        && u.FK_ClientID == objrid.FK_ClientID
+                        && u.FK_ClientID == objrid.FK_ClientId
                         && u.FK_RID == objrid.PK_Rid
 
                         select u.MobileNumber).ToList();
@@ -617,97 +633,130 @@ namespace Analytics.Helpers.BO
                 }
                 if (MobileNumbers.Count() > 0)
                 {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("PK_Uid");
-                    dt.Columns.Add("FK_RID");
-                    dt.Columns.Add("FK_ClientID");
-                    dt.Columns.Add("ReferenceNumber");
-                    dt.Columns.Add("Longurl");
-                    dt.Columns.Add("MobileNumber");
-                    dt.Columns.Add("CreatedDate", typeof(DateTime));
-                    dt.Columns.Add("UpdatedDate", typeof(DateTime));
-                    dt.Columns.Add("UniqueNumber");
-                    dt.Columns.Add("CreatedBy");
-                    dt.Columns.Add("FK_Batchid");
+                    //DataTable dt = new DataTable();
+                    //dt.Columns.Add("PK_Uid");
+                    //dt.Columns.Add("FK_RID");
+                    //dt.Columns.Add("FK_ClientID");
+                    //dt.Columns.Add("ReferenceNumber");
+                    //dt.Columns.Add("Longurl");
+                    //dt.Columns.Add("MobileNumber");
+                    //dt.Columns.Add("CreatedDate", typeof(DateTime));
+                    //dt.Columns.Add("UpdatedDate", typeof(DateTime));
+                    //dt.Columns.Add("UniqueNumber");
+                    //dt.Columns.Add("CreatedBy");
+                    //dt.Columns.Add("FK_Batchid");
 
                     int uid_ID = GetNEXTAutoIncrementedID();
                     int uid_ID_start = uid_ID + 1;
                     int MobilenumberCount = MobileNumbers.Count();
                     int uid_ID_end = uid_ID + MobilenumberCount;
                     List<string> objh = dc.hashidlists.Where(h => h.PK_Hash_ID >= uid_ID_start && h.PK_Hash_ID <= uid_ID_end).Select(x => x.HashID).ToList();
-                    List<int> pkuids = Enumerable.Range(uid_ID_start, MobilenumberCount).ToList();
+                    //List<int> pkuids = Enumerable.Range(uid_ID_start, MobilenumberCount).ToList();
                     if (MobileNumbers.Count() == objh.Count())
                     {
-                        foreach (string m in MobileNumbers)
-                        {
+                        //foreach (string m in MobileNumbers)
+                        //{
 
-                            DataRow dr = dt.NewRow();
-                            dr["PK_Uid"] = uid_ID_start;
-                            dr["MobileNumber"] = m;
-                            //dr["UniqueNumber"] = objh.Where(h => h.PK_Hash_ID == uid_ID_start).Select(x => x.HashID).SingleOrDefault();
-                            dr["CreatedDate"] = (DateTime)DateTime.UtcNow;
-                            dt.Rows.Add(dr);
-                            uid_ID_start = uid_ID_start + 1;
-                        }
-                        int j = 0;
-                        foreach (string i in objh)
-                        {
+                        //    DataRow dr = dt.NewRow();
+                        //    dr["PK_Uid"] = uid_ID_start;
+                        //    dr["MobileNumber"] = m;
+                        //    //dr["UniqueNumber"] = objh.Where(h => h.PK_Hash_ID == uid_ID_start).Select(x => x.HashID).SingleOrDefault();
+                        //    dr["CreatedDate"] = (DateTime)DateTime.UtcNow;
+                        //    dt.Rows.Add(dr);
+                        //    uid_ID_start = uid_ID_start + 1;
+                        //}
+                        //int j = 0;
+                        //foreach (string i in objh)
+                        //{
 
-                            dt.Rows[j]["UniqueNumber"] = i;
-                            j++;
-                        }
-                        string LongUrlEXPR = "'" + LongUrl + "'";
-                        //DateTime utctime = DateTime.UtcNow;
-                        dt.Columns["FK_RID"].Expression = objrid.PK_Rid.ToString();
-                        dt.Columns["FK_ClientID"].Expression = objrid.FK_ClientID.ToString();
-                        dt.Columns["ReferenceNumber"].Expression = ReferenceNumber;
-                        dt.Columns["Longurl"].Expression = LongUrlEXPR.ToString();
-                        //dt.Columns["CreatedDate"].Expression = utctime;
-                        dt.Columns["CreatedBy"].Expression = Helper.CurrentUserId.ToString();
-                        dt.Columns["FK_Batchid"].Expression = Convert.ToString(batchid);
+                        //    dt.Rows[j]["UniqueNumber"] = i;
+                        //    j++;
+                        //}
+                        //string LongUrlEXPR = "'" + LongUrl + "'";
+                        ////DateTime utctime = DateTime.UtcNow;
+                        //dt.Columns["FK_RID"].Expression = objrid.PK_Rid.ToString();
+                        //dt.Columns["FK_ClientID"].Expression = objrid.FK_ClientId.ToString();
+                        //dt.Columns["ReferenceNumber"].Expression = ReferenceNumber;
+                        //dt.Columns["Longurl"].Expression = LongUrlEXPR.ToString();
+                        ////dt.Columns["CreatedDate"].Expression = utctime;
+                        //dt.Columns["CreatedBy"].Expression = Helper.CurrentUserId.ToString();
+                        //dt.Columns["FK_Batchid"].Expression = Convert.ToString(batchid);
 
                         
-
-                        //if (dt.Rows.Count > 0)
+                        
+                       // StreamWriter swExtLogFile = new StreamWriter("~/UploadFiles/tmp_mysqluploader.txt", true);
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                        
+                        StreamWriter swExtLogFile = new StreamWriter(path_tmp);
+                        //int uid_ID1 = GetNEXTAutoIncrementedID();
+                        //swExtLogFile.Write(Environment.NewLine);
+                        StringBuilder MyStringBuilder = new StringBuilder();
+                       // MyStringBuilder.Append("PK_Uid,");
+                        MyStringBuilder.Append("FK_RID,");
+                        MyStringBuilder.Append("FK_ClientID,");
+                        MyStringBuilder.Append("ReferenceNumber,");
+                        MyStringBuilder.Append("Longurl,");
+                        MyStringBuilder.Append("MobileNumber,");
+                        MyStringBuilder.Append("CreatedDate,");
+                        MyStringBuilder.Append("UniqueNumber,");
+                        MyStringBuilder.Append("CreatedBy,");
+                        MyStringBuilder.Append("FK_Batchid");
+                        MyStringBuilder.Append(Environment.NewLine);
+                        //for (int i2 = 0; i2 < MobileNumbers.Count; i2++)
                         //{
-                        //    string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-                        //    MySqlConnection conn = new MySqlConnection(connStr);
-                        //    MySqlBulkLoader bulkCopy = new MySqlBulkLoader(conn);
-                        //    //using (MySqlBulkLoader bulkCopy = new MySqlBulkLoader(conn))
-                        //    //{
-                        //        bulkCopy.Timeout = 10000; // in seconds
-                        //        bulkCopy.TableName = "uiddata";
-                            
-                        //        bulkCopy.Load();
-                        //        //bulkCopy.WriteToServer(dt);
-                        //    //}
-                        //}
-
-                        StreamWriter swExtLogFile = new StreamWriter("~/UploadFiles/tmp_mysqluploader.txt", true);
-                        int i1;
-                        swExtLogFile.Write(Environment.NewLine);
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            object[] array = row.ItemArray;
-                            for (i1 = 0; i1 < array.Length - 1; i1++)
+                            for (int j2 = 0; j2 < MobileNumbers.Count; j2++)
                             {
-                                swExtLogFile.Write(array[i1].ToString() + " | ");
-                            }
-                            swExtLogFile.WriteLine(array[i1].ToString());
+                                //MyStringBuilder.Append(uid_ID + ",");//pk_uid
+                                MyStringBuilder.Append(objrid.PK_Rid.ToString() + ",");//fk_rid
+                                MyStringBuilder.Append(objrid.FK_ClientId.ToString() + ",");//fk_clientid
+                                MyStringBuilder.Append(ReferenceNumber + ",");//referencenumber
+                                MyStringBuilder.Append(LongUrl.ToString() + ",");//longurl
+                                MyStringBuilder.Append(MobileNumbers[j2].ToString() + ",");//mobilenumber
+                                MyStringBuilder.Append(Helper.GetUTCTime().ToString() + ",");//createddate
+                                MyStringBuilder.Append(objh[j2].ToString() + ",");//uniquenumber
+                                MyStringBuilder.Append(Helper.CurrentUserId.ToString() + ",");//createdby
+                                MyStringBuilder.Append(Convert.ToString(batchid));//batchid
+                            //}
+                            swExtLogFile.WriteLine(MyStringBuilder);
+                           // uid_ID = uid_ID + 1;
+                            //swExtLogFile.Write(Environment.NewLine);
+                            MyStringBuilder.Clear();
                         }
+                        //foreach (DataRow row in dt.Rows)
+                        //{
+                        //    object[] array = row.ItemArray;
+                        //    for (i1 = 0; i1 < array.Length - 1; i1++)
+                        //    {
+                        //        swExtLogFile.Write(array[i1].ToString() + " , ");
+
+                        //    }
+                        //    swExtLogFile.WriteLine(array[i1].ToString());
+                        //}
                         //swExtLogFile.Write("*****END OF DATA****" + DateTime.Now.ToString());
                         swExtLogFile.Flush();
                         swExtLogFile.Close();
-                        string strFile = @"~/UploadFiles/tmp_mysqluploader.txt";
+
+                        //string strFile = @"C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\mysqlproj\surl2\Analytics\UploadFiles\tmp_mysqluploader.txt";
+
                         MySqlConnection connection = new MySqlConnection(connStr);
                         MySqlBulkLoader bl = new MySqlBulkLoader(connection);
                         //var connection = myConnection as MySqlConnection;
                         //var bl = new MySqlBulkLoader(connection);
-                        bl.TableName = '';
-                        bl.FieldTerminator = "\t";
+                        bl.TableName = "uiddata";
+                        bl.FieldTerminator = ",";
                         bl.LineTerminator = swExtLogFile.NewLine;
-                        bl.FileName = strFile;
+                        bl.FileName = path_tmp;
                         bl.NumberOfLinesToSkip = 1;
+                        //bl.Columns.Add("PK_Uid");
+                        bl.Columns.Add("FK_RID");
+                        bl.Columns.Add("FK_ClientID");
+                        bl.Columns.Add("ReferenceNumber");
+                        bl.Columns.Add("Longurl");
+                        bl.Columns.Add("MobileNumber");
+                        bl.Columns.Add("CreatedDate");
+                        bl.Columns.Add("UniqueNumber");
+                        bl.Columns.Add("CreatedBy");
+                        bl.Columns.Add("FK_Batchid");
                         var inserted = bl.Load();
                         return "Successfully Uploaded.";
                     }

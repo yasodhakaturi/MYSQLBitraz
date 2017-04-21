@@ -66,8 +66,8 @@ namespace Analytics
                 if (UserName.Trim() != "" && Email.Trim() != "" && Password.Trim() != "")
                 {
 
-                    client isEmailExists = new OperationsBO().CheckclientEmail(Email);
-                    bool valideamil = new OperationsBO().ValidateEmail(Email);
+                    //client isEmailExists = new OperationsBO().CheckclientEmail(Email);
+                    //bool valideamil = new OperationsBO().ValidateEmail(Email);
                     //client obj1 = new client();
                     
                         //if (isEmailExists == null)
@@ -94,7 +94,7 @@ namespace Analytics
                         //    }
                         //}
                     
-                    client cl_obj = new OperationsBO().CheckclientEmail(Email);
+                    client cl_obj = new OperationsBO().CheckclientEmail(Email,Password);
                     //if (cl_obj != null)
                     //{
                     //    cid = cl_obj.PK_ClientID;
@@ -167,20 +167,20 @@ namespace Analytics
                                       registree.Longurl.Trim() == longurl.Trim() &&
                                       registree.MobileNumber.Trim() == mobilenumber.Trim()
                                       select registree.UniqueNumber).SingleOrDefault();
-                            ////if data found in uiddata insert data into uiddata 
-                            //if (Hashid == null)
-                            //{
-                            //    //Uniqueid = Helper.GetRandomAlphanumericString(5);
-                            //    new DataInsertionBO().Insertuiddata(Uniqueid_RID, objrid.FK_ClientID, referencenumber, longurl, mobilenumber);
+                            //if data found in uiddata insert data into uiddata 
+                            if (Hashid == null)
+                            {
+                                //Uniqueid = Helper.GetRandomAlphanumericString(5);
+                                new DataInsertionBO().Insertuiddata(Uniqueid_RID, objrid.FK_ClientId, referencenumber, longurl, mobilenumber);
 
-                            //    pk_uid = (from registree in dc.uiddatas
-                            //              where registree.ReferenceNumber.Trim() == referencenumber.Trim() &&
-                            //              registree.Longurl.Trim() == longurl.Trim() &&
-                            //              registree.MobileNumber.Trim() == mobilenumber.Trim()
-                            //              select registree.PK_Uid).SingleOrDefault();
-                            //    Hashid = Helper.GetHashID(pk_uid);
-                            //    new OperationsBO().UpdateHashid(pk_uid, Hashid);
-                            //}
+                                pk_uid = (from registree in dc.uiddatas
+                                          where registree.ReferenceNumber.Trim() == referencenumber.Trim() &&
+                                          registree.Longurl.Trim() == longurl.Trim() &&
+                                          registree.MobileNumber.Trim() == mobilenumber.Trim()
+                                          select registree.PK_Uid).SingleOrDefault();
+                                Hashid = Helper.GetHashID(pk_uid);
+                                new OperationsBO().UpdateHashid(pk_uid, Hashid);
+                            }
 
                             
                             System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;

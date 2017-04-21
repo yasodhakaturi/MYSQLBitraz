@@ -345,15 +345,6 @@
     <Compile Include="cookietable.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="countrydata.cs">
-      <DependentUpon>AnalyticsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="countrydata_geolite2.cs">
-      <DependentUpon>AnalyticsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="countrydata_ipv4_geolite2.cs">
-      <DependentUpon>AnalyticsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="errorlog.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
@@ -448,11 +439,8 @@
     </Content>
     <Content Include="App_Data\APIKey.xml" />
     <Content Include="chat.html" />
-    <Content Include="Content\angular-block-ui.css" />
-    <Content Include="Content\angular-block-ui.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="dist\admin\admin.html" />
     <Content Include="dist\admin\fonts\fontawesome-webfont.svg" />
     <Content Include="dist\admin\fonts\glyphicons-halflings-regular.svg" />
@@ -1312,7 +1300,6 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-block-ui.min.js.map" />
     <Content Include="Scripts\angular-block-ui.js.map" />
-    <Content Include="Content\angular-block-ui.css.map" />
     <Content Include="dist\admin\fonts\fontawesome-webfont.eot" />
     <Content Include="dist\admin\fonts\fontawesome-webfont.ttf" />
     <Content Include="dist\admin\fonts\fontawesome-webfont.woff" />

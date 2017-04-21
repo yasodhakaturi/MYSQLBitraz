@@ -27,62 +27,86 @@ namespace Analytics.Helpers.BO
             connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
             try
             {
-                // create and open a connection object
-                lSQLConn = new MySqlConnection(connStr);
-                lSQLConn.Open();
-                lSQLCmd.CommandType = CommandType.StoredProcedure;
-                lSQLCmd.CommandText = "Insertuiddata";
-                lSQLCmd.Parameters.Add(new MySqlParameter("@fk_rid", fk_rid));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@FK_ClientID", FK_ClientID));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@referencenumber", referencenumber));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@longurl", longurl));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@mobilenumber", mobilenumber));
+                //// create and open a connection object
+                //lSQLConn = new MySqlConnection(connStr);
+                //lSQLConn.Open();
+                //lSQLCmd.CommandType = CommandType.StoredProcedure;
+                //lSQLCmd.CommandText = "Insertuiddata";
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@fk_rid", fk_rid));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@FK_ClientID", FK_ClientID));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@referencenumber", referencenumber));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@longurl", longurl));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@mobilenumber", mobilenumber));
 
-                lSQLCmd.Connection = lSQLConn;
-                lSQLCmd.ExecuteNonQuery();
+                //lSQLCmd.Connection = lSQLConn;
+                //lSQLCmd.ExecuteNonQuery();
+                string utcdatetime = Helper.GetUTCTime();
+                DateTime? utcdt = Convert.ToDateTime(utcdatetime);
+                uiddata obju = new uiddata();
+                obju.FK_RID = fk_rid;
+                obju.FK_ClientID = FK_ClientID;
+                obju.ReferenceNumber = referencenumber;
+                obju.Longurl = longurl;
+                obju.MobileNumber = mobilenumber;
+                obju.CreatedDate = utcdt;
+                obju.CreatedBy = FK_ClientID;
+                dc.uiddatas.Add(obju);
+                dc.SaveChanges();
             }
             catch (Exception ex)
             {
 
                 ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
             }
-            finally
-            {
-                lSQLCmd.Dispose();
-                lSQLConn.Close();
-            }
+            //finally
+            //{
+            //    lSQLCmd.Dispose();
+            //    lSQLConn.Close();
+            //}
         }
         public void Insertriddata(string CampaignName, string referencenumber, string pwd,int clientid)
         {
-            MySqlConnection lSQLConn = null;
-            MySqlCommand lSQLCmd = new MySqlCommand();
-            string connStr = "";
-            connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+            //MySqlConnection lSQLConn = null;
+            //MySqlCommand lSQLCmd = new MySqlCommand();
+            //string connStr = "";
+            //connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
             try
             {
-                // create and open a connection object
-                lSQLConn = new MySqlConnection(connStr);
-                lSQLConn.Open();
-                lSQLCmd.CommandType = CommandType.StoredProcedure;
-                lSQLCmd.CommandText = "Insertriddata";
-                lSQLCmd.Parameters.Add(new MySqlParameter("@CampaignName", CampaignName));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@referencenumber", referencenumber));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@pwd", pwd));
-                lSQLCmd.Parameters.Add(new MySqlParameter("@clientid", clientid));
+                //// create and open a connection object
+                //lSQLConn = new MySqlConnection(connStr);
+                //lSQLConn.Open();
+                //lSQLCmd.CommandType = CommandType.StoredProcedure;
+                //lSQLCmd.CommandText = "Insertriddata";
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@CampaignName", CampaignName));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@referencenumber", referencenumber));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@pwd", pwd));
+                //lSQLCmd.Parameters.Add(new MySqlParameter("@clientid", clientid));
 
-                lSQLCmd.Connection = lSQLConn;
-                lSQLCmd.ExecuteNonQuery();
+                //lSQLCmd.Connection = lSQLConn;
+                //lSQLCmd.ExecuteNonQuery();
+                string utcdatetime = Helper.GetUTCTime();
+                DateTime? utcdt = Convert.ToDateTime(utcdatetime);
+                riddata objr = new riddata();
+                objr.CampaignName = CampaignName;
+                objr.ReferenceNumber = referencenumber;
+                objr.Pwd = pwd;
+                objr.FK_ClientId = clientid;
+                objr.IsActive = true;
+                objr.CreatedDate = utcdt;
+                objr.CreatedBy = clientid;
+                dc.riddatas.Add(objr);
+                dc.SaveChanges();
             }
             catch (Exception ex)
             {
                 ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
 
             }
-            finally
-            {
-                lSQLCmd.Dispose();
-                lSQLConn.Close();
-            }
+            //finally
+            //{
+            //    lSQLCmd.Dispose();
+            //    lSQLConn.Close();
+            //}
         }
         public void InsertShortUrldata(string ipv4, string ipv6, string browser, string browser_version, string city, string Region, string country, string countrycode, string req_url, string useragent, string hostname, string devicetype, string ismobiledevice,int? fk_uid,int? fk_rid,int? FK_ClientID)
         {

@@ -66,36 +66,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="countrydatas">
-      <EntityTypeMapping TypeName="shortenurlModel.countrydata">
-        <MappingFragment StoreEntitySet="countrydata">
-          <ScalarProperty Name="PK_Country_ID" ColumnName="PK_Country_ID" />
-          <ScalarProperty Name="Start_IPv4_address" ColumnName="Start_IPv4_address" />
-          <ScalarProperty Name="End_IPv4_address" ColumnName="End_IPv4_address" />
-          <ScalarProperty Name="Start_IP_num" ColumnName="Start_IP_num" />
-          <ScalarProperty Name="End_IP_num" ColumnName="End_IP_num" />
-          <ScalarProperty Name="Country_code" ColumnName="Country_code" />
-          <ScalarProperty Name="Country_name" ColumnName="Country_name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="countrydata_ipv4_geolite2">
-      <EntityTypeMapping TypeName="shortenurlModel.countrydata_ipv4_geolite2">
-        <MappingFragment StoreEntitySet="countrydata_ipv4_geolite2">
-          <ScalarProperty Name="PK_Country_ID_IPV4" ColumnName="PK_Country_ID_IPV4" />
-          <ScalarProperty Name="network" ColumnName="network" />
-          <ScalarProperty Name="Start_IPv4_address" ColumnName="Start_IPv4_address" />
-          <ScalarProperty Name="End_IPv4_address" ColumnName="End_IPv4_address" />
-          <ScalarProperty Name="Start_IP_num" ColumnName="Start_IP_num" />
-          <ScalarProperty Name="End_IP_num" ColumnName="End_IP_num" />
-          <ScalarProperty Name="geoname_id" ColumnName="geoname_id" />
-          <ScalarProperty Name="registered_country_geoname_id" ColumnName="registered_country_geoname_id" />
-          <ScalarProperty Name="represented_country_geoname_id" ColumnName="represented_country_geoname_id" />
-          <ScalarProperty Name="is_anonymous_proxy" ColumnName="is_anonymous_proxy" />
-          <ScalarProperty Name="is_satellite_provider" ColumnName="is_satellite_provider" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="errorlogs">
       <EntityTypeMapping TypeName="shortenurlModel.errorlog">
         <MappingFragment StoreEntitySet="errorlog">
@@ -180,7 +150,7 @@
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-          <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+          <ScalarProperty Name="FK_ClientId" ColumnName="FK_ClientId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -276,18 +246,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="countrydata_geolite2">
-      <EntityTypeMapping TypeName="shortenurlModel.countrydata_geolite2">
-        <MappingFragment StoreEntitySet="countrydata_geolite2">
-          <ScalarProperty Name="PK_Country_ID_GeoLite" ColumnName="PK_Country_ID_GeoLite" />
-          <ScalarProperty Name="geoname_id" ColumnName="geoname_id" />
-          <ScalarProperty Name="locale_code" ColumnName="locale_code" />
-          <ScalarProperty Name="continent_code" ColumnName="continent_code" />
-          <ScalarProperty Name="continent_name" ColumnName="continent_name" />
-          <ScalarProperty Name="country_iso_code" ColumnName="country_iso_code" />
-          <ScalarProperty Name="country_name" ColumnName="country_name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="InsertRIDData" FunctionName="shortenurlModel.Store.InsertRIDData" />
+    <FunctionImportMapping FunctionImportName="InsertSHORTURLData" FunctionName="shortenurlModel.Store.InsertSHORTURLData" />
+    <FunctionImportMapping FunctionImportName="InsertUIDData" FunctionName="shortenurlModel.Store.InsertUIDData" />
+    <FunctionImportMapping FunctionImportName="spGetALLCOUNTS1" FunctionName="shortenurlModel.Store.spGetALLCOUNTS1" />
   </EntityContainerMapping>
 </Mapping>

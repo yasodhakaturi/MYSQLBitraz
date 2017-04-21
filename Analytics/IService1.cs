@@ -15,7 +15,7 @@ namespace Analytics
     public interface IService1
     {
         [OperationContract]
-        [WebInvoke(Method = "GET",
+        [WebInvoke(Method = "POST",//GET
             ResponseFormat = WebMessageFormat.Json,
              BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "GetApiKey?UserName={UserName}&Email={Email}&Password={Password}")]

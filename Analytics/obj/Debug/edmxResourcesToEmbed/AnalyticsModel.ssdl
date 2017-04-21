@@ -82,48 +82,6 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
     <Property Name="MobileNumber" Type="varchar" MaxLength="250" />
     <Property Name="FK_ShorturlId" Type="int" />
   </EntityType>
-  <EntityType Name="countrydata">
-    <Key>
-      <PropertyRef Name="PK_Country_ID" />
-    </Key>
-    <Property Name="PK_Country_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Start_IPv4_address" Type="longtext" />
-    <Property Name="End_IPv4_address" Type="longtext" />
-    <Property Name="Start_IP_num" Type="longtext" />
-    <Property Name="End_IP_num" Type="longtext" />
-    <Property Name="Country_code" Type="longtext" />
-    <Property Name="Country_name" Type="longtext" />
-  </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'def.shortenurl.countrydata_geolite2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="countrydata_geolite2">
-    <Key>
-      <PropertyRef Name="PK_Country_ID_GeoLite" />
-    </Key>
-    <Property Name="PK_Country_ID_GeoLite" Type="int" Nullable="false" />
-    <Property Name="geoname_id" Type="varchar" MaxLength="50" />
-    <Property Name="locale_code" Type="varchar" MaxLength="50" />
-    <Property Name="continent_code" Type="varchar" MaxLength="50" />
-    <Property Name="continent_name" Type="varchar" MaxLength="50" />
-    <Property Name="country_iso_code" Type="varchar" MaxLength="50" />
-    <Property Name="country_name" Type="varchar" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="countrydata_ipv4_geolite2">
-    <Key>
-      <PropertyRef Name="PK_Country_ID_IPV4" />
-    </Key>
-    <Property Name="PK_Country_ID_IPV4" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="network" Type="varchar" MaxLength="50" />
-    <Property Name="Start_IPv4_address" Type="longtext" />
-    <Property Name="End_IPv4_address" Type="longtext" />
-    <Property Name="Start_IP_num" Type="longtext" />
-    <Property Name="End_IP_num" Type="longtext" />
-    <Property Name="geoname_id" Type="varchar" MaxLength="50" />
-    <Property Name="registered_country_geoname_id" Type="varchar" MaxLength="50" />
-    <Property Name="represented_country_geoname_id" Type="varchar" MaxLength="50" />
-    <Property Name="is_anonymous_proxy" Type="varchar" MaxLength="50" />
-    <Property Name="is_satellite_provider" Type="varchar" MaxLength="50" />
-  </EntityType>
   <EntityType Name="errorlog">
     <Key>
       <PropertyRef Name="PKErrorLogId" />
@@ -203,7 +161,7 @@ warning 6002: The table/view 'def.shortenurl.countrydata_geolite2' does not have
     <Property Name="CreatedDate" Type="datetime" Precision="6" />
     <Property Name="EndDate" Type="datetime" Precision="6" />
     <Property Name="UpdatedDate" Type="datetime" Precision="6" />
-    <Property Name="FK_ClientID" Type="int" Nullable="false" />
+    <Property Name="FK_ClientId" Type="int" Nullable="false" />
     <Property Name="CreatedBy" Type="int" />
   </EntityType>
   <EntityType Name="shorturldata">
@@ -293,7 +251,7 @@ warning 6002: The table/view 'def.shortenurl.countrydata_geolite2' does not have
         <PropertyRef Name="PK_ClientID" />
       </Principal>
       <Dependent Role="riddata">
-        <PropertyRef Name="FK_ClientID" />
+        <PropertyRef Name="FK_ClientId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -357,13 +315,53 @@ warning 6002: The table/view 'def.shortenurl.countrydata_geolite2' does not have
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="InsertRIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="CampaignName" Type="longtext" Mode="In" />
+    <Parameter Name="referencenumber" Type="varchar" Mode="In" />
+    <Parameter Name="pwd" Type="longtext" Mode="In" />
+    <Parameter Name="clientid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="InsertSHORTURLData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="ipv4" Type="longtext" Mode="In" />
+    <Parameter Name="ipv6" Type="longtext" Mode="In" />
+    <Parameter Name="browser" Type="varchar" Mode="In" />
+    <Parameter Name="browser_version" Type="varchar" Mode="In" />
+    <Parameter Name="latitude" Type="longtext" Mode="In" />
+    <Parameter Name="longitude" Type="longtext" Mode="In" />
+    <Parameter Name="ipnum" Type="varchar" Mode="In" />
+    <Parameter Name="req_url" Type="longtext" Mode="In" />
+    <Parameter Name="useragent" Type="longtext" Mode="In" />
+    <Parameter Name="hostname" Type="varchar" Mode="In" />
+    <Parameter Name="IsMobiledevice" Type="varchar" Mode="In" />
+    <Parameter Name="fk_uid" Type="int" Mode="In" />
+    <Parameter Name="fk_rid" Type="int" Mode="In" />
+    <Parameter Name="FK_clientid" Type="int" Mode="In" />
+    <Parameter Name="cookievalue" Type="varchar" Mode="In" />
+    <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="InsertUIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="fk_rid" Type="int" Mode="In" />
+    <Parameter Name="fk_clientid" Type="int" Mode="In" />
+    <Parameter Name="referencenumber" Type="varchar" Mode="In" />
+    <Parameter Name="longurl" Type="longtext" Mode="In" />
+    <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spGetALLCOUNTS1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="DateFrom" Type="datetime" Mode="In" />
+    <Parameter Name="DateTo" Type="datetime" Mode="In" />
+    <Parameter Name="rid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetCampaignSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="rid" Type="longtext" Mode="In" />
+  </Function>
+  <Function Name="spGetDashBoardSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+    <Parameter Name="FkClientId" Type="int" Mode="In" />
+  </Function>
   <EntityContainer Name="shortenurlModelStoreContainer">
     <EntitySet Name="batchuploaddata" EntityType="Self.batchuploaddata" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="Self.city_blocks_ipv4_geolite2" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="client" EntityType="Self.client" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="cookietable" EntityType="Self.cookietable" Schema="shortenurl" store:Type="Tables" />
-    <EntitySet Name="countrydata" EntityType="Self.countrydata" Schema="shortenurl" store:Type="Tables" />
-    <EntitySet Name="countrydata_ipv4_geolite2" EntityType="Self.countrydata_ipv4_geolite2" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="errorlog" EntityType="Self.errorlog" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="freegeoipdata" EntityType="Self.freegeoipdata" Schema="shortenurl" store:Type="Tables" />
     <EntitySet Name="hashidlist" EntityType="Self.hashidlist" Schema="shortenurl" store:Type="Tables" />
@@ -392,17 +390,6 @@ warning 6002: The table/view 'def.shortenurl.countrydata_geolite2' does not have
 `city_locations_geolite2`.`metro_code`, 
 `city_locations_geolite2`.`time_zone`
 FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="countrydata_geolite2" EntityType="Self.countrydata_geolite2" store:Type="Tables" store:Schema="shortenurl">
-      <DefiningQuery>SELECT
-`countrydata_geolite2`.`PK_Country_ID_GeoLite`, 
-`countrydata_geolite2`.`geoname_id`, 
-`countrydata_geolite2`.`locale_code`, 
-`countrydata_geolite2`.`continent_code`, 
-`countrydata_geolite2`.`continent_name`, 
-`countrydata_geolite2`.`country_iso_code`, 
-`countrydata_geolite2`.`country_name`
-FROM `countrydata_geolite2` AS `countrydata_geolite2`</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_CookieTable_SHORTURLDATA" Association="Self.FK_CookieTable_SHORTURLDATA">
       <End Role="shorturldata" EntitySet="shorturldata" />
