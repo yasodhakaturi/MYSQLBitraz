@@ -32,6 +32,7 @@ namespace Analytics.Controllers
             //}
             //public JsonResult GetclientDetails()
             //{
+           
             List<CampaignView1> objc = new List<CampaignView1>();
             CampaignView1 obj = new CampaignView1();
             int id1 = Convert.ToInt32(id);
@@ -793,7 +794,7 @@ namespace Analytics.Controllers
                     object[] array = row.ItemArray;
                     for (i1 = 0; i1 < array.Length - 1; i1++)
                     {
-                        swExtLogFile.Write(array[i1].ToString() + " , ");
+                        swExtLogFile.Write(array[i1].ToString() + ",");
                         
                     }
                     swExtLogFile.WriteLine(array[i1].ToString());
@@ -819,6 +820,149 @@ namespace Analytics.Controllers
 
             }
         }
+        public void FillGeoLiteDb1()
+        {
+            DataTable dt = new DataTable();
+            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+            
+            string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                       "GeoLiteCityLocation.CSV");
+            dt = ConvertCSVtoDataTable(path_tmp);
+            
+            string path_tmp1 = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                      "GeoLiteCityLocation1.CSV");
+            System.IO.File.Create(path_tmp1).Dispose();
+            StreamWriter swExtLogFile = new StreamWriter(path_tmp1);
+            int i1;
+
+            //List<string> columnslist = new List<string>();
+            //columnslist.Add("PK_Hash_ID");
+
+            swExtLogFile.Write("locId,");
+            swExtLogFile.Write("country,");
+            swExtLogFile.Write("region,");
+            swExtLogFile.Write("city,");
+            swExtLogFile.Write("postalCode,");
+            swExtLogFile.Write("latitude,");
+            swExtLogFile.Write("longitude,");
+            swExtLogFile.Write("metroCode,");
+            swExtLogFile.Write("areaCode");
+            swExtLogFile.Write(Environment.NewLine);
+            foreach (DataRow row in dt.Rows)
+            {
+                object[] array = row.ItemArray;
+                for (i1 = 0; i1 < array.Length - 1; i1++)
+                {
+                    swExtLogFile.Write(array[i1].ToString() + " , ");
+
+                }
+                swExtLogFile.WriteLine(array[i1].ToString());
+            }
+            //swExtLogFile.Write("*****END OF DATA****" + DateTime.Now.ToString());
+            swExtLogFile.Flush();
+            swExtLogFile.Close();
+
+            //string strFile = @"C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\mysqlproj\surl2\Analytics\UploadFiles\tmp_mysqluploader.txt";
+
+            MySqlConnection connection = new MySqlConnection(connStr);
+            MySqlBulkLoader bl = new MySqlBulkLoader(connection);
+            //var connection = myConnection as MySqlConnection;
+            //var bl = new MySqlBulkLoader(connection);
+            bl.TableName = "locations_data";
+            bl.FieldTerminator = ",";
+            bl.LineTerminator = swExtLogFile.NewLine;
+            bl.FileName = path_tmp1;
+            bl.NumberOfLinesToSkip = 1;
+
+            bl.Columns.Add("locId");
+            bl.Columns.Add("country");
+            bl.Columns.Add("region");
+            bl.Columns.Add("city");
+            bl.Columns.Add("postalCode");
+            bl.Columns.Add("latitude");
+            bl.Columns.Add("longitude");
+            bl.Columns.Add("metroCode");
+            
+
+            var inserted = bl.Load();
+
+        }
+        public void FillGeoLiteDb()
+        {
+           DataTable dt = new DataTable();
+                string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                       "GeoLiteCityBlocks.CSV");
+                
+               dt= ConvertCSVtoDataTable(path_tmp);
+               string path_tmp1 = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                          "GeoLiteCityBlocks1.CSV");
+               
+                System.IO.File.Create(path_tmp1).Dispose();
+                StreamWriter swExtLogFile = new StreamWriter(path_tmp1);
+                int i1;
+                
+                //List<string> columnslist = new List<string>();
+                //columnslist.Add("PK_Hash_ID");
+
+                swExtLogFile.Write("startIpNum,");
+                swExtLogFile.Write("endIpNum,");
+                swExtLogFile.Write("locId");
+                
+                swExtLogFile.Write(Environment.NewLine);
+                foreach (DataRow row in dt.Rows)
+                {
+                    object[] array = row.ItemArray;
+                    for (i1 = 0; i1 < array.Length - 1; i1++)
+                    {
+                        swExtLogFile.Write(array[i1].ToString() + " , ");
+
+                    }
+                    swExtLogFile.WriteLine(array[i1].ToString());
+                }
+                //swExtLogFile.Write("*****END OF DATA****" + DateTime.Now.ToString());
+                swExtLogFile.Flush();
+                swExtLogFile.Close();
+
+                //string strFile = @"C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\mysqlproj\surl2\Analytics\UploadFiles\tmp_mysqluploader.txt";
+
+                MySqlConnection connection = new MySqlConnection(connStr);
+                MySqlBulkLoader bl = new MySqlBulkLoader(connection);
+                //var connection = myConnection as MySqlConnection;
+                //var bl = new MySqlBulkLoader(connection);
+                bl.TableName = "master_location";
+                bl.FieldTerminator = ",";
+                bl.LineTerminator = swExtLogFile.NewLine;
+                bl.FileName = path_tmp1;
+                bl.NumberOfLinesToSkip = 1;
+                bl.Columns.Add("startIpNum");
+                bl.Columns.Add("endIpNum");
+                bl.Columns.Add("locId");
+                var inserted = bl.Load();
+
+            }
+        public static DataTable ConvertCSVtoDataTable(string strFilePath)
+        {
+            StreamReader sr = new StreamReader(strFilePath);
+            string[] headers = sr.ReadLine().Split(',');
+            DataTable dt = new DataTable();
+            foreach (string header in headers)
+            {
+                dt.Columns.Add(header);
+            }
+            while (!sr.EndOfStream)
+            {
+                string[] rows = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    
+                    dr[i] = rows[i].Replace('"', ' ').Trim();
+                }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        } 
        
         [System.Web.Http.HttpPost]
         public JsonResult UploadData(string[] MobileNumbers, string LongURL, string ReferenceNumber, string type, HttpPostedFileBase UploadFile)
@@ -836,8 +980,17 @@ namespace Analytics.Controllers
                 List<string> outputdat = new List<string>();
                 List<int> pkuids = new List<int>();
                 string Hashid;
-                //FillHashId(1, 10);
-                // FillHashId(8000000,10000000);
+
+                //FillHashId(1, 1000000);
+                //FillHashId(1000000, 2000000);
+                //FillHashId(2000000, 3000000);
+                //FillHashId(3000000, 4000000);
+                //FillHashId(4000000, 5000000);
+                //FillHashId(5000000, 6000000);
+                //FillHashId(6000000, 7000000);
+                //FillHashId(7000000, 8000000);
+                //FillHashId(8000000, 9000000);
+                //FillHashId(9000000, 10000000);
 
 
 
@@ -1056,7 +1209,7 @@ namespace Analytics.Controllers
                 return null;
             }
         }
-
+        
 
         public void UploadData1(string[] MobileNumbers,string LongURL,string ReferenceNumber,string type)
          {
