@@ -981,15 +981,15 @@ namespace Analytics.Controllers
                 List<int> pkuids = new List<int>();
                 string Hashid;
 
-                FillHashId(1, 1000000);
-                FillHashId(1000000, 2000000);
-                FillHashId(2000000, 3000000);
-                FillHashId(3000000, 4000000);
-                FillHashId(4000000, 5000000);
-                FillHashId(5000000, 6000000);
-                FillHashId(6000000, 7000000);
-                FillHashId(7000000, 8000000);
-                FillHashId(8000000, 9000000);
+                //FillHashId(1, 1000000);
+                //FillHashId(1000000, 2000000);
+                //FillHashId(2000000, 3000000);
+                //FillHashId(3000000, 4000000);
+                //FillHashId(4000000, 5000000);
+                //FillHashId(5000000, 6000000);
+                //FillHashId(6000000, 7000000);
+                //FillHashId(7000000, 8000000);
+                //FillHashId(8000000, 9000000);
                 FillHashId(9000000, 10000000);
 
                 FillGeoLiteDb();
