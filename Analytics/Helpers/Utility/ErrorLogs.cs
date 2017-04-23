@@ -8,10 +8,16 @@ namespace Analytics.Helpers.Utility
 {
     public class ErrorLogs
     {
-        public static void LogErrorData(string stackTraceInfo, string message)
+        public static void LogErrorData(string stackTraceInfo, Exception exp)
         {
             try
             {
+                string message="";
+                if (exp.InnerException == null)
+                    message = exp.Message;
+                else
+                    message = exp.InnerException.ToString();
+
                 string utcdatetime = Helper.GetUTCTime();
                 DateTime? utcdt = Convert.ToDateTime(utcdatetime);
                 shortenurlEntities dc = new shortenurlEntities();

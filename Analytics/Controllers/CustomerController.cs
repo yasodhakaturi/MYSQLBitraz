@@ -91,7 +91,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(objc, JsonRequestBehavior.AllowGet);
             }
         }
@@ -144,7 +144,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception occur.";
@@ -216,7 +216,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "exception occur.";
@@ -274,7 +274,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "exception occur.";
@@ -329,7 +329,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "exception occur.";

@@ -123,7 +123,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 error errobj = new error();
                 errobj.message = "Exception" + ex.Message;
                 return JsonConvert.SerializeObject(errobj);
@@ -219,7 +219,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 error errobj = new error();
                 //UID_UIDRID = "NULL";
                 errobj.message = "Exception" + ex.Message;
@@ -287,7 +287,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 error errobj = new error();
                 //RID_UIDRIID = "NULL";
                 errobj.message = "Exception" + ex.Message;
@@ -366,7 +366,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 error errobj = new error();
                 //RID_UIDRIID = "NULL";
                 errobj.message = "Exception" + ex.Message;
@@ -454,7 +454,7 @@ namespace Analytics
         //             }
         //             catch (Exception ex)
         //             {
-        //                 ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //                 ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
         //             }
         //}
@@ -598,7 +598,7 @@ namespace Analytics
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        string jsonclient = "Exception occurs";
 
         //        WebOperationContext.Current.OutgoingResponse.ContentType =
@@ -640,7 +640,7 @@ namespace Analytics
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
         //        string jsonclient = "Exception occurs";
 
         //        WebOperationContext.Current.OutgoingResponse.ContentType =

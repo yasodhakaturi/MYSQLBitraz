@@ -93,7 +93,7 @@ namespace Analytics.Controllers
     //        }
     //         catch (Exception ex)
     //        {
-    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
     //            return new HttpStatusCodeResult(400, ex.Message).ToString();
     //        }
     //     }
@@ -160,8 +160,8 @@ namespace Analytics.Controllers
     //        catch (Exception ex)
     //        {
 
-    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
-    //            return Json(ex.StackTrace, ex.InnerException.ToString());
+    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+    //            return Json(ex.StackTrace, ex.InnerException);
     //        }
     //}
 
@@ -214,8 +214,8 @@ namespace Analytics.Controllers
     //        catch (Exception ex)
     //        {
 
-    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
-    //            return Json(ex.StackTrace, ex.InnerException.ToString());
+    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+    //            return Json(ex.StackTrace, ex.InnerException);
     //        }
     //    }
 
@@ -235,8 +235,8 @@ namespace Analytics.Controllers
     //        catch (Exception ex)
     //        {
 
-    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
-    //            return Json(ex.StackTrace, ex.InnerException.ToString());
+    //            ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+    //            return Json(ex.StackTrace, ex.InnerException);
     //        }
     //    }
        
@@ -258,7 +258,7 @@ namespace Analytics.Controllers
     //    catch (Exception ex)
     //    {
 
-    //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+    //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
     //    }
     //   // return RedirectToAction("Index","Admin");
     //}

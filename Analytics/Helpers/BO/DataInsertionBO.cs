@@ -56,7 +56,7 @@ namespace Analytics.Helpers.BO
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
             }
             //finally
             //{
@@ -99,7 +99,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
             }
             //finally
@@ -143,7 +143,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
 
             }
             finally
@@ -204,7 +204,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return countobj;
             }
             finally
@@ -317,7 +317,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return countobj;
             }
             finally

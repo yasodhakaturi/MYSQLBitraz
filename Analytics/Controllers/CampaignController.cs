@@ -72,7 +72,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(objc, JsonRequestBehavior.AllowGet);
             }
         }
@@ -281,7 +281,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(obj_search, JsonRequestBehavior.AllowGet);
             }
         }
@@ -400,7 +400,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -497,7 +497,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -557,7 +557,7 @@ namespace Analytics.Controllers
 
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -612,7 +612,7 @@ namespace Analytics.Controllers
              
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -680,7 +680,7 @@ namespace Analytics.Controllers
              }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
             }
         }
         public void GetBatchDownloadedFile(int BatchID)
@@ -730,7 +730,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
             }
         }
         
@@ -981,17 +981,19 @@ namespace Analytics.Controllers
                 List<int> pkuids = new List<int>();
                 string Hashid;
 
-                //FillHashId(1, 1000000);
-                //FillHashId(1000000, 2000000);
-                //FillHashId(2000000, 3000000);
-                //FillHashId(3000000, 4000000);
-                //FillHashId(4000000, 5000000);
-                //FillHashId(5000000, 6000000);
-                //FillHashId(6000000, 7000000);
-                //FillHashId(7000000, 8000000);
-                //FillHashId(8000000, 9000000);
-                //FillHashId(9000000, 10000000);
+                FillHashId(1, 1000000);
+                FillHashId(1000000, 2000000);
+                FillHashId(2000000, 3000000);
+                FillHashId(3000000, 4000000);
+                FillHashId(4000000, 5000000);
+                FillHashId(5000000, 6000000);
+                FillHashId(6000000, 7000000);
+                FillHashId(7000000, 8000000);
+                FillHashId(8000000, 9000000);
+                FillHashId(9000000, 10000000);
 
+                FillGeoLiteDb();
+                FillGeoLiteDb1();
 
 
                 riddata objrid = (from registree in dc.riddatas
@@ -1205,7 +1207,7 @@ namespace Analytics.Controllers
                
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return null;
             }
         }

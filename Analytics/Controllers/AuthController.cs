@@ -19,6 +19,7 @@ namespace Analytics.Controllers
         {
             return View();
         }
+       
         public JsonResult ReferenceNumberVerification(string ReferenceNumber, string Password)
         {
             try
@@ -104,7 +105,7 @@ namespace Analytics.Controllers
             }
  catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -172,7 +173,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -209,7 +210,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 message = "Exception Occured";
                 return Json(message);
             }
@@ -238,7 +239,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 message = "Exception Occured";
                 return Json(message);
             }

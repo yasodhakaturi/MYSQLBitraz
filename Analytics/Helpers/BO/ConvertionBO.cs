@@ -39,7 +39,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return "";
             }
         }
@@ -61,7 +61,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return 0;
             }
         }
@@ -99,7 +99,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException.ToString());
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
                 return "";
             }
         }
