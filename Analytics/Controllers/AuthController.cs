@@ -105,7 +105,7 @@ namespace Analytics.Controllers
             }
  catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -173,7 +173,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -210,7 +210,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 message = "Exception Occured";
                 return Json(message);
             }
@@ -239,7 +239,7 @@ namespace Analytics.Controllers
             catch (Exception ex)
             {
 
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 message = "Exception Occured";
                 return Json(message);
             }

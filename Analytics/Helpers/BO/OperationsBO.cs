@@ -52,7 +52,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return null;
             }
         }
@@ -72,7 +72,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return false;
             }
         }
@@ -91,7 +91,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return 0;
         //    }
         //}
@@ -110,7 +110,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return "";
             }
 
@@ -149,7 +149,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return null;
         //    }
         //}
@@ -175,7 +175,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //        return 0;
         //    }
         //}
@@ -331,7 +331,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
 
             }
         }
@@ -409,7 +409,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
         }
         //public void InsertUIDriddata(string referencenumber)
@@ -430,7 +430,7 @@ namespace Analytics.Helpers.BO
         //    }
         //    catch (Exception ex)
         //    {
-        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
         //    }
         //}
 
@@ -478,7 +478,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
         }
         public void UpdateHashid(int pk_uid, string Hashid)
@@ -492,7 +492,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
         }
 
@@ -770,7 +770,7 @@ namespace Analytics.Helpers.BO
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return null;
             }
         }

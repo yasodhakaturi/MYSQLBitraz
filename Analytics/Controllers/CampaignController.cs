@@ -72,7 +72,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return Json(objc, JsonRequestBehavior.AllowGet);
             }
         }
@@ -281,7 +281,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return Json(obj_search, JsonRequestBehavior.AllowGet);
             }
         }
@@ -400,7 +400,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -497,7 +497,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -557,7 +557,7 @@ namespace Analytics.Controllers
 
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
         }
@@ -612,7 +612,7 @@ namespace Analytics.Controllers
              
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 Error obj_err = new Error();
                 Errormessage errmesobj = new Errormessage();
                 errmesobj.message = "Exception Occured";
@@ -680,7 +680,7 @@ namespace Analytics.Controllers
              }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
         }
         public void GetBatchDownloadedFile(int BatchID)
@@ -730,7 +730,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
             }
         }
         
@@ -995,7 +995,7 @@ namespace Analytics.Controllers
                 //FillGeoLiteDb();
                 //FillGeoLiteDb1();
 
-
+                
                 riddata objrid = (from registree in dc.riddatas
                                   where registree.ReferenceNumber.Trim() == ReferenceNumber.Trim()
                                   select registree).SingleOrDefault();
@@ -1207,7 +1207,7 @@ namespace Analytics.Controllers
                
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.InnerException);
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
                 return null;
             }
         }

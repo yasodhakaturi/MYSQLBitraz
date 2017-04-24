@@ -8,15 +8,15 @@ namespace Analytics.Helpers.Utility
 {
     public class ErrorLogs
     {
-        public static void LogErrorData(string stackTraceInfo, Exception exp)
+        public static void LogErrorData(string stackTraceInfo, string message)
         {
             try
             {
-                string message="";
-                if (exp.InnerException == null)
-                    message = exp.Message;
-                else
-                    message = exp.InnerException.ToString();
+                //string message="";
+                //if (exp == null)
+                //    message = null;
+                //else
+                //    message = exp.InnerException.ToString();
 
                 string utcdatetime = Helper.GetUTCTime();
                 DateTime? utcdt = Convert.ToDateTime(utcdatetime);
