@@ -294,7 +294,7 @@ namespace Analytics
                 return JsonConvert.SerializeObject(errobj);
             }
         }
-        public string RegisterCampaign(string CampaignName, string Password)
+        public string RegisterOrGetCampaign(string CampaignName, string Password)
         {
             try
             {

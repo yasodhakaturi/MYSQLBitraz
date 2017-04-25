@@ -33,7 +33,7 @@ namespace Analytics.Controllers
             //{
             //    HttpWebRequest webRequest; HttpWebResponse WebResp; Stream response; StreamReader data;
             //     webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey?UserName=testuser1&Email=testuser@gmail.com&Password=testuser1");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/GetApiKey?UserName=testcampaign1&Email=testcampaign@gmail.com&Password=teastcampaign1");
+            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/GetApiKey?UserName=testcampaign&Email=testcampaign@gmail.com&Password=teastcampaign");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey");
                 
@@ -58,8 +58,8 @@ namespace Analytics.Controllers
             //    string api_key = WebResp.Headers["Api_key"];
 
 
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/RegisterCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/RegisterCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
             //    webRequest.ContentType = "application/json";
@@ -94,7 +94,7 @@ namespace Analytics.Controllers
             //    ShortUrl ShortUrljson = JsonConvert.DeserializeObject<ShortUrl>(GetShortUrlResult);
             //    string ShortUrl = ShortUrljson.shortUrl;
 
-               
+
             //}
             //catch (WebException webex)
             //{
