@@ -34,11 +34,11 @@ namespace Analytics.Controllers
             //    HttpWebRequest webRequest; HttpWebResponse WebResp; Stream response; StreamReader data;
             //     //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey?UserName=testuser1&Email=testuser@gmail.com&Password=testuser1");
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?&Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
 
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testpassword&Api_Key=6ZuD3zVvSFGFWDWd0254dwW03ZoBiNF4DgzomnxPhZ8");
 
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testpassword&Api_Key=6gLqU53pOxhcXghYEBxjnKtT/wqKnXugfWz24f7yQ");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey");
                 
@@ -66,10 +66,10 @@ namespace Analytics.Controllers
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=teastcampaign4");
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
 
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
-            //    // webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+            //      //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+            //     webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
 
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
@@ -90,10 +90,10 @@ namespace Analytics.Controllers
             //    //string ReferenceNumber = ReferenceNumberjson.ReferenceNumber;
 
 
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetShortUrl?referencenumber=" + ReferenceNumber + "&longurl=https://google.com&mobilenumber=8331878564");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+            //     // webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
 
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
@@ -113,10 +113,10 @@ namespace Analytics.Controllers
             //    ShortUrl ShortUrljson = JsonConvert.DeserializeObject<ShortUrl>(GetShortUrlResult);
             //    string ShortUrl = ShortUrljson.shortUrl;
 
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetALLCampaigns");
+            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetALLCampaigns");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetALLCampaigns");
-            //    // webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetALLCampaigns");
+            //     webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetALLCampaigns");
 
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
