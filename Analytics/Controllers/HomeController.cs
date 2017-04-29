@@ -32,15 +32,20 @@ namespace Analytics.Controllers
             //try
             //{
             //    HttpWebRequest webRequest; HttpWebResponse WebResp; Stream response; StreamReader data;
-            //     webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey?UserName=testuser1&Email=testuser@gmail.com&Password=testuser1");
-            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/GetApiKey?UserName=testcampaign&Email=testcampaign@gmail.com&Password=teastcampaign");
+            //     //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey?UserName=testuser1&Email=testuser@gmail.com&Password=testuser1");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?&Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey");
                 
                 
             //    webRequest.Method = "POST";
             //    webRequest.KeepAlive = true;
-            //    webRequest.Timeout = 100000;
+            //    //webRequest.Timeout = 100000;
             //    webRequest.ContentType = "application/x-www-form-urlencoded";
             //    //Stream os = null;
             //    //parameters p = new parameters();
@@ -55,35 +60,49 @@ namespace Analytics.Controllers
             //    //os.Close();
             //    webRequest.ContentLength = 0;
             //    WebResp = (HttpWebResponse)webRequest.GetResponse();
-            //    string api_key = WebResp.Headers["Api_key"];
+            //    //string api_key = WebResp.Headers["Api_key"];
+            //    string token = WebResp.Headers["token"];
 
 
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/RegisterOrGetCampaign?CampaignName=testcampaign3&Password=teastcampaign3");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=teastcampaign4");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+            //    // webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=testpassword");
+
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
             //    webRequest.ContentType = "application/json";
-            //    webRequest.Headers.Add("Api_key", api_key);
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
             //    WebResp = (HttpWebResponse)webRequest.GetResponse();
-            //    api_key = WebResp.Headers["Api_key"];
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
             //    response = WebResp.GetResponseStream();
             //    data = new StreamReader(response);
             //    string strres = data.ReadToEnd();
             //    var json = JObject.Parse(strres);
-            //    string ReferenceNumberResult = (string)json["RegisterCampaignResult"];
+            //    //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
+            //    string RegisterCampaignResult = (string)json["RegisterCampaignResult"];
             //    //string ReferenceNumber = (string)json["ReferenceNumber"];
-            //    ReferenceNumber1 ReferenceNumberjson = JsonConvert.DeserializeObject<ReferenceNumber1>(ReferenceNumberResult);
-            //    string ReferenceNumber = ReferenceNumberjson.ReferenceNumber;
+            //    //ReferenceNumber1 ReferenceNumberjson = JsonConvert.DeserializeObject<ReferenceNumber1>(ReferenceNumberResult);
+            //    //string ReferenceNumber = ReferenceNumberjson.ReferenceNumber;
 
 
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetShortUrl?referencenumber=" + ReferenceNumber + "&longurl=https://google.com&mobilenumber=8331877564");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/Service1.svc/GetShortUrl?ReferenceNumber=" + ReferenceNumber + "&Longurl=https://google.com&MobileNumber=8331877564");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetShortUrl?referencenumber=" + ReferenceNumber + "&longurl=https://google.com&mobilenumber=8331878564");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign4&longurl=https://google.com&mobilenumber=8331878564");
+
             //    webRequest.Method = "GET";
             //    //webRequest.Timeout = 12000;
             //    webRequest.ContentType = "application/json";
-            //    webRequest.Headers.Add("Api_key", api_key);
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
             //    WebResp = (HttpWebResponse)webRequest.GetResponse();
-            //    api_key = WebResp.Headers["Api_key"];
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
             //    Stream response1 = WebResp.GetResponseStream();
             //    data = new StreamReader(response1);
             //    string strres1 = data.ReadToEnd();
@@ -93,6 +112,29 @@ namespace Analytics.Controllers
 
             //    ShortUrl ShortUrljson = JsonConvert.DeserializeObject<ShortUrl>(GetShortUrlResult);
             //    string ShortUrl = ShortUrljson.shortUrl;
+
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetALLCampaigns");
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetALLCampaigns");
+            //    // webRequest = (HttpWebRequest)WebRequest.Create("http://bitraz.com/ShortURLService.svc/GetALLCampaigns");
+
+            //    webRequest.Method = "GET";
+            //    //webRequest.Timeout = 12000;
+            //    webRequest.ContentType = "application/json";
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
+            //    WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
+            //    response = WebResp.GetResponseStream();
+            //    data = new StreamReader(response);
+            //     strres = data.ReadToEnd();
+            //     json = JObject.Parse(strres);
+            //    //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
+            //     string GetALLCampaignsResult = (string)json["GetAllCampaignsResult"];
+            //    //string ReferenceNumber = (string)json["ReferenceNumber"];
+            //     List<CampaignsList> campaigns = JsonConvert.DeserializeObject<List<CampaignsList>>(GetALLCampaignsResult);
+                
 
 
             //}
@@ -115,7 +157,10 @@ namespace Analytics.Controllers
             return View(obj);
             //return View();
         }
-
+        public class CampaignsList
+        {
+            public string CampaignName { get; set; }
+        }
         public class ReferenceNumber1
         {
             public string ReferenceNumber { get; set; }

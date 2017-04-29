@@ -357,6 +357,17 @@ namespace Analytics.Helpers.BO
        return checkCampaign;
 
         }
+        public client CheckclientEmailApi_key(string email, string password,string api_key)
+        {
+            client obj = new client();
+            obj = dc.clients.Where(c => c.Email == email && c.Password == password  && c.APIKey==api_key).Select(x => x).SingleOrDefault();
+            //if (obj != null)
+            //    check = true;
+            //else
+            //    check = false;
+            return obj;
+
+        }
         public client CheckclientEmail(string email,string password)
         {
             client obj = new client();

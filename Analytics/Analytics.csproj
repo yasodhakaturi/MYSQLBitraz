@@ -23,6 +23,7 @@
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -372,6 +373,7 @@
     <Compile Include="Helpers\Utility\Helper.cs" />
     <Compile Include="Helpers\Utility\SqlHelper.cs" />
     <Compile Include="IService1.cs" />
+    <Compile Include="IShortURLService.cs" />
     <Compile Include="locations_data.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
@@ -407,6 +409,9 @@
     </Compile>
     <Compile Include="shorturldata.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShortURLService.svc.cs">
+      <DependentUpon>ShortURLService.svc</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="sysdiagram.cs">
@@ -1282,6 +1287,7 @@
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="ShortURLService.svc" />
     <Content Include="splitmaxlimitfunction.txt" />
     <Content Include="trigger.txt" />
     <Content Include="WebForm1.aspx" />
