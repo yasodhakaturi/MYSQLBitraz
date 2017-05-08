@@ -209,7 +209,7 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, UsersCollecti
             var $ctrl = this;
             var timer;
             $ctrl.campaign = campaign;
-            $ctrl.campaign.generator = {"simple": {}, "advanced":{}, "upload":{}};
+            $ctrl.campaign.generator = {"simple": {uploadType:'url'}, "advanced":{uploadType:'url'}, "upload":{uploadType:'url'}};
             $ctrl.activeTab = 'simple';
             $ctrl.campaignForm = {"simple": {}, "advanced":{}, "upload":{}};
             $ctrl.generation = false;
@@ -218,7 +218,8 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, UsersCollecti
               if($ctrl.campaignForm[type].$valid){
                 if(type == 'simple' || type == 'advanced'){
                   $ctrl.generation = true;
-                  $ctrl.campaign.generate({LongUrl: form.longurl, MobileNumbers: $scope.sanitizeMobileNumbers(form.mobileNumbers, type)}, type).then((resp)=>{
+
+                  $ctrl.campaign.generate({LongUrlorMessage: form.longUrlOrMessage, UploadType:form.uploadType, MobileNumbers: $scope.sanitizeMobileNumbers(form.mobileNumbers, type)}, type).then((resp)=>{
                     $ctrl.generation = false;
                     if(resp.ShortenUrl){
                       $ctrl.campaignForm[type].ShortenUrl = resp.ShortenUrl;
@@ -233,7 +234,7 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, UsersCollecti
                 }else if(type == 'upload'){
                   $ctrl.generation = true;
                   if ($ctrl.campaignForm[type].$valid) {
-                    $ctrl.campaign.generateFromFile({LongUrl: $ctrl.campaign.generator['upload'].longurl, File: $ctrl.campaignForm[type].file}, type)
+                    $ctrl.campaign.generateFromFile({LongUrlorMessage: $ctrl.campaign.generator['upload'].longUrlOrMessage, UploadType: $ctrl.campaign.generator['upload'].uploadType, File: $ctrl.campaignForm[type].file}, type)
                       .then((resp)=>{
                         $ctrl.generation = false;
                         if(resp.ShortenUrl){

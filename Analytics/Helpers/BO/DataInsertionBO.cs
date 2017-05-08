@@ -46,7 +46,7 @@ namespace Analytics.Helpers.BO
                 obju.FK_RID = fk_rid;
                 obju.FK_ClientID = FK_ClientID;
                 obju.ReferenceNumber = referencenumber;
-                obju.Longurl = longurl;
+                obju.LongurlorMessage = longurl;
                 obju.MobileNumber = mobilenumber;
                 obju.CreatedDate = utcdt;
                 obju.CreatedBy = FK_ClientID;

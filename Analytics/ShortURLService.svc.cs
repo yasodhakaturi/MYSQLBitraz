@@ -384,7 +384,7 @@ namespace Analytics
                             //check data in UID table
                             Hashid = (from registree in dc.uiddatas
                                       where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber &&
-                                      registree.Longurl.Trim() == longurl.Trim() &&
+                                      registree.LongurlorMessage.Trim() == longurl.Trim() &&
                                       registree.MobileNumber.Trim() == mobilenumber.Trim()
                                       select registree.UniqueNumber).SingleOrDefault();
                             //if data found in uiddata insert data into uiddata 
@@ -395,7 +395,7 @@ namespace Analytics
 
                                 pk_uid = (from registree in dc.uiddatas
                                           where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber.Trim() &&
-                                          registree.Longurl.Trim() == longurl.Trim() &&
+                                          registree.LongurlorMessage.Trim() == longurl.Trim() &&
                                           registree.MobileNumber.Trim() == mobilenumber.Trim()
                                           select registree.PK_Uid).SingleOrDefault();
                                 //Hashid = Helper.GetHashID(pk_uid);

@@ -21,9 +21,9 @@ function pageTitle($rootScope, $timeout) {
         link: function(scope, element) {
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 // Default title
-                var title = 'biTRAZ | trace your link';
+                var title = 'Mobilytics.ae | trace your link';
                 // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'biTRAZ | ' + toState.data.pageTitle;
+                if (toState.data && toState.data.pageTitle) title = 'Mobilytics.ae | ' + toState.data.pageTitle;
                 $timeout(function() {
                     element.text(title);
                 });

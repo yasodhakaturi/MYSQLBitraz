@@ -2,7 +2,7 @@ angular.module('bitraz.template', ['views/admin/admin.html', 'views/admin/analyt
 
 angular.module("views/admin/admin.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("views/admin/admin.html",
-    "<!-- Header --> <div id=\"header\" ng-include=\"'views/common/header-dashboard.html'\"></div> <!-- Navigation --> <!-- <aside id=\"menu\" ng-include=\"'views/common/navigation.html'\"></aside> --> <!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to biTraz Admin. </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
+    "<!-- Header --> <div id=\"header\" ng-include=\"'views/common/header-dashboard.html'\"></div> <!-- Navigation --> <!-- <aside id=\"menu\" ng-include=\"'views/common/navigation.html'\"></aside> --> <!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae Admin. </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
 }]);
 
 angular.module("views/admin/analytics.html", []).run(["$templateCache", function ($templateCache) {
@@ -12,7 +12,7 @@ angular.module("views/admin/analytics.html", []).run(["$templateCache", function
 
 angular.module("views/admin/archieves.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("views/admin/archieves.html",
-    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to biTRAZ admin archieves </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
+    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae admin archieves </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
 }]);
 
 angular.module("views/admin/campaigns.html", []).run(["$templateCache", function ($templateCache) {
@@ -78,15 +78,15 @@ angular.module("views/admin/campaigns/add_campaign.html", []).run(["$templateCac
     "                </div>\n" +
     "\n" +
     "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Assign to client</label>\n" +
+    "                    <label class=\"col-sm-3 control-label\">Assign to Client</label>\n" +
     "\n" +
     "                    <div class=\"col-sm-9\">\n" +
     "                        <select ng-required=\"true\" name=\"client\" ng-model=\"$ctrl.newCampaign.CreatedUserId\"\n" +
-    "                                placeholder=\"Select client\" class=\"form-control\"\n" +
+    "                                placeholder=\"Select Client\" class=\"form-control\"\n" +
     "                                ng-options=\"user.id as user.UserName for user in $ctrl.customerList\"></select>\n" +
     "                        <small class=\"form-text text-muted text-danger\"\n" +
     "                               ng-if=\"$ctrl.newCampaignForm.client.$invalid && $ctrl.newCampaignForm.client.$touched\">\n" +
-    "                            <span ng-if=\"$ctrl.newCampaignForm.client.$error.required\">client is required</span>\n" +
+    "                            <span ng-if=\"$ctrl.newCampaignForm.client.$error.required\">Client is required</span>\n" +
     "                        </small>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -171,12 +171,12 @@ angular.module("views/admin/campaigns/edit_campaign.html", []).run(["$templateCa
     "                </div>\n" +
     "\n" +
     "                <div class=\"form-group\">\n" +
-    "                    <label class=\"col-sm-3 control-label\">Assign to client</label>\n" +
+    "                    <label class=\"col-sm-3 control-label\">Assign to Client</label>\n" +
     "\n" +
     "                    <div class=\"col-sm-9\">\n" +
-    "                        <select ng-required=\"true\" name=\"client\" ng-model=\"$ctrl.newCampaign.CreatedUserId\" placeholder=\"Select client\" class=\"form-control\" ng-options=\"user.id as user.UserName for user in $ctrl.customerList\"></select>\n" +
+    "                        <select ng-required=\"true\" name=\"client\" ng-model=\"$ctrl.newCampaign.CreatedUserId\" placeholder=\"Select Client\" class=\"form-control\" ng-options=\"user.id as user.UserName for user in $ctrl.customerList\"></select>\n" +
     "                        <small  class=\"form-text text-muted text-danger\" ng-if=\"$ctrl.newCampaignForm.client.$invalid && $ctrl.newCampaignForm.client.$touched\">\n" +
-    "                            <span ng-if=\"$ctrl.newCampaignForm.client.$error.required\">client is required</span>\n" +
+    "                            <span ng-if=\"$ctrl.newCampaignForm.client.$error.required\">Client is required</span>\n" +
     "                        </small>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -225,11 +225,40 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['simple']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <select  ng-required=\"true\" name=\"longurl\" placeholder=\"Select Url\"\n" +
+    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['simple'].uploadType\">\n" +
+    "                                            <option value=\"url\">Long URL</option>\n" +
+    "                                            <option value=\"message\">Long Message</option>\n" +
+    "                                        </select>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['simple'].uploadType.$invalid && $ctrl.campaignForm['simple'].uploadType.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['simple'].uploadType.$error.required\">Type is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['simple'].uploadType == 'message'\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Long Message</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <textarea rows=\"4\" ng-required=\"true\" name=\"longmessage\" placeholder=\"Enter a Long Message here\"\n" +
+    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['simple'].longUrlOrMessage\"/>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['simple'].longmessage.$invalid && $ctrl.campaignForm['simple'].longmessage.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['simple'].longmessage.$error.required\">Long Message is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['simple'].uploadType == 'url'\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Long Url</label>\n" +
     "\n" +
     "                                    <div class=\"col-sm-9\">\n" +
-    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Long Url\"\n" +
-    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['simple'].longurl\"/>\n" +
+    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Enter a Long Url\"\n" +
+    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['simple'].longUrlOrMessage\"/>\n" +
     "                                        <small class=\"form-text text-muted text-danger\"\n" +
     "                                               ng-if=\"$ctrl.campaignForm['simple'].longurl.$invalid && $ctrl.campaignForm['simple'].longurl.$touched\">\n" +
     "                                            <span ng-if=\"$ctrl.campaignForm['simple'].longurl.$error.required\">Long Url is required</span>\n" +
@@ -275,11 +304,40 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['advanced']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <select  ng-required=\"true\" name=\"longurl\" placeholder=\"Select Type\"\n" +
+    "                                                 class=\"form-control\" ng-model=\"$ctrl.campaign.generator['advanced'].uploadType\">\n" +
+    "                                            <option value=\"url\">Long URL</option>\n" +
+    "                                            <option value=\"message\">Long Message</option>\n" +
+    "                                        </select>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['advanced'].uploadType.$invalid && $ctrl.campaignForm['advanced'].uploadType.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['advanced'].uploadType.$error.required\">Type is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['advanced'].uploadType == 'message'\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Long Message</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <textarea rows=\"4\" ng-required=\"true\" name=\"longmessage\" placeholder=\"Enter a Long Message here\"\n" +
+    "                                                  class=\"form-control\" ng-model=\"$ctrl.campaign.generator['advanced'].longUrlOrMessage\"/>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['advanced'].longmessage.$invalid && $ctrl.campaignForm['advanced'].longmessage.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['advanced'].longmessage.$error.required\">Long Message is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['advanced'].uploadType == 'url'\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Long Url</label>\n" +
     "\n" +
     "                                    <div class=\"col-sm-9\">\n" +
-    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Long Url\"\n" +
-    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['advanced'].longurl\"/>\n" +
+    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Enter a Long Url\"\n" +
+    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['advanced'].longUrlOrMessage\"/>\n" +
     "                                        <small class=\"form-text text-muted text-danger\"\n" +
     "                                               ng-if=\"$ctrl.campaignForm['advanced'].longurl.$invalid && $ctrl.campaignForm['advanced'].longurl.$touched\">\n" +
     "                                            <span ng-if=\"$ctrl.campaignForm['advanced'].longurl.$error.required\">Long Url is required</span>\n" +
@@ -325,16 +383,45 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                        </div>\n" +
     "                    </div>\n" +
     "                    <div id=\"upload\" class=\"tab-pane fade\" ng-class=\"{'in active': $ctrl.activeTab == 'upload'}\">\n" +
-    "                        <h3>Upload</h3>\n" +
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
     "                            <p>Generate Urls by a file upload.</p>\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['upload']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <select  ng-required=\"true\" name=\"longurl\" placeholder=\"Select Type\"\n" +
+    "                                                 class=\"form-control\" ng-model=\"$ctrl.campaign.generator['upload'].uploadType\">\n" +
+    "                                            <option value=\"url\">Long URL</option>\n" +
+    "                                            <option value=\"message\">Long Message</option>\n" +
+    "                                        </select>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['upload'].uploadType.$invalid && $ctrl.campaignForm['upload'].uploadType.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['upload'].uploadType.$error.required\">Type is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['upload'].uploadType == 'message'\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Long Message</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <textarea rows=\"4\" ng-required=\"true\" name=\"longmessage\" placeholder=\"Enter a Long Message here\"\n" +
+    "                                                  class=\"form-control\" ng-model=\"$ctrl.campaign.generator['upload'].longUrlOrMessage\"/>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['upload'].longmessage.$invalid && $ctrl.campaignForm['upload'].longmessage.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['upload'].longmessage.$error.required\">Long Message is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "\n" +
+    "                                <div class=\"form-group\" ng-if=\"$ctrl.campaign.generator['upload'].uploadType == 'url'\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Long Url</label>\n" +
     "\n" +
     "                                    <div class=\"col-sm-9\">\n" +
-    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Long Url\"\n" +
-    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['upload'].longurl\"/>\n" +
+    "                                        <input type=\"url\" ng-required=\"true\" name=\"longurl\" placeholder=\"Enter a Long Url\"\n" +
+    "                                               class=\"form-control\" ng-model=\"$ctrl.campaign.generator['upload'].longUrlOrMessage\"/>\n" +
     "                                        <small class=\"form-text text-muted text-danger\"\n" +
     "                                               ng-if=\"$ctrl.campaignForm['upload'].longurl.$invalid && $ctrl.campaignForm['upload'].longurl.$touched\">\n" +
     "                                            <span ng-if=\"$ctrl.campaignForm['upload'].longurl.$error.required\">Long Url is required</span>\n" +
@@ -404,7 +491,7 @@ angular.module("views/admin/components/clients_component_tmpl.html", []).run(["$
 
 angular.module("views/admin/header.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("views/admin/header.html",
-    "<div id=\"logo\" class=\"light-version\"> <a ng-href=\"#\"><span class=\"logo\"></span></a> </div> <nav role=\"navigation\"> <!-- <minimaliza-menu></minimaliza-menu> --> <div class=\"small-logo\"> <a ng-href=\"#\"><span class=\"logo\"></span></a> </div> <div class=\"mobile-menu\" ng-if=\"$root.userInfo.user_id\"> <button type=\"button\" class=\"navbar-toggle mobile-menu-toggle\" data-toggle=\"collapse\" data-target=\"#mobile-collapse\"> <i class=\"fa fa-chevron-down\"></i> </button> <div class=\"collapse mobile-navbar\" id=\"mobile-collapse\"> <ul class=\"nav navbar-nav\"> <li ng-class=\"{'active':active == 'home'}\"><a class=\"page-scroll\" ui-sref=\"bitraz.main.index\"><i class=\"pe-7s-home\"></i> Home</a></li> <li> <a ui-sref=\"bitraz.main.analytics\"> <i class=\"pe pe-7s-graph1 text-danger\"></i> Analytics </a> </li> <li> <a ui-sref=\"bitraz.main.campaigns\"> <i class=\"pe pe-7s-portfolio text-info\"></i> Campaigns </a> </li> <li> <a ui-sref=\"bitraz.main.users\"> <i class=\"pe pe-7s-users text-success\"></i> Users </a> </li> <!--<li>--> <!--<a ui-sref=\"bitraz.main.archieves\">--> <!--<i class=\"pe pe-7s-box1 text-success\"></i> Archieve--> <!--</a>--> <!--</li>--> <li ng-class=\"{'active':active == 'security'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"bitraz.main.settings\"><i class=\"pe-7s-config\"></i> Settings </a></li> <li><a class=\"page-scroll\" page-scroll ng-click=\"logout()\"><i class=\"pe-7s-power\"></i> Logout</a></li> </ul> </div> </div> <div class=\"navbar-right\" ng-if=\"$root.userInfo.user_id\"> <ul class=\"nav navbar-nav no-borders\"> <li uib-dropdown> <a ui-sref=\"bitraz.main.index\" uib-dropdown-toggle> <i class=\"pe-7s-home\"></i> </a> </li> <li uib-dropdown> <a uib-dropdown-toggle> <i class=\"pe-7s-graph\"></i> </a> <div uib-dropdown-menu class=\"hdropdown bigmenu animated flipInX\"> <table> <tbody> <tr> <td> <a ui-sref=\"bitraz.main.analytics\"> <i class=\"pe pe-7s-graph1 text-danger\"></i> <h5>Analytics</h5> </a>  <td> <a ui-sref=\"bitraz.main.campaigns\"> <i class=\"pe pe-7s-portfolio text-info\"></i> <h5>Campaigns</h5> </a>   <tr> <td> <a ui-sref=\"bitraz.main.users\"> <i class=\"pe pe-7s-users text-success\"></i> <h5>Users</h5> </a>  <td> <a ui-sref=\"bitraz.main.archieves\"> <i class=\"pe pe-7s-box1 text-success\"></i> <h5>Archieve</h5> </a>    </table> </div> </li> <li> <a ui-sref=\"bitraz.main.settings\"> <i class=\"pe-7s-config\"></i> </a> </li> <li> <a ng-click=\"logout()\"> <i class=\"pe-7s-power\"></i> </a> </li> </ul> </div> </nav>");
+    "<div id=\"logo\" class=\"light-version\"> <a ng-href=\"#\"><span class=\"logo\">mobilytics.ae</span></a> </div> <nav role=\"navigation\"> <!-- <minimaliza-menu></minimaliza-menu> --> <div class=\"small-logo\"> <a ng-href=\"#\"><span class=\"logo\">mobilytics.ae</span></a> </div> <div class=\"mobile-menu\" ng-if=\"$root.userInfo.user_id\"> <button type=\"button\" class=\"navbar-toggle mobile-menu-toggle\" data-toggle=\"collapse\" data-target=\"#mobile-collapse\"> <i class=\"fa fa-chevron-down\"></i> </button> <div class=\"collapse mobile-navbar\" id=\"mobile-collapse\"> <ul class=\"nav navbar-nav\"> <li ng-class=\"{'active':active == 'home'}\"><a class=\"page-scroll\" ui-sref=\"bitraz.main.index\"><i class=\"pe-7s-home\"></i> Home</a></li> <li> <a ui-sref=\"bitraz.main.analytics\"> <i class=\"pe pe-7s-graph1 text-danger\"></i> Analytics </a> </li> <li> <a ui-sref=\"bitraz.main.campaigns\"> <i class=\"pe pe-7s-portfolio text-info\"></i> Campaigns </a> </li> <li> <a ui-sref=\"bitraz.main.users\"> <i class=\"pe pe-7s-users text-success\"></i> Users </a> </li> <!--<li>--> <!--<a ui-sref=\"bitraz.main.archieves\">--> <!--<i class=\"pe pe-7s-box1 text-success\"></i> Archieve--> <!--</a>--> <!--</li>--> <li ng-class=\"{'active':active == 'security'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"bitraz.main.settings\"><i class=\"pe-7s-config\"></i> Settings </a></li> <li><a class=\"page-scroll\" page-scroll ng-click=\"logout()\"><i class=\"pe-7s-power\"></i> Logout</a></li> </ul> </div> </div> <div class=\"navbar-right\" ng-if=\"$root.userInfo.user_id\"> <ul class=\"nav navbar-nav no-borders\"> <li uib-dropdown> <a ui-sref=\"bitraz.main.index\" uib-dropdown-toggle> <i class=\"pe-7s-home\"></i> </a> </li> <li uib-dropdown> <a uib-dropdown-toggle> <i class=\"pe-7s-graph\"></i> </a> <div uib-dropdown-menu class=\"hdropdown bigmenu animated flipInX\"> <table> <tbody> <tr> <td> <a ui-sref=\"bitraz.main.analytics\"> <i class=\"pe pe-7s-graph1 text-danger\"></i> <h5>Analytics</h5> </a>  <td> <a ui-sref=\"bitraz.main.campaigns\"> <i class=\"pe pe-7s-portfolio text-info\"></i> <h5>Campaigns</h5> </a>   <tr> <td> <a ui-sref=\"bitraz.main.users\"> <i class=\"pe pe-7s-users text-success\"></i> <h5>Users</h5> </a>  <td> <a ui-sref=\"bitraz.main.archieves\"> <i class=\"pe pe-7s-box1 text-success\"></i> <h5>Archieve</h5> </a>    </table> </div> </li> <li> <a ui-sref=\"bitraz.main.settings\"> <i class=\"pe-7s-config\"></i> </a> </li> <li> <a ng-click=\"logout()\"> <i class=\"pe-7s-power\"></i> </a> </li> </ul> </div> </nav>");
 }]);
 
 angular.module("views/admin/index.html", []).run(["$templateCache", function ($templateCache) {
@@ -414,7 +501,7 @@ angular.module("views/admin/index.html", []).run(["$templateCache", function ($t
 
 angular.module("views/admin/settings.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("views/admin/settings.html",
-    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to biTraz admin settings </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <ul> <li>change password</li> <li>list admin users and roles, add/edit user</li> </ul> </div> </div> </div> </div>");
+    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae admin settings </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> <div class=\"row\"> <div class=\"col-sm-12\"> <ul> <li>change password</li> <li>list admin users and roles, add/edit user</li> </ul> </div> </div> </div> </div>");
 }]);
 
 angular.module("views/admin/users.html", []).run(["$templateCache", function ($templateCache) {

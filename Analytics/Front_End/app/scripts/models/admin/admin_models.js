@@ -207,9 +207,8 @@ angular.module('bitraz.models', ['bitraz.models.common', "ngFileUpload"])
         }
 
         generate(form, type) {
-
           var refDefer = $q.defer();
-          var data = {ReferenceNumber:this.ReferenceNumber, CampaignID: this.Id, LongUrl: form.LongUrl, MobileNumbers: form.MobileNumbers, type:type};
+          var data = {ReferenceNumber:this.ReferenceNumber, CampaignID: this.Id, LongUrlorMessage: form.LongUrlorMessage, MobileNumbers: form.MobileNumbers, type:type, UploadType: form.UploadType};
 
           $http({
             method: 'POST',
@@ -235,7 +234,7 @@ angular.module('bitraz.models', ['bitraz.models.common', "ngFileUpload"])
         generateFromFile(form, type) {
 
           var refDefer = $q.defer();
-          var data = {ReferenceNumber:this.ReferenceNumber, CampaignID: this.Id, LongUrl: form.LongUrl, UploadFile: form.File, type:type};
+          var data = {ReferenceNumber:this.ReferenceNumber, CampaignID: this.Id, LongUrlorMessage: form.LongUrlorMessage, UploadFile: form.File, type:type, UploadType: form.UploadType};
           var _that = this;
           Upload.upload({
             url: appConfig.apiEndPoint + '/Campaign/UploadData',

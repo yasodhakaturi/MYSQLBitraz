@@ -65,7 +65,7 @@ namespace Analytics
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertRIDData", campaignNameParameter, referencenumberParameter, pwdParameter, clientidParameter);
         }
     
-        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, string ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber)
+        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, Nullable<long> ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber)
         {
             var ipv4Parameter = ipv4 != null ?
                 new ObjectParameter("ipv4", ipv4) :
@@ -91,9 +91,9 @@ namespace Analytics
                 new ObjectParameter("longitude", longitude) :
                 new ObjectParameter("longitude", typeof(string));
     
-            var ipnumParameter = ipnum != null ?
+            var ipnumParameter = ipnum.HasValue ?
                 new ObjectParameter("ipnum", ipnum) :
-                new ObjectParameter("ipnum", typeof(string));
+                new ObjectParameter("ipnum", typeof(long));
     
             var req_urlParameter = req_url != null ?
                 new ObjectParameter("req_url", req_url) :

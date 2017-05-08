@@ -638,7 +638,7 @@ namespace Analytics.Controllers
                                           CampaignName=r.CampaignName,
                                           Mobilenumber=u.MobileNumber,
                                           ShortURL=s.Req_url,
-                                          LongUrl=u.Longurl,
+                                          LongUrl=u.LongurlorMessage,
                                           GoogleMapUrl = "https://www.google.com/maps?q=loc:"+s.Latitude+","+s.Longitude,
                                           IPAddress=s.Ipv4,
                                           Browser=s.Browser,
@@ -965,7 +965,7 @@ namespace Analytics.Controllers
         } 
        
         [System.Web.Http.HttpPost]
-        public JsonResult UploadData(string[] MobileNumbers, string LongURL, string ReferenceNumber, string type, HttpPostedFileBase UploadFile)
+        public JsonResult UploadData(string[] MobileNumbers, string LongURLorMessage, string ReferenceNumber, string type,string uploadtype, HttpPostedFileBase UploadFile)
        {
                
             try
@@ -999,24 +999,29 @@ namespace Analytics.Controllers
                 riddata objrid = (from registree in dc.riddatas
                                   where registree.ReferenceNumber.Trim() == ReferenceNumber.Trim()
                                   select registree).SingleOrDefault();
-                if (type.ToLower() == "simple" && objrid != null)
+                if (type.ToLower() == "simple" && objrid != null )
                 {
                     string mobilenumber = MobileNumbers[0];
                     uiddata objc = new uiddata();
-                    uiddata objc1 = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.Longurl == LongURL).SingleOrDefault();
+                    uiddata objc1 = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type==uploadtype).SingleOrDefault();
                     if (objc1 == null)
                     {
                         objc.MobileNumber= mobilenumber;
                         objc.ReferenceNumber = ReferenceNumber;
-                        objc.Longurl = LongURL;
+                        objc.LongurlorMessage = LongURLorMessage;
+                        if (uploadtype.ToLower() == "url")
+                            objc.Type = "url";
+                        else if (uploadtype.ToLower() == "message")
+                            objc.Type = "message";
                         objc.FK_ClientID = objrid.FK_ClientId;
                         objc.FK_RID = objrid.PK_Rid;
                         objc.CreatedDate = DateTime.UtcNow;
                         objc.CreatedBy = Helper.CurrentUserId;
+                        //objc.CreatedBy = 44;
                         objc.FK_Batchid=0;
                         dc.uiddatas.Add(objc);
                         dc.SaveChanges();
-                        uiddata objuid = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.Longurl == LongURL).SingleOrDefault();
+                        uiddata objuid = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype).SingleOrDefault();
                         //Hashid = Helper.GetHashID(objuid.PK_Uid);
                         Hashid = dc.hashidlists.Where(h => h.PK_Hash_ID == objuid.PK_Uid).Select(x => x.HashID).SingleOrDefault();
                         objbo.UpdateHashid(objuid.PK_Uid, Hashid);
@@ -1040,13 +1045,15 @@ namespace Analytics.Controllers
                 }
                 else if (type.ToLower() == "advanced" && objrid != null)
                 {
+                    string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                       "tmp_mysqluploader.txt");
                     string batchname = objrid.CampaignName + "_" + DateTime.UtcNow;
                     string formated_mobilenumbers = String.Join(",", MobileNumbers);
                     List<string> MobileNumbers_List = MobileNumbers.ToList();
                         batchuploaddata objb = new batchuploaddata();
                         objb.ReferenceNumber = ReferenceNumber;
                         objb.MobileNumber = formated_mobilenumbers;
-                        objb.Longurl = LongURL;
+                        objb.Longurl = LongURLorMessage;
                         objb.FK_ClientID = objrid.FK_ClientId;
                         objb.FK_RID = objrid.PK_Rid;
                         objb.CreatedDate = DateTime.UtcNow;
@@ -1057,7 +1064,7 @@ namespace Analytics.Controllers
                         dc.batchuploaddatas.Add(objb);
                         dc.SaveChanges();
                     batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
-                    string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, MobileNumbers_List,"");
+                    string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURLorMessage, objo.PK_Batchid, objrid, MobileNumbers_List, path_tmp, uploadtype);
                     if (result != null)
                     {
                         objo.Status = "Completed";
@@ -1068,6 +1075,10 @@ namespace Analytics.Controllers
                         obje.BatchID = objo.PK_Batchid;
                         obje.CreatedDate = objo.CreatedDate;
                         
+                    }
+                    if ((System.IO.File.Exists(path_tmp)))
+                    {
+                        System.IO.File.Delete(path_tmp);
                     }
 
                 }
@@ -1110,7 +1121,7 @@ namespace Analytics.Controllers
                             batchuploaddata objb = new batchuploaddata();
                             objb.ReferenceNumber = ReferenceNumber;
                             objb.MobileNumber = mobilenumbersstr;
-                            objb.Longurl = LongURL;
+                            objb.Longurl = LongURLorMessage;
                             objb.FK_ClientID = objrid.FK_ClientId;
                             objb.FK_RID = objrid.PK_Rid;
                             objb.CreatedDate = DateTime.UtcNow;
@@ -1121,7 +1132,7 @@ namespace Analytics.Controllers
                             dc.batchuploaddatas.Add(objb);
                             dc.SaveChanges();
                             batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
-                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURL, objo.PK_Batchid, objrid, SplitedData, path_tmp);
+                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURLorMessage, objo.PK_Batchid, objrid, SplitedData, path_tmp,uploadtype);
                             if (result == "Successfully Uploaded.")
                             {
                                 objo.Status = "Completed";
@@ -1239,7 +1250,7 @@ namespace Analytics.Controllers
             {
                 clientid = objrid.FK_ClientId;
                 rid = objrid.PK_Rid;
-                List<string> mobilenumberdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.Longurl == LongURL).Select(r=>r.MobileNumber).ToList();
+                List<string> mobilenumberdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.MobileNumber).ToList();
                 if (mobilenumberdata.Count != 0)
                 {
                     MobileNumbersFiltered_List = MobileNumbersList.Except(mobilenumberdata).ToList();
@@ -1253,7 +1264,7 @@ namespace Analytics.Controllers
                         new DataInsertionBO().Insertuiddata(rid, clientid, ReferenceNumber, LongURL, m);
                     }
 
-                    pkuids = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersFiltered_List.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.Longurl == LongURL).Select(r => r.PK_Uid).ToList();
+                    pkuids = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersFiltered_List.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.PK_Uid).ToList();
                     foreach (int uid in pkuids)
                     {
                         Hashid = "";
@@ -1262,7 +1273,7 @@ namespace Analytics.Controllers
                         // shorturls.Add("https://g0.pe/" + Hashid);
                     }
                 }
-                List<exportDataModel> exportdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.Longurl == LongURL).Select(r=>new exportDataModel(){MobileNumber=r.MobileNumber,ShortenUrl=r.UniqueNumber}).ToList();
+                List<exportDataModel> exportdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => new exportDataModel() { MobileNumber = r.MobileNumber, ShortenUrl = r.UniqueNumber }).ToList();
                 exportdata = exportdata.Select(x => { x.ShortenUrl = "https://g0.pe/" + x.ShortenUrl; return x; }).ToList();
                 //DataTable dt = new DataTable();
                 //dt.Columns.Add("Mobilenumber");

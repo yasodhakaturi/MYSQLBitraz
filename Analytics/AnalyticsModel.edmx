@@ -228,8 +228,9 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="FK_RID" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
           <Property Name="ReferenceNumber" Type="varchar" MaxLength="450" />
-          <Property Name="Longurl" Type="varchar" MaxLength="450" />
+          <Property Name="LongurlorMessage" Type="longtext" />
           <Property Name="MobileNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="45" />
           <Property Name="CreatedDate" Type="datetime" Precision="6" />
           <Property Name="UpdatedDate" Type="datetime" Precision="6" />
           <Property Name="UniqueNumber" Type="varchar" MaxLength="450" />
@@ -333,7 +334,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Parameter Name="browser_version" Type="varchar" Mode="In" />
           <Parameter Name="latitude" Type="longtext" Mode="In" />
           <Parameter Name="longitude" Type="longtext" Mode="In" />
-          <Parameter Name="ipnum" Type="varchar" Mode="In" />
+          <Parameter Name="ipnum" Type="bigint" Mode="In" />
           <Parameter Name="req_url" Type="longtext" Mode="In" />
           <Parameter Name="useragent" Type="longtext" Mode="In" />
           <Parameter Name="hostname" Type="varchar" Mode="In" />
@@ -642,7 +643,6 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <Property Name="FK_RID" Type="Int32" />
           <Property Name="FK_ClientID" Type="Int32" />
           <Property Name="ReferenceNumber" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
-          <Property Name="Longurl" Type="String" MaxLength="450" FixedLength="false" Unicode="false" />
           <Property Name="MobileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" />
           <Property Name="UpdatedDate" Type="DateTime" />
@@ -652,6 +652,8 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <NavigationProperty Name="client" Relationship="Self.FK_UIDDATA_Client" FromRole="uiddata" ToRole="client" />
           <NavigationProperty Name="riddata" Relationship="Self.FK_UIDDATA_RIDDATA" FromRole="uiddata" ToRole="riddata" />
           <NavigationProperty Name="shorturldatas" Relationship="Self.FK_SHORTURLDATA_UIDDATA" FromRole="uiddata" ToRole="shorturldata" />
+          <Property Name="LongurlorMessage" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="city_locations_geolite2">
           <Key>
@@ -814,7 +816,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <Parameter Name="browser_version" Mode="In" Type="String" />
             <Parameter Name="latitude" Mode="In" Type="String" />
             <Parameter Name="longitude" Mode="In" Type="String" />
-            <Parameter Name="ipnum" Mode="In" Type="String" />
+            <Parameter Name="ipnum" Mode="In" Type="Int64" />
             <Parameter Name="req_url" Mode="In" Type="String" />
             <Parameter Name="useragent" Mode="In" Type="String" />
             <Parameter Name="hostname" Mode="In" Type="String" />
@@ -1055,11 +1057,12 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <EntitySetMapping Name="uiddatas">
             <EntityTypeMapping TypeName="shortenurlModel.uiddata">
               <MappingFragment StoreEntitySet="uiddata">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="LongurlorMessage" ColumnName="LongurlorMessage" />
                 <ScalarProperty Name="PK_Uid" ColumnName="PK_Uid" />
                 <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
                 <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
                 <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
-                <ScalarProperty Name="Longurl" ColumnName="Longurl" />
                 <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />

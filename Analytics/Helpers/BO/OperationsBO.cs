@@ -102,7 +102,7 @@ namespace Analytics.Helpers.BO
                 string LongURL = "";
                 LongURL = (from uniid in dc.uiddatas
                            where uniid.UniqueNumber == Uniqueid_ShortURL
-                           select uniid.Longurl).SingleOrDefault();
+                           select uniid.LongurlorMessage).SingleOrDefault();
                 if (LongURL != "")
                     return LongURL;
                 else
@@ -277,7 +277,7 @@ namespace Analytics.Helpers.BO
                     string devicetype = HttpContext.Current.Request.Browser.Platform;
                     string ismobiledevice = HttpContext.Current.Request.Browser.IsMobileDevice.ToString();
                     //retrieve longurl from uid
-                    longurl = uid_obj.Longurl;
+                    longurl = uid_obj.LongurlorMessage;
                     //longurl = new OperationsBO().GetLongURL(Uniqueid_SHORTURLDATA);
                     //if(longurl!=null)
                     //    HttpContext.Current.Response.Redirect(longurl);
@@ -618,7 +618,7 @@ namespace Analytics.Helpers.BO
        }
 
 
-       public string BulkUploaduiddata(string ReferenceNumber, string LongUrl, int batchid, riddata objrid, List<string> MobileNumbers, string path_tmp)
+       public string BulkUploaduiddata(string ReferenceNumber, string LongurlorMessage, int batchid, riddata objrid, List<string> MobileNumbers, string path_tmp, string type)
         {
             try
             {
@@ -632,10 +632,10 @@ namespace Analytics.Helpers.BO
                 //                    select u.MobileNumber).ToList();
                 objc = (from u in dc.uiddatas
                         where u.ReferenceNumber == ReferenceNumber
-                        && u.Longurl == LongUrl
+                        && u.LongurlorMessage == LongurlorMessage
                         && u.FK_ClientID == objrid.FK_ClientId
                         && u.FK_RID == objrid.PK_Rid
-
+                        && u.Type == type
                         select u.MobileNumber).ToList();
                 objc = MobileNumbers.Intersect(objc).ToList();
                 if (objc.Count > 0)
@@ -706,8 +706,10 @@ namespace Analytics.Helpers.BO
                         MyStringBuilder.Append("FK_RID,");
                         MyStringBuilder.Append("FK_ClientID,");
                         MyStringBuilder.Append("ReferenceNumber,");
-                        MyStringBuilder.Append("Longurl,");
+                        if(type.ToLower()!="message")
+                        MyStringBuilder.Append("LongurlorMessage,");
                         MyStringBuilder.Append("MobileNumber,");
+                        MyStringBuilder.Append("Type,");
                         MyStringBuilder.Append("CreatedDate,");
                         MyStringBuilder.Append("UniqueNumber,");
                         MyStringBuilder.Append("CreatedBy,");
@@ -721,8 +723,10 @@ namespace Analytics.Helpers.BO
                                 MyStringBuilder.Append(objrid.PK_Rid.ToString() + ",");//fk_rid
                                 MyStringBuilder.Append(objrid.FK_ClientId.ToString() + ",");//fk_clientid
                                 MyStringBuilder.Append(ReferenceNumber + ",");//referencenumber
-                                MyStringBuilder.Append(LongUrl.ToString() + ",");//longurl
+                                if (type.ToLower() != "message")
+                                MyStringBuilder.Append(LongurlorMessage.ToString() + ",");//longurl
                                 MyStringBuilder.Append(MobileNumbers[j2].ToString() + ",");//mobilenumber
+                                MyStringBuilder.Append(type.ToString() + ",");//type
                                 MyStringBuilder.Append(Helper.GetUTCTime().ToString() + ",");//createddate
                                 MyStringBuilder.Append(objh[j2].ToString() + ",");//uniquenumber
                                 MyStringBuilder.Append(Helper.CurrentUserId.ToString() + ",");//createdby
@@ -762,13 +766,22 @@ namespace Analytics.Helpers.BO
                         bl.Columns.Add("FK_RID");
                         bl.Columns.Add("FK_ClientID");
                         bl.Columns.Add("ReferenceNumber");
-                        bl.Columns.Add("Longurl");
+                        if (type.ToLower() != "message")
+                        bl.Columns.Add("LongurlorMessage");
                         bl.Columns.Add("MobileNumber");
+                        bl.Columns.Add("Type");
                         bl.Columns.Add("CreatedDate");
                         bl.Columns.Add("UniqueNumber");
                         bl.Columns.Add("CreatedBy");
                         bl.Columns.Add("FK_Batchid");
                         var inserted = bl.Load();
+                        if (type.ToLower() == "message")
+                        {
+                            (from p in dc.uiddatas
+                             where p.FK_Batchid == batchid
+                             select p).ToList().ForEach(x => x.LongurlorMessage = LongurlorMessage);
+                            dc.SaveChanges();
+                        }
                         return "Successfully Uploaded.";
                     }
                 }
