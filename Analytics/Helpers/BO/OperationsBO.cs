@@ -663,10 +663,11 @@ namespace Analytics.Helpers.BO
                     //dt.Columns.Add("FK_Batchid");
 
                     int uid_ID = GetNEXTAutoIncrementedID();
-                    int uid_ID_start = uid_ID + 1;
+                    //int uid_ID_start = uid_ID + 1;
+                    int uid_ID_start = uid_ID;
                     int MobilenumberCount = MobileNumbers.Count();
                     int uid_ID_end = uid_ID + MobilenumberCount;
-                    List<string> objh = dc.hashidlists.Where(h => h.PK_Hash_ID >= uid_ID_start && h.PK_Hash_ID <= uid_ID_end).Select(x => x.HashID).ToList();
+                    List<string> objh = dc.hashidlists.Where(h => h.PK_Hash_ID >= uid_ID_start && h.PK_Hash_ID < uid_ID_end).Select(x => x.HashID).ToList();
                     //List<int> pkuids = Enumerable.Range(uid_ID_start, MobilenumberCount).ToList();
                     if (MobileNumbers.Count() == objh.Count())
                     {
@@ -707,12 +708,12 @@ namespace Analytics.Helpers.BO
                         //int uid_ID1 = GetNEXTAutoIncrementedID();
                         //swExtLogFile.Write(Environment.NewLine);
                         StringBuilder MyStringBuilder = new StringBuilder();
-                       // MyStringBuilder.Append("PK_Uid,");
+                        MyStringBuilder.Append("PK_Uid,");
                         MyStringBuilder.Append("FK_RID,");
                         MyStringBuilder.Append("FK_ClientID,");
                         MyStringBuilder.Append("ReferenceNumber,");
-                        if(type.ToLower()!="message")
-                        MyStringBuilder.Append("LongurlorMessage,");
+                        if (type.ToLower() != "message")
+                            MyStringBuilder.Append("LongurlorMessage,");
                         MyStringBuilder.Append("MobileNumber,");
                         MyStringBuilder.Append("Type,");
                         MyStringBuilder.Append("CreatedDate,");
@@ -724,7 +725,7 @@ namespace Analytics.Helpers.BO
                         //{
                             for (int j2 = 0; j2 < MobileNumbers.Count; j2++)
                             {
-                                //MyStringBuilder.Append(uid_ID + ",");//pk_uid
+                                MyStringBuilder.Append(uid_ID + ",");//pk_uid
                                 MyStringBuilder.Append(objrid.PK_Rid.ToString() + ",");//fk_rid
                                 MyStringBuilder.Append(objrid.FK_ClientId.ToString() + ",");//fk_clientid
                                 MyStringBuilder.Append(ReferenceNumber + ",");//referencenumber
@@ -738,7 +739,7 @@ namespace Analytics.Helpers.BO
                                 MyStringBuilder.Append(Convert.ToString(batchid));//batchid
                             //}
                             swExtLogFile.WriteLine(MyStringBuilder);
-                           // uid_ID = uid_ID + 1;
+                            uid_ID = uid_ID + 1;
                             //swExtLogFile.Write(Environment.NewLine);
                             MyStringBuilder.Clear();
                         }
@@ -767,7 +768,7 @@ namespace Analytics.Helpers.BO
                         bl.LineTerminator = swExtLogFile.NewLine;
                         bl.FileName = path_tmp;
                         bl.NumberOfLinesToSkip = 1;
-                        //bl.Columns.Add("PK_Uid");
+                        bl.Columns.Add("PK_Uid");
                         bl.Columns.Add("FK_RID");
                         bl.Columns.Add("FK_ClientID");
                         bl.Columns.Add("ReferenceNumber");
