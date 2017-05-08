@@ -526,7 +526,12 @@ namespace Analytics.Helpers.BO
         {
             //string strQuery = "select IDENT_CURRENT('uiddata')";
            //string strQuery="SELECT AUTO_INCREMENT FROM uiddata";
-            string strQuery = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'shortenurl' AND TABLE_NAME   = 'uiddata';";
+            var conn1 = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+            MySqlConnection connection = new MySqlConnection(conn1);
+            var csb = new MySqlConnectionStringBuilder(conn1);
+            string dbname = csb.Database;
+            string strQuery = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" +dbname+ "'  AND TABLE_NAME   = 'uiddata';";
+            //string strQuery = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'shortenurl' AND TABLE_NAME   = 'uiddata';";
             int id = 0;
             using (MySqlConnection conn = new MySqlConnection(Helper.ConnectionString))
             {
