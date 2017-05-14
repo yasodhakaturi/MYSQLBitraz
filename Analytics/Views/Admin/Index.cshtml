@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Page title set in pageTitle directive -->
-    <title page-title>biTRAZ :: trace your link</title> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> 
+    <title page-title>mobilytics.ae :: trace your link</title> <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
     <link rel="stylesheet" href="../dist/admin/styles/vendor.css" type="text/css">
     <link rel="stylesheet" href="../dist/admin/styles/style.css" type="text/css">
@@ -17,7 +17,7 @@
                 env: "@Model.env",
                 apiUrl: '@Model.appUrl',
                 appUrl:{admin: "@Model.apiUrl.admin",analytics:"@Model.apiUrl.analytics",landing:"@Model.apiUrl.landing"},
-                userInfo: { user_id: @Model.userInfo.user_id, UserName: "@Model.userInfo.user_name", isAdmin: @Model.isAdmin, isclient: @Model.isclient, isReadOnly: true }
+                userInfo: { user_id: @Model.userInfo.user_id, UserName: "@Model.userInfo.user_name", isAdmin: @Model.isAdmin, isClient: @Model.isclient, isReadOnly: true }
             }
         })();</script>
     </head>
