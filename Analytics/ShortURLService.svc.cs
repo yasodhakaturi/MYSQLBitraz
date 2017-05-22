@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -407,7 +408,8 @@ namespace Analytics
                             System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
                             ctx.OutgoingResponse.Headers.Add("token", token);
                             // return "http://g0.pe/" + Hashid;
-                            string ShortUrl = "https://g0.pe/" + Hashid;
+                            //string ShortUrl = "https://g0.pe/" + Hashid;
+                            string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
                             ShortUrl1 sobj = new ShortUrl1();
                             sobj.shortUrl = ShortUrl;
                             return JsonConvert.SerializeObject(sobj);
