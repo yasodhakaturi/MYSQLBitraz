@@ -22,7 +22,7 @@ namespace Analytics.Helpers.BO
         MySqlConnection lSQLConn = null;
         MySqlCommand lSQLCmd = new MySqlCommand();
         string connStr = "";
-        public void Insertuiddata(int fk_rid, int? FK_ClientID, string referencenumber, string longurl, string mobilenumber)
+        public void Insertuiddata(int fk_rid, int? FK_ClientID, string referencenumber, string Type, string longurlorMessage, string mobilenumber)
         {
             connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
             try
@@ -46,7 +46,8 @@ namespace Analytics.Helpers.BO
                 obju.FK_RID = fk_rid;
                 obju.FK_ClientID = FK_ClientID;
                 obju.ReferenceNumber = referencenumber;
-                obju.LongurlorMessage = longurl;
+                obju.Type = Type;
+                obju.LongurlorMessage = longurlorMessage;
                 obju.MobileNumber = mobilenumber;
                 obju.CreatedDate = utcdt;
                 obju.CreatedBy = FK_ClientID;

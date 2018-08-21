@@ -84,43 +84,43 @@ namespace Analytics.Controllers
                               .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
                         
                          
-                        // Move to locations result 
+                        // Move to Users result 
                             myReader.NextResult();
                             users users = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
-                            // Move to locations result 
+                            // Move to Visits result 
                             myReader.NextResult();
                             visits visits = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
-                            // Move to locations result 
+                            // Move to Campaign result 
                             myReader.NextResult();
                             campaigns campaigns = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<campaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
-                            // Move to locations result 
+                            // Move to Recent Campaigns result 
                             myReader.NextResult();
                             List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
 
-                            // Move to locations result 
+                            // Move to Today Campaigns result 
                             myReader.NextResult();
                             today today = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
-                            // Move to locations result 
+                            // Move to Last 7 days Campaigns result 
                             myReader.NextResult();
                             last7days last7days = ((IObjectContextAdapter)dc)
                            .ObjectContext
                            .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
 
-                            // Move to locations result 
+                            // Move to this month Campaigns result 
                             myReader.NextResult();
                             month month = ((IObjectContextAdapter)dc)
                            .ObjectContext

@@ -45,15 +45,22 @@ namespace Analytics
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
              BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "GetShortUrl?CampaignName={CampaignName}&longurl={longurl}&mobilenumber={mobilenumber}")]
-        string GetShortUrl(string CampaignName, string longurl, string mobilenumber);
+            UriTemplate = "GetShortUrl?CampaignId={CampaignId}&Type={Type}&longurlorMessage={longurlorMessage}&mobilenumber={mobilenumber}")]
+        string GetShortUrl(string CampaignId, string Type, string longurlorMessage, string mobilenumber);
 
+        //[OperationContract]
+        //[WebInvoke(Method = "GET",
+        //    ResponseFormat = WebMessageFormat.Json,
+        //    BodyStyle = WebMessageBodyStyle.Wrapped,
+        //    UriTemplate = "GetCampaignReferenceNumber?CampaignName={CampaignName}&Password={Password}")]
+        //string GetCampaignReferenceNumber(string CampaignName, string Password);
+       
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "GetCampaign?CampaignName={CampaignName}&Password={Password}")]
-        string GetCampaign(string CampaignName, string Password);
+            UriTemplate = "GetCampaignAnalyticsData?CampaignId={CampaignId}")]
+        string GetCampaignAnalyticsData(string CampaignId);
 
         //[OperationContract]
         //[WebInvoke(Method = "GET",

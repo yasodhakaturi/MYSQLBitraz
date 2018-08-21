@@ -132,61 +132,59 @@ namespace Analytics
 
 
 
-        public string GetShortUrl(string referencenumber, string longurl, string mobilenumber)
+        public string GetShortUrl(string CampaignName, string Type, string longurlorMessage, string mobilenumber)
         {
             try
             {
+                Analytics.ShortURLService.InMemoryInstances instance = Analytics.ShortURLService.InMemoryInstances.Instance;
                 IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
-                string api_key = woc.Headers["Api_key"];
+                string token = woc.Headers["token"];
 
-                client cl_obj = (from c in dc.clients
-                                 where c.APIKey == api_key
-                                 select c).SingleOrDefault();
                 string Hashid = ""; int pk_uid = 0;
-                if (cl_obj != null && api_key != "" && api_key != null)
+                if (token != "" && token != null)
                 {
-                    if (referencenumber.Trim() != "" && longurl.Trim() != "" && mobilenumber.Trim() != "")
+                    string pkclientid = instance.GetClientIdFromToken(token);
+                    int pk_clientid = Convert.ToInt32(pkclientid);
+                    client cl_obj = (from c in dc.clients
+                                     where c.PK_ClientID == pk_clientid
+                                     select c).SingleOrDefault();
+                    if (CampaignName.Trim() != "" && longurlorMessage.Trim() != "" && Type.Trim() != "" && mobilenumber.Trim() != "")
                     {
                         //check reference number in RID table
                         riddata objrid = (from registree in dc.riddatas
-                                          where registree.ReferenceNumber.Trim() == referencenumber.Trim()
+                                          where registree.CampaignName.Trim() == CampaignName.Trim() && registree.FK_ClientId == pk_clientid
                                           select registree).SingleOrDefault();
-                        Uniqueid_RID = objrid.PK_Rid;
-                        //if (Uniqueid_RID == 0)
-                        //{
-                        //    new DataInsertionBO().Insertriddata(referencenumber, "");
-                        //    Uniqueid_RID = (from registree in dc.riddatas
-                        //                    where registree.ReferenceNumber.Trim() == referencenumber.Trim()
-                        //                    select registree.PK_Rid).SingleOrDefault();
-                        //}
+
                         if (objrid != null)
                         {
                             //check data in UID table
                             Hashid = (from registree in dc.uiddatas
-                                      where registree.ReferenceNumber.Trim() == referencenumber.Trim() &&
-                                      registree.LongurlorMessage.Trim() == longurl.Trim() &&
+                                      where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber &&
+                                      registree.LongurlorMessage.Trim() == longurlorMessage.Trim() &&
                                       registree.MobileNumber.Trim() == mobilenumber.Trim()
                                       select registree.UniqueNumber).SingleOrDefault();
                             //if data found in uiddata insert data into uiddata 
                             if (Hashid == null)
                             {
                                 //Uniqueid = Helper.GetRandomAlphanumericString(5);
-                                new DataInsertionBO().Insertuiddata(Uniqueid_RID, objrid.FK_ClientId, referencenumber, longurl, mobilenumber);
+                                new DataInsertionBO().Insertuiddata(objrid.PK_Rid, objrid.FK_ClientId, objrid.ReferenceNumber, Type, longurlorMessage, mobilenumber);
 
                                 pk_uid = (from registree in dc.uiddatas
-                                          where registree.ReferenceNumber.Trim() == referencenumber.Trim() &&
-                                          registree.LongurlorMessage.Trim() == longurl.Trim() &&
+                                          where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber.Trim() &&
+                                          registree.LongurlorMessage.Trim() == longurlorMessage.Trim() &&
                                           registree.MobileNumber.Trim() == mobilenumber.Trim()
                                           select registree.PK_Uid).SingleOrDefault();
-                                Hashid = Helper.GetHashID(pk_uid);
+                                //Hashid = Helper.GetHashID(pk_uid);
+                                Hashid = dc.hashidlists.Where(x => x.PK_Hash_ID == pk_uid).Select(y => y.HashID).SingleOrDefault();
                                 new OperationsBO().UpdateHashid(pk_uid, Hashid);
                             }
 
-                            
+
                             System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
-                            ctx.OutgoingResponse.Headers.Add("Api_key", api_key);
+                            ctx.OutgoingResponse.Headers.Add("token", token);
                             // return "http://g0.pe/" + Hashid;
-                            string ShortUrl = "https://g0.pe/" + Hashid;
+                            //string ShortUrl = "https://g0.pe/" + Hashid;
+                            string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
                             ShortUrl1 sobj = new ShortUrl1();
                             sobj.shortUrl = ShortUrl;
                             return JsonConvert.SerializeObject(sobj);
@@ -195,7 +193,7 @@ namespace Analytics
                         else
                         {
                             error errobj = new error();
-                            errobj.message = "Referencenumber not valid";
+                            errobj.message = "CamapignName not registered.";
                             return JsonConvert.SerializeObject(errobj);
                             //return "Referencenumber not valid";
                         }
@@ -212,7 +210,7 @@ namespace Analytics
                 else
                 {
                     error errobj = new error();
-                    errobj.message = "Please Pass valid APiKey";
+                    errobj.message = "Please Pass valid token";
                     return JsonConvert.SerializeObject(errobj);
                     //return "Please Pass valid APiKey";
                 }

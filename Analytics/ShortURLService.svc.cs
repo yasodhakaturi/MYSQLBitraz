@@ -1,5 +1,6 @@
 ﻿using Analytics.Helpers.BO;
 using Analytics.Helpers.Utility;
+using Analytics.Models;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
@@ -36,6 +37,9 @@ namespace Analytics
         public class ShortUrl1
         {
             public string shortUrl { get; set; }
+            public string CampaignId { get; set; }
+            public string ShortUrlId { get; set; }
+            public string ClientId { get; set; }
         }
         public string GetApiKey(string UserName, string Email, string Password)
         {
@@ -254,10 +258,11 @@ namespace Analytics
 
                             System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
                             ctx.OutgoingResponse.Headers.Add("token", token);
+                            int CampaignNumber = dc.riddatas.Where(x => x.ReferenceNumber == ReferenceNumber).Select(y => y.PK_Rid).SingleOrDefault();
                             // return "ReferenceNumber :" + ReferenceNumber;
 
                             //refnum.ReferenceNumber = ReferenceNumber;
-                            return JsonConvert.SerializeObject("Campaign Registered Successfully.");
+                            return JsonConvert.SerializeObject("Campaign Registered Successfully.CampaignId is " + CampaignNumber);
                         }
                         else
                         {
@@ -294,77 +299,77 @@ namespace Analytics
                 return JsonConvert.SerializeObject(errobj);
             }
         }
-        public string GetCampaign(string CampaignName, string Password)
+        //public string GetCampaignReferenceNumber(string CampaignName, string Password)
+        //{
+        //    try
+        //    {
+        //        InMemoryInstances instance = InMemoryInstances.Instance;
+        //        int clientid = 0; int Uni_RID = 0; string ReferenceNumber = "";
+        //        ReferenceNumber1 refnum = new ReferenceNumber1(); error err_obj = new error();
+        //        IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
+        //        string token = woc.Headers["token"];
+        //        string pkclientid = instance.GetClientIdFromToken(token);
+        //        int pk_clientid = Convert.ToInt32(pkclientid);
+        //        if (token != "" && token != null)
+        //        {
+        //            client cl_obj = (from c in dc.clients
+        //                             where c.PK_ClientID == pk_clientid
+        //                             select c).SingleOrDefault();
+        //            // string ReferenceNumber = string.Format("{0}_{1:N}", cl_obj.Email, Guid.NewGuid());
+
+        //            if (cl_obj != null)
+        //            {
+        //                riddata Campaignexistance = new OperationsBO().CheckCampaignNameExistance(cl_obj, CampaignName);
+        //                if (Password != null && Password != "" && Campaignexistance != null)
+        //                {
+        //                    if (Campaignexistance.Pwd != Password)
+        //                        Campaignexistance = null;
+        //                }
+        //                if (Campaignexistance != null)
+        //                {
+        //                    System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
+        //                    ctx.OutgoingResponse.Headers.Add("token", token);
+        //                    refnum.CampaignNumber = Campaignexistance.ReferenceNumber;
+        //                    return JsonConvert.SerializeObject(refnum);
+        //                }
+        //                else
+        //                {
+        //                    err_obj.message = "Invalid Campaign";
+        //                    return JsonConvert.SerializeObject(err_obj);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                err_obj.message = "Please Pass valid token";
+        //                return JsonConvert.SerializeObject(err_obj);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            err_obj.message = "Please Pass valid token";
+        //            return JsonConvert.SerializeObject(err_obj);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+        //        error errobj = new error();
+        //        //RID_UIDRIID = "NULL";
+        //        errobj.message = "Exception" + ex.Message;
+        //        return JsonConvert.SerializeObject(errobj);
+        //    }
+        //}
+
+
+
+        public string GetShortUrl(string CampaignId, string Type,string longurlorMessage, string mobilenumber)
         {
             try
             {
                 InMemoryInstances instance = InMemoryInstances.Instance;
-                int clientid = 0; int Uni_RID = 0; string ReferenceNumber = "";
-                ReferenceNumber1 refnum = new ReferenceNumber1(); error err_obj = new error();
                 IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
                 string token = woc.Headers["token"];
-                string pkclientid = instance.GetClientIdFromToken(token);
-                int pk_clientid = Convert.ToInt32(pkclientid);
-                if (token != "" && token != null)
-                {
-                    client cl_obj = (from c in dc.clients
-                                     where c.PK_ClientID == pk_clientid
-                                     select c).SingleOrDefault();
-                    // string ReferenceNumber = string.Format("{0}_{1:N}", cl_obj.Email, Guid.NewGuid());
-
-                    if (cl_obj != null)
-                    {
-                        riddata Campaignexistance = new OperationsBO().CheckCampaignNameExistance(cl_obj, CampaignName);
-                        if (Password != null && Password != "" && Campaignexistance != null)
-                        {
-                            if (Campaignexistance.Pwd != Password)
-                                Campaignexistance = null;
-                        }
-                        if (Campaignexistance != null)
-                        {
-                            System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
-                            ctx.OutgoingResponse.Headers.Add("token", token);
-                            refnum.CampaignNumber = Campaignexistance.ReferenceNumber;
-                            return JsonConvert.SerializeObject(refnum);
-                        }
-                        else
-                        {
-                            err_obj.message = "Invalid Campaign";
-                            return JsonConvert.SerializeObject(err_obj);
-                        }
-                    }
-                    else
-                    {
-                        err_obj.message = "Please Pass valid token";
-                        return JsonConvert.SerializeObject(err_obj);
-                    }
-                }
-                else
-                {
-                    err_obj.message = "Please Pass valid token";
-                    return JsonConvert.SerializeObject(err_obj);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                error errobj = new error();
-                //RID_UIDRIID = "NULL";
-                errobj.message = "Exception" + ex.Message;
-                return JsonConvert.SerializeObject(errobj);
-            }
-        }
-
-
-
-        public string GetShortUrl(string CampaignName, string longurl, string mobilenumber)
-        {
-            try
-            {
-                InMemoryInstances instance = InMemoryInstances.Instance;
-                IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
-                string token = woc.Headers["token"];
-                
+                int rid;
                 string Hashid = ""; int pk_uid = 0;
                 if (token != "" && token != null)
                 {
@@ -373,11 +378,12 @@ namespace Analytics
                     client cl_obj = (from c in dc.clients
                                      where c.PK_ClientID == pk_clientid
                                      select c).SingleOrDefault();
-                    if (CampaignName.Trim() != "" && longurl.Trim() != "" && mobilenumber.Trim() != "")
+                    if (CampaignId.Trim() != "" && longurlorMessage.Trim() != "" && Type.Trim() != "" && mobilenumber.Trim() != "" && cl_obj != null)
                     {
+                        rid = Convert.ToInt32(CampaignId);
                         //check reference number in RID table
                         riddata objrid = (from registree in dc.riddatas
-                                          where registree.CampaignName.Trim() == CampaignName.Trim() && registree.FK_ClientId==pk_clientid
+                                          where registree.PK_Rid == rid && registree.FK_ClientId == pk_clientid
                                           select registree).SingleOrDefault();
                         
                         if (objrid != null)
@@ -385,18 +391,18 @@ namespace Analytics
                             //check data in UID table
                             Hashid = (from registree in dc.uiddatas
                                       where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber &&
-                                      registree.LongurlorMessage.Trim() == longurl.Trim() &&
+                                      registree.LongurlorMessage.Trim() == longurlorMessage.Trim() &&
                                       registree.MobileNumber.Trim() == mobilenumber.Trim()
                                       select registree.UniqueNumber).SingleOrDefault();
                             //if data found in uiddata insert data into uiddata 
                             if (Hashid == null)
                             {
                                 //Uniqueid = Helper.GetRandomAlphanumericString(5);
-                                new DataInsertionBO().Insertuiddata(objrid.PK_Rid, objrid.FK_ClientId, objrid.ReferenceNumber, longurl, mobilenumber);
+                                new DataInsertionBO().Insertuiddata(objrid.PK_Rid, objrid.FK_ClientId, objrid.ReferenceNumber,Type,longurlorMessage, mobilenumber);
 
                                 pk_uid = (from registree in dc.uiddatas
                                           where registree.ReferenceNumber.Trim() == objrid.ReferenceNumber.Trim() &&
-                                          registree.LongurlorMessage.Trim() == longurl.Trim() &&
+                                          registree.LongurlorMessage.Trim() == longurlorMessage.Trim() &&
                                           registree.MobileNumber.Trim() == mobilenumber.Trim()
                                           select registree.PK_Uid).SingleOrDefault();
                                 //Hashid = Helper.GetHashID(pk_uid);
@@ -410,8 +416,12 @@ namespace Analytics
                             // return "http://g0.pe/" + Hashid;
                             //string ShortUrl = "https://g0.pe/" + Hashid;
                             string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
+                            uiddata uidrec=dc.uiddatas.Where(x=>x.FK_RID==rid).Select(y=>y).SingleOrDefault();
                             ShortUrl1 sobj = new ShortUrl1();
                             sobj.shortUrl = ShortUrl;
+                            sobj.ShortUrlId = uidrec.PK_Uid.ToString();
+                            sobj.CampaignId = CampaignId;
+                            sobj.ClientId = uidrec.FK_ClientID.ToString();
                             return JsonConvert.SerializeObject(sobj);
 
                         }
@@ -498,6 +508,111 @@ namespace Analytics
                         return JsonConvert.SerializeObject(err_obj);
                     }
                 
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                error errobj = new error();
+                //RID_UIDRIID = "NULL";
+                errobj.message = "Exception" + ex.Message;
+                return JsonConvert.SerializeObject(errobj);
+            }
+        }
+
+        public string GetCampaignAnalyticsData(string CampaignId)
+        {
+            try
+            {
+                InMemoryInstances instance = InMemoryInstances.Instance;
+               
+                error err_obj = new error();
+                IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
+                string token = woc.Headers["token"];
+                error errobj = new error();
+                if (token != "" && token != null)
+                {
+                    string pkclientid = instance.GetClientIdFromToken(token);
+                    int pk_clientid = Convert.ToInt32(pkclientid);
+                    client cl_obj = (from c in dc.clients
+                                     where c.PK_ClientID == pk_clientid
+                                     select c).SingleOrDefault();
+                    if (CampaignId != null)
+                    {
+                        int? cid = Convert.ToInt32(CampaignId);
+                        riddata objr = dc.riddatas.Where(r => r.PK_Rid ==cid).SingleOrDefault();
+                        if (objr != null && cl_obj != null)
+                        {
+                            List<ExportAnalyticsData> objexport = (from s in dc.shorturldatas
+                                                                   join u in dc.uiddatas on s.FK_Uid equals u.PK_Uid
+                                                                   join r in dc.riddatas on u.FK_RID equals r.PK_Rid
+                                                                   join c in dc.clients on r.FK_ClientId equals c.PK_ClientID
+                                                                   where s.FK_RID == objr.PK_Rid && s.FK_ClientID == objr.FK_ClientId
+                                                                   select new ExportAnalyticsData()
+                                                                   {
+                                                                       CampaignId=s.FK_RID.ToString(),
+                                                                       ClientId=s.FK_ClientID.ToString(),
+                                                                       HitId=s.PK_Shorturl.ToString(),
+                                                                       ShorturlId=s.FK_Uid.ToString(),
+                                                                       CampaignName = r.CampaignName,
+                                                                       Mobilenumber = u.MobileNumber,
+                                                                       ShortURL = s.Req_url,
+                                                                       LongUrl = u.LongurlorMessage,
+                                                                       GoogleMapUrl = "https://www.google.com/maps?q=loc:" + s.Latitude + "," + s.Longitude,
+                                                                       IPAddress = s.Ipv4,
+                                                                       Browser = s.Browser,
+                                                                       BrowserVersion = s.Browser_version,
+                                                                       City = s.City,
+                                                                       Region = s.Region,
+                                                                       Country = s.Country,
+                                                                       CountryCode = s.CountryCode,
+                                                                       PostalCode = s.PostalCode,
+                                                                       Lattitude = s.Latitude,
+                                                                       Longitude = s.Longitude,
+                                                                       MetroCode = s.MetroCode,
+                                                                       DeviceName = s.DeviceName,
+                                                                       DeviceBrand = s.DeviceBrand,
+                                                                       OS_Name = s.OS_Name,
+                                                                       OS_Version = s.OS_Version,
+                                                                       IsMobileDevice = s.IsMobileDevice,
+                                                                       CreatedDate = s.CreatedDate.ToString(),
+                                                                       clientName = c.UserName
+
+
+                                                                   }
+                                                                     ).ToList();
+                            if (objexport.Count>0)
+                            {
+                                System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
+                                ctx.OutgoingResponse.Headers.Add("token", token);
+                                //refnum.CampaignNumber = Campaignexistance.ReferenceNumber;
+                                return JsonConvert.SerializeObject(objexport);
+                            }
+                            else
+                            {
+                                err_obj.message = "No Analytics Data for this Campaign";
+                                return JsonConvert.SerializeObject(err_obj);
+                            }
+                        }
+                        else
+                        {
+                            err_obj.message = "Campaign doesnot exist.";
+                            return JsonConvert.SerializeObject(err_obj);
+                        }
+                    }
+                    else
+                    {
+                        err_obj.message = "Please Pass valid Reference Number";
+                        return JsonConvert.SerializeObject(err_obj);
+                    }
+                }
+
+               else
+                    {
+                        err_obj.message = "Please Pass valid token";
+                        return JsonConvert.SerializeObject(err_obj);
+                    }
+                
+
             }
             catch (Exception ex)
             {

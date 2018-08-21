@@ -33,8 +33,8 @@ namespace Analytics
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
              BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "GetShortUrl?referencenumber={referencenumber}&longurl={longurl}&mobilenumber={mobilenumber}")]
-        string GetShortUrl(string referencenumber, string longurl, string mobilenumber);
+            UriTemplate = "GetShortUrl?CampaignName={CampaignName}&Type={Type}&longurlorMessage={longurlorMessage}&mobilenumber={mobilenumber}")]
+        string GetShortUrl(string CampaignName, string Type, string longurlorMessage, string mobilenumber);
 
 
         //[OperationContract]

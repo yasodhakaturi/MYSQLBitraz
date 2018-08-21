@@ -1261,7 +1261,7 @@ namespace Analytics.Controllers
                 {
                     foreach (string m in MobileNumbersFiltered_List)
                     {
-                        new DataInsertionBO().Insertuiddata(rid, clientid, ReferenceNumber, LongURL, m);
+                        new DataInsertionBO().Insertuiddata(rid, clientid, ReferenceNumber,"", LongURL, m);
                     }
 
                     pkuids = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersFiltered_List.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.PK_Uid).ToList();

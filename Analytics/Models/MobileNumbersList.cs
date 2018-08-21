@@ -50,6 +50,10 @@ namespace Analytics.Models
     }
     public class ExportAnalyticsData
     {
+        public string CampaignId { get; set; }
+        public string ClientId { get; set; }
+        public string HitId { get; set; }
+        public string ShorturlId { get; set; }
         public string CampaignName { get; set; }
         public string Mobilenumber { get; set; }
         public string ShortURL { get; set; }
@@ -73,5 +77,6 @@ namespace Analytics.Models
         public string IsMobileDevice { get; set; }
         public string CreatedDate { get; set; }
         public string clientName { get; set; }
+
     }
 }
