@@ -12,7 +12,7 @@ angular.module("views/analytics/archieves.html", []).run(["$templateCache", func
 
 angular.module("views/analytics/campaigns.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("views/analytics/campaigns.html",
-    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\" ng-show=\"!$rootScope.pageLoading\"> <div class=\"row\"> <div class=\"col-lg-12\"> <h2> Campaigns </h2> </div> </div> <div class=\"row\"> <div class=\"col-lg-8 col-md-10 col-sm-12\"> <ul class=\"list-inline text-right\"> <li><div class=\"btn btn-primary\" ng-click=\"addCampaign()\">Add Campaign</div> </li> </ul> </div> </div> <div class=\"row\"> <div class=\"col-lg-8 col-md-10 col-sm-12\"> <div id=\"campaignList\" ui-grid=\"campaignListOptions\" class=\"grid\"></div> </div> </div> </div> </div>");
+    "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\" ng-show=\"!$rootScope.pageLoading\"> <div class=\"row\"> <div class=\"col-lg-12\"> <h2> Campaigns </h2> </div> </div> <div class=\"row\"> <div class=\"col-lg-10 col-md-10 col-sm-12\"> <ul class=\"list-inline text-right\"> <li><div class=\"btn btn-primary\" ng-click=\"addCampaign()\">Add Campaign</div> </li> </ul> </div> </div> <div class=\"row\"> <div class=\"col-lg-10 col-md-10 col-sm-12\"> <div id=\"campaignList\" ui-grid=\"campaignListOptions\" class=\"grid\"></div> </div> </div> </div> </div>");
 }]);
 
 angular.module("views/analytics/campaigns/add_campaign.html", []).run(["$templateCache", function ($templateCache) {
