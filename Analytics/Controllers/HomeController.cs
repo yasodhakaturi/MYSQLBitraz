@@ -244,9 +244,59 @@ namespace Analytics.Controllers
 
         public string testpost(string ClientId, string HitId)
         {
+            HttpWebRequest webRequest; HttpWebResponse WebResp=null; Stream response; StreamReader data;
+            //webRequest = (HttpWebRequest)WebRequest.Create("");
+            //webRequest.Method = "POST";
+            ////webRequest.Timeout = 12000;
+            //webRequest.ContentType = "application/json";
+            ////webRequest.Headers.Add("Api_key", api_key);
+            ////webRequest.Headers.Add("token", token);
+            //WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //api_key = WebResp.Headers["Api_key"];
+            //token = WebResp.Headers["token"];
+            //JsonTextReader
+            //response = WebResp.GetResponseStream();
+            //data = new StreamReader(response);
+            //string strres = data.ReadToEnd();
+            //var json = JObject.Parse(strres);
+            ////var json;
+            //string ReferenceNumberResult = (string)json["CampaignId"];
+            //AnalyticsData obj = JsonConvert.DeserializeObject<AnalyticsData>(dataString);
+           //string c=JObject["CampaignId"];
 
+            HitId = "0";
             return HitId;
         }
+        public class AnalyticsData
+        {
+            public int? CampaignId { get; set; }
+            public int? ClientId { get; set; }
+            public int? HitId { get; set; }
+            public int? ShorturlId { get; set; }
+            public string CampaignName { get; set; }
+            public string Mobilenumber { get; set; }
+            public string ShortURL { get; set; }
+            public string LongUrl { get; set; }
+            public string GoogleMapUrl { get; set; }
+            public string IPAddress { get; set; }
+            public string Browser { get; set; }
+            public string BrowserVersion { get; set; }
+            public string City { get; set; }
+            public string Region { get; set; }
+            public string Country { get; set; }
+            public string CountryCode { get; set; }
+            public string PostalCode { get; set; }
+            public string Lattitude { get; set; }
+            public string Longitude { get; set; }
+            public string MetroCode { get; set; }
+            public string DeviceName { get; set; }
+            public string DeviceBrand { get; set; }
+            public string OS_Name { get; set; }
+            public string OS_Version { get; set; }
+            public string IsMobileDevice { get; set; }
+            public DateTime? CreatedDate { get; set; }
+            public string clientName { get; set; }
 
+        }
     }
 }
