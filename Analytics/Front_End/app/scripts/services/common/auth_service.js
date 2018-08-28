@@ -1,4 +1,4 @@
-angular.module('bitraz.auth', ["ngResource"])
+angular.module('app.auth', ["ngResource"])
   .service('AuthService', ["$resource", 'appConfig', function ($resource, appConfig) {
     return $resource(appConfig.apiEndPoint + '/Auth/Login/', {}, {
       login: {

@@ -5,11 +5,11 @@
             window.appConfig = {
                 env:'local',
                 appUrl: {admin: '', analytics:'', landing: ''},
-                apiUrl: 'http://192.168.1.64:8080',
+                apiUrl: 'http://192.168.1.64:3000',
                 userInfo: {user_id: 1, UserName: '', isAdmin: false, isClient: false, isReadOnly: true}
             }
         })();</script>  <!-- Body --> <!-- appCtrl controller with serveral data used in theme on diferent view --> <body ng-controller="appCtrl" class="{{$state.current.data.specialClass}} fixed-navbar hide-sidebar"> <!-- Simple splash screen--> <div class="splash splash-screen"> <!--<div class="color-line"></div>--> <div class="splash-title"> <h1>Mobilytics.ae</h1> <p></p> <img src="images/loading-bars.svg" width="64" height="64"></div> </div> <!--[if lt IE 7]>
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a
         href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]--> <!-- Page view wrapper --> <div class="uiview" ui-view></div>  <script src="scripts/vendor.js"></script> <script>MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_
-    = 'https://bitraz.com/dist/index/images/clusters/m';  //changed image path</script> <script src="scripts/scripts.js"></script> <script src="scripts/templates.js"></script> 
+    = 'https://mobilytics.ae/dist/index/images/clusters/m';  //changed image path</script> <script src="scripts/scripts.js"></script> <script src="scripts/templates.js"></script> 

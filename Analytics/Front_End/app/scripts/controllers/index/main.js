@@ -5,7 +5,7 @@
  */
 
 angular
-    .module('bitraz.controllers', ['bitraz.auth', 'bitraz.common.controllers', 'bitraz.campaigns'])
+    .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.campaigns'])
     .controller('appCtrl', appCtrl)
     .controller('AppController', AppController)
     .controller('HeaderController', HeaderController)
@@ -97,7 +97,7 @@ function AnalyticsController($rootScope, $scope, RidService, $state, $location) 
   };
 
   if(!($rootScope.userInfo && $rootScope.userInfo.user_id)){
-    $state.go('bitraz.main.login', {redirect_url: $location.$$absUrl});
+    $state.go('app.main.login', {redirect_url: $location.$$absUrl});
   }else{
     $scope.init()
   }

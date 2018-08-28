@@ -15,27 +15,27 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
     // Set default state
     $urlRouterProvider.otherwise("/login");
     $stateProvider
-        .state('bitraz', {
+        .state('app', {
           abstract: true,
           // add new module targets below. (each sticky child needs a dedicated target)
           template: '<div ui-view="header" class="header-container"></div><div ui-view="body"></div>',
           controller: "AppController"
         })
-        .state('bitraz.main', {
+        .state('app.main', {
           //Astract state is activated implicitly when one of its descendants are activated.
           abstract: true,
           //sticky state continue running even after it is "exited". controller of a Sticky State are retained.
           sticky: true,
           deepStateRedirect: true,
           views: {
-            "header@bitraz": {
+            "header@app": {
               templateUrl: "views/index/index_header.html",
               controller: "HeaderController"
             }
           }
         })
         // Dashboard - Main page
-//        .state('bitraz.main.index', {
+//        .state('app.main.index', {
 //            url: "/index",
 //
 //            data: {
@@ -44,13 +44,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
 //                activeMenu:'home'
 //            },
 //            views: {
-//              "body@bitraz": {
+//              "body@app": {
 //                templateUrl: "views/index/index.html",
 //                controller: "HomeController"
 //              }
 //            }
 //        })
-//        .state('bitraz.main.features', {
+//        .state('app.main.features', {
 //            url: "/features",
 //            data: {
 //                pageTitle: 'Features',
@@ -58,13 +58,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
 //                activeMenu:'features'
 //            },
 //            views: {
-//              "body@bitraz": {
+//              "body@app": {
 //                templateUrl: "views/index/features.html",
 //                controller: "FeatureController"
 //              }
 //            }
 //        })
-//        .state('bitraz.main.clients', {
+//        .state('app.main.clients', {
 //          url: "/clients",
 //          data: {
 //            pageTitle: 'Clients',
@@ -72,13 +72,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
 //            activeMenu:'clients'
 //          },
 //          views: {
-//            "body@bitraz": {
+//            "body@app": {
 //              templateUrl: "views/index/clients.html",
 //              controller: "ClientController"
 //            }
 //          }
 //        })
-//        .state('bitraz.main.contact', {
+//        .state('app.main.contact', {
 //          url: "/contact",
 //          data: {
 //            pageTitle: 'Contact',
@@ -86,13 +86,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
 //            activeMenu:'contact'
 //          },
 //          views: {
-//            "body@bitraz": {
+//            "body@app": {
 //              templateUrl: "views/index/contact.html",
 //              controller: "ContactController"
 //            }
 //          }
 //        })
-        .state('bitraz.main.login', {
+        .state('app.main.login', {
           url: "/login?redirect_url",
           data: {
             pageTitle: 'Login',
@@ -100,13 +100,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
             activeMenu:'login'
           },
           views: {
-            "body@bitraz": {
+            "body@app": {
               templateUrl: "views/common/login.html",
               controller: "LoginController"
             }
           }
         })
-        .state('bitraz.main.analytics', {
+        .state('app.main.analytics', {
           url: "/analytics?rid",
           data: {
             pageTitle: 'Analytics',
@@ -116,7 +116,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
           },
 
           views: {
-            "body@bitraz": {
+            "body@app": {
               templateUrl: "views/index/analytics.html",
               controller: "AnalyticsController"
             }
@@ -138,8 +138,8 @@ angular.module('routes', [
   'ui.bootstrap.tpls',
   'daterangepicker',
   'highcharts-ng',
-  'bitraz.rid',
-  'bitraz.auth',
+  'app.rid',
+  'app.auth',
   "bitraz.template"
 ])
     .config(configState)

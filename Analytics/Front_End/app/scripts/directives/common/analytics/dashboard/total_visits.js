@@ -1,4 +1,4 @@
-angular.module("bitraz.dashboard")
+angular.module("app.dashboard")
   .component("totalVisits", {
     templateUrl: "views/common/dashboard/total_visits_tmpl.html",
     bindings: {

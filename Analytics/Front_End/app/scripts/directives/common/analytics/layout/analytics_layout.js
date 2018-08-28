@@ -1,4 +1,4 @@
-angular.module("bitraz")
+angular.module("app")
   .component("analyticsLayout", {
     templateUrl: "views/common/directives/analytics_layout.html",
     bindings: {

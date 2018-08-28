@@ -5,7 +5,7 @@
  */
 
 angular
-  .module('bitraz.controllers', ['bitraz.auth', 'bitraz.common.controllers', 'bitraz.campaigns'])
+  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.campaigns'])
     .controller('appCtrl', appCtrl)
     .controller('AppController', AppController)
     .controller('HeaderController', HeaderController)
@@ -68,13 +68,13 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, CampaignsColl
                                                               '</div>'},
           { name:'Genarate URl\'s', cellTemplate:'<div>' +
           '&nbsp;&nbsp;&nbsp;' +
-          '<a ui-sref="bitraz.main.analytics({rid:row.entity.ReferenceNumber})">View</a>' +
+          '<a ui-sref="app.main.analytics({rid:row.entity.ReferenceNumber})">View</a>' +
           '</div>'
           },
           { name:'Actions', cellTemplate:'<div>' +
                       '<a ng-click="grid.appScope.editCampaign(row.entity)">Edit</a>' +
                       '&nbsp;&nbsp;&nbsp;' +
-                      '<a ui-sref="bitraz.main.analytics({rid:row.entity.ReferenceNumber})">View</a>' +
+                      '<a ui-sref="app.main.analytics({rid:row.entity.ReferenceNumber})">View</a>' +
                       '</div>'
           }
         ],

@@ -1,2 +1,2 @@
-angular.module('bitraz.directives', [
-  "bitraz.directives.common"])
+angular.module('app.directives', [
+  "app.directives.common"])

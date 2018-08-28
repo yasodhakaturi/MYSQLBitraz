@@ -1,10 +1,10 @@
 (function () {
-    angular.module('bitraz', [
+    angular.module('app', [
         "routes",
-        "bitraz.controllers",
-        "bitraz.services",
-        "bitraz.directives",
-        "bitraz.models"
+        "app.controllers",
+        "app.services",
+        "app.directives",
+        "app.models"
 
     ]).constant('appConfig', {
         apps: (()=> {

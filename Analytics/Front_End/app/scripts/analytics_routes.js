@@ -15,27 +15,27 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
   // Set default state
   $urlRouterProvider.otherwise("/index");
   $stateProvider
-    .state('bitraz', {
+    .state('app', {
       abstract: true,
       // add new module targets below. (each sticky child needs a dedicated target)
       template: '<div ui-view="header" class="header-container"></div><div ui-view="body"></div>',
       controller: "AppController"
     })
-    .state('bitraz.main', {
+    .state('app.main', {
       //Astract state is activated implicitly when one of its descendants are activated.
       abstract: true,
       //sticky state continue running even after it is "exited". controller of a Sticky State are retained.
       sticky: true,
       deepStateRedirect: true,
       views: {
-        "header@bitraz": {
+        "header@app": {
           templateUrl: "views/analytics/header.html",
           controller: "HeaderController"
         }
       }
     })
     // Dashboard - Main page
-    .state('bitraz.main.index', {
+    .state('app.main.index', {
       url: "/index",
 
       data: {
@@ -44,13 +44,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/analytics/index.html",
           controller: "HomeController"
         }
       }
     })
-    .state('bitraz.main.analytics', {
+    .state('app.main.analytics', {
       url: "/analytics?rid",
       data: {
         pageTitle: 'Analytics',
@@ -58,13 +58,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/common/analytics.html",
           controller: "AnalyticsController"
         }
       }
     })
-    .state('bitraz.main.campaigns', {
+    .state('app.main.campaigns', {
       url: "/campaigns",
       data: {
         pageTitle: 'Campaigns',
@@ -72,13 +72,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/analytics/campaigns.html",
           controller: "CampaignsController"
         }
       }
     })
-    .state('bitraz.main.users', {
+    .state('app.main.users', {
       url: "/users",
       data: {
         pageTitle: 'Users',
@@ -86,13 +86,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/analytics/users.html",
           controller: "UsersController"
         }
       }
     })
-    .state('bitraz.main.archieves', {
+    .state('app.main.archieves', {
       url: "/archieves",
       data: {
         pageTitle: 'Archieves',
@@ -100,13 +100,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/analytics/archieves.html",
           controller: "ArchievesController"
         }
       }
     })
-    .state('bitraz.main.settings', {
+    .state('app.main.settings', {
       url: "/settings",
       data: {
         pageTitle: 'Settings',
@@ -114,13 +114,13 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         requiresLogin: true
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/analytics/settings.html",
           controller: "SettingsController"
         }
       }
     })
-    .state('bitraz.main.login', {
+    .state('app.main.login', {
       url: "/login?redirect_url",
       data: {
         pageTitle: 'Login',
@@ -128,7 +128,7 @@ function configState($stateProvider, $urlRouterProvider, $compileProvider, $urlM
         activeMenu:'login'
       },
       views: {
-        "body@bitraz": {
+        "body@app": {
           templateUrl: "views/common/login.html",
           controller: "LoginController"
         }
@@ -150,9 +150,9 @@ angular.module('routes', [
   'ui.bootstrap.tpls',
   'daterangepicker',
   'highcharts-ng',
-  'bitraz.rid',
-  "bitraz.template",
-  "bitraz.dashboard"
+  'app.rid',
+  "app.template",
+  "app.dashboard"
 ])
   .config(configState)
   .run(function($rootScope, $state, appConfig, $location) {
@@ -166,7 +166,7 @@ angular.module('routes', [
 
       if ( isAuthenticationRequired ) {
         event.preventDefault();
-        $state.go('bitraz.main.login', {redirect_url: $location.$$absUrl});
+        $state.go('app.main.login', {redirect_url: $location.$$absUrl});
       }
     });
   });
