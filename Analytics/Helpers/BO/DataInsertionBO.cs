@@ -65,7 +65,7 @@ namespace Analytics.Helpers.BO
             //    lSQLConn.Close();
             //}
         }
-        public void Insertriddata(string CampaignName, string referencenumber, string pwd,int clientid)
+        public void Insertriddata(string CampaignName, string referencenumber, string pwd, int clientid, string WebHookUrl)
         {
             //MySqlConnection lSQLConn = null;
             //MySqlCommand lSQLCmd = new MySqlCommand();
@@ -96,6 +96,18 @@ namespace Analytics.Helpers.BO
                 objr.CreatedDate = utcdt;
                 objr.CreatedBy = clientid;
                 dc.riddatas.Add(objr);
+                dc.SaveChanges();
+                
+                riddata objr1=new riddata();
+                objr1=dc.riddatas.Where(x=>x.CampaignName==CampaignName&&x.ReferenceNumber==referencenumber&&x.FK_ClientId==clientid).Select(y=>y).SingleOrDefault();
+                campaignhookurl objcamp = new campaignhookurl();
+                objcamp.CampaignName = CampaignName;
+                objcamp.HookURL = WebHookUrl;
+                objcamp.Status = "Active";
+                objcamp.FK_Rid = objr.PK_Rid;
+                objcamp.FK_ClientID = clientid;
+                objcamp.UpdatedDate = utcdt;
+                dc.campaignhookurls.Add(objcamp);
                 dc.SaveChanges();
             }
             catch (Exception ex)

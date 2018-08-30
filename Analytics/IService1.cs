@@ -26,8 +26,8 @@ namespace Analytics
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "RegisterOrGetCampaign?CampaignName={CampaignName}&Password={Password}")]
-        string RegisterOrGetCampaign(string CampaignName, string Password);
+            UriTemplate = "RegisterOrGetCampaign?CampaignName={CampaignName}&Password={Password}&WebHookUrl={WebHookUrl}")]
+        string RegisterOrGetCampaign(string CampaignName, string Password, string WebHookUrl);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
