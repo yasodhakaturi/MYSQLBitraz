@@ -36,12 +36,12 @@ namespace Analytics.Controllers
 
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testpassword&Api_Key=6ZuD3zVvSFGFWDWd0254dwW03ZoBiNF4DgzomnxPhZ8");
 
                 
-            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser&Api_Key=6gLqU53pOxhcXghYEBxjnKtT/wqKnXugfWz24f7yQ");
+            //   webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser&Api_Key=6gLqU53pOxhcXghYEBxjnKtT/wqKnXugfWz24f7yQ");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/Service1.svc/GetApiKey");
 
@@ -50,36 +50,23 @@ namespace Analytics.Controllers
             //    webRequest.KeepAlive = true;
             //    webRequest.Timeout = 100000;
             //    webRequest.ContentType = "application/x-www-form-urlencoded";
-            //    //Stream os = null;
-            //    //parameters p = new parameters();
-            //    //p.UserName = "testuser1";
-            //    //p.Email = "testuser@gmail.com";
-            //    //p.Password = "testuser1";
-            //    //string val = JsonConvert.SerializeObject(p);
-            //    //byte[] bytes = Encoding.ASCII.GetBytes(val);
-            //    //webRequest.ContentLength = bytes.Length;
-            //    //os = webRequest.GetRequestStream();
-            //    //os.Write(bytes, 0, bytes.Length);
-            //    //os.Close();
+                
             //    webRequest.ContentLength = 0;
             //    WebResp = (HttpWebResponse)webRequest.GetResponse();
-            //    //string api_key = WebResp.Headers["Api_key"];
             //    string token = WebResp.Headers["token"];
 
 
             //   // webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign4&Password=teastcampaign4");
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign79&Password=testpassword&WebHookUrl=http://smartsms.smsbm.ae/webhook/hook/pcstat");
+            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign79&Password=testpassword&WebHookUrl=http://smartsms.smsbm.ae/webhook/hook/pcstat");
 
             //     //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign5&Password=testpassword&WebHookUrl=http://smartsms.smsbm.ae/webhook/hook/pcstat");
-            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign19&Password=testpassword19&WebHookUrl=http://smartsms.smsbm.ae/webhook/hook/pcstat");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign91&Password=testpassword19&WebHookUrl=http://smartsms.smsbm.ae/webhook/hook/pcstat");
 
             //    webRequest.Method = "GET";
             //    webRequest.Timeout = 12000;
             //    webRequest.ContentType = "application/json";
-            //   // webRequest.Headers.Add("Api_key", api_key);
             //    webRequest.Headers.Add("token", token);
             //    WebResp = (HttpWebResponse)webRequest.GetResponse();
-            //   // api_key = WebResp.Headers["Api_key"];
             //    token = WebResp.Headers["token"];
             //    response = WebResp.GetResponseStream();
             //    data = new StreamReader(response);
