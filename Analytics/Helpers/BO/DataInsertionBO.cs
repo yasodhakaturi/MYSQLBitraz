@@ -105,7 +105,7 @@ namespace Analytics.Helpers.BO
                 objcamp.HookURL = WebHookUrl;
                 objcamp.Status = "Active";
                 objcamp.FK_Rid = objr1.PK_Rid;
-                objcamp.FK_ClientID = clientid;
+                objcamp.FK_ClientID = objr1.FK_ClientId;
                 objcamp.UpdatedDate = utcdt;
                 dc.campaignhookurls.Add(objcamp);
                 dc.SaveChanges();
