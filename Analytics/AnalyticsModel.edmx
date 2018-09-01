@@ -144,6 +144,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="AckFailureTime" Type="int" />
           <Property Name="FK_Rid" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
+          <Property Name="FK_HookID" Type="int" />
         </EntityType>
         <EntityType Name="locations_data">
           <Key>
@@ -922,6 +923,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <Property Name="AckFailureTime" Type="Int32" />
           <Property Name="FK_Rid" Type="Int32" />
           <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="FK_HookID" Type="Int32" />
           <NavigationProperty Name="campaignhookurl" Relationship="shortenurlModel.hitnotify_ibfk_1" FromRole="hitnotify" ToRole="campaignhookurl" />
         </EntityType>
         <Association Name="hitnotify_ibfk_1">
@@ -1209,6 +1211,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <EntitySetMapping Name="hitnotifies">
             <EntityTypeMapping TypeName="shortenurlModel.hitnotify">
               <MappingFragment StoreEntitySet="hitnotify">
+                <ScalarProperty Name="FK_HookID" ColumnName="FK_HookID" />
                 <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
                 <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
                 <ScalarProperty Name="AckFailureTime" ColumnName="AckFailureTime" />
