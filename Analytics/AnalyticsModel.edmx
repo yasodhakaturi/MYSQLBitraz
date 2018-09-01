@@ -141,9 +141,9 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="LastSuccHitDate" Type="datetime" Precision="6" />
           <Property Name="LastSucAckDate" Type="datetime" Precision="6" />
           <Property Name="NotifyCount" Type="int" />
+          <Property Name="AckFailureTime" Type="int" />
           <Property Name="FK_Rid" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
-          <Property Name="FK_HookID" Type="int" />
         </EntityType>
         <EntityType Name="locations_data">
           <Key>
@@ -228,6 +228,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="FK_RID" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
           <Property Name="FK_City_Master_id" Type="int" />
+          <Property Name="ACK" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -355,7 +356,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
               <PropertyRef Name="PK_HookID" />
             </Principal>
             <Dependent Role="hitnotify">
-              <PropertyRef Name="FK_HookID" />
+              <PropertyRef Name="FK_ClientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -663,6 +664,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <NavigationProperty Name="cookietables" Relationship="Self.FK_CookieTable_SHORTURLDATA" FromRole="shorturldata" ToRole="cookietable" />
           <NavigationProperty Name="riddata" Relationship="Self.FK_SHORTURLDATA_RIDDATA" FromRole="shorturldata" ToRole="riddata" />
           <NavigationProperty Name="uiddata" Relationship="Self.FK_SHORTURLDATA_UIDDATA" FromRole="shorturldata" ToRole="uiddata" />
+          <Property Name="ACK" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -893,7 +895,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <End Role="campaignhookurl" EntitySet="campaignhookurls" />
             <End Role="hitnotify" EntitySet="hitnotifies" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
             <PropertyRef Name="PK_HookID" />
@@ -917,9 +919,9 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <Property Name="LastSuccHitDate" Type="DateTime" />
           <Property Name="LastSucAckDate" Type="DateTime" />
           <Property Name="NotifyCount" Type="Int32" />
+          <Property Name="AckFailureTime" Type="Int32" />
           <Property Name="FK_Rid" Type="Int32" />
           <Property Name="FK_ClientID" Type="Int32" />
-          <Property Name="FK_HookID" Type="Int32" />
           <NavigationProperty Name="campaignhookurl" Relationship="shortenurlModel.hitnotify_ibfk_1" FromRole="hitnotify" ToRole="campaignhookurl" />
         </EntityType>
         <Association Name="hitnotify_ibfk_1">
@@ -930,11 +932,11 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
               <PropertyRef Name="PK_HookID" />
             </Principal>
             <Dependent Role="hitnotify">
-              <PropertyRef Name="FK_HookID" />
+              <PropertyRef Name="FK_ClientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1097,6 +1099,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <EntitySetMapping Name="shorturldatas">
             <EntityTypeMapping TypeName="shortenurlModel.shorturldata">
               <MappingFragment StoreEntitySet="shorturldata">
+                <ScalarProperty Name="ACK" ColumnName="ACK" />
                 <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
@@ -1206,9 +1209,9 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <EntitySetMapping Name="hitnotifies">
             <EntityTypeMapping TypeName="shortenurlModel.hitnotify">
               <MappingFragment StoreEntitySet="hitnotify">
-                <ScalarProperty Name="FK_HookID" ColumnName="FK_HookID" />
                 <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
                 <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
+                <ScalarProperty Name="AckFailureTime" ColumnName="AckFailureTime" />
                 <ScalarProperty Name="NotifyCount" ColumnName="NotifyCount" />
                 <ScalarProperty Name="LastSucAckDate" ColumnName="LastSucAckDate" />
                 <ScalarProperty Name="LastSuccHitDate" ColumnName="LastSuccHitDate" />

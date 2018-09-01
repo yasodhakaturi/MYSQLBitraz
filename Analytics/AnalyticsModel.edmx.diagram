@@ -31,7 +31,7 @@
         <EntityTypeShape EntityType="shortenurlModel.campaignhookurl" Width="1.5" PointX="14.375" PointY="8.125" />
         <EntityTypeShape EntityType="shortenurlModel.hitnotify" Width="1.5" PointX="16.625" PointY="8" />
         <AssociationConnector Association="shortenurlModel.hitnotify_ibfk_1" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
