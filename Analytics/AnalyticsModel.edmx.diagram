@@ -28,7 +28,7 @@
         <AssociationConnector Association="shortenurlModel.FK_SHORTURLDATA_RIDDATA" ManuallyRouted="false" />
         <AssociationConnector Association="shortenurlModel.FK_UIDDATA_RIDDATA" ManuallyRouted="false" />
         <AssociationConnector Association="shortenurlModel.FK_SHORTURLDATA_UIDDATA" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="shortenurlModel.campaignhookurl" Width="1.5" PointX="14.375" PointY="8.125" />
+        <EntityTypeShape EntityType="shortenurlModel.campaignhookurl" Width="1.5" PointX="14.375" PointY="8.25" />
         <EntityTypeShape EntityType="shortenurlModel.hitnotify" Width="1.5" PointX="16.625" PointY="8" />
         <AssociationConnector Association="shortenurlModel.hitnotify_ibfk_1" />
       </Diagram>

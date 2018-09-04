@@ -20,6 +20,7 @@ namespace Analytics
         public Nullable<System.DateTime> LastSuccHitDate { get; set; }
         public Nullable<System.DateTime> LastSucAckDate { get; set; }
         public Nullable<int> NotifyCount { get; set; }
+        public Nullable<int> AckFailureTime { get; set; }
         public Nullable<int> FK_Rid { get; set; }
         public Nullable<int> FK_ClientID { get; set; }
         public Nullable<int> FK_HookID { get; set; }
