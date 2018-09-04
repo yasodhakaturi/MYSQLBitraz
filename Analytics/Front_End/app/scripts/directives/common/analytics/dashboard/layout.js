@@ -1,4 +1,4 @@
-angular.module("bitraz.dashboard", ['ui.router'])
+angular.module("app.dashboard", ['ui.router'])
   .component("dashboardLayout", {
     templateUrl: "views/common/dashboard/dashboard_tmpl.html",
     bindings: {

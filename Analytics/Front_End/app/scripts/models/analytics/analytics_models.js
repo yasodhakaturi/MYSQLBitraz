@@ -1,4 +1,4 @@
-angular.module('bitraz.models', ['bitraz.models.common'])
+angular.module('app.models', ['app.models.common'])
   .factory('UserModel', ['$http', '$q', 'appConfig', function($http, $q, appConfig) {
     class User {
       constructor(data) {

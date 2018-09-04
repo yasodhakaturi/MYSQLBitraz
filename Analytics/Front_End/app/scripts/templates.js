@@ -1,2 +1,2 @@
 // just a dummy module
-angular.module('bitraz.template', []);
+angular.module('app.template', []);

@@ -1,4 +1,4 @@
-angular.module("bitraz.dashboard")
+angular.module("app.dashboard")
   .component("loggedUsers", {
     templateUrl: "views/common/dashboard/logged_users_tmpl.html",
     bindings: {

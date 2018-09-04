@@ -1,4 +1,4 @@
-angular.module('bitraz.campaigns', ["ngResource"])
+angular.module('app.campaigns', ["ngResource"])
   .service('CampaignService', ["$resource", 'appConfig', function ($resource, appConfig) {
     return $resource(appConfig.apiEndPoint + '/Analytics/GETAllCampaigns/', {}, {
       getCampaigns: {

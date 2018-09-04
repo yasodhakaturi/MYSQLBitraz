@@ -1,2 +1,2 @@
-angular.module('bitraz.services', [
-  "bitraz.auth"])
+angular.module('app.services', [
+  "app.auth"])

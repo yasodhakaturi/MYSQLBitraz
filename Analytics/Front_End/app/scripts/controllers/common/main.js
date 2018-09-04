@@ -1,5 +1,5 @@
 angular
-  .module('bitraz.common.controllers', ['bitraz.auth', 'ngMap'])
+  .module('app.common.controllers', ['app.auth', 'ngMap'])
   .controller('LoginController', LoginController)
   .controller('AnalyticsController', AnalyticsController);
 
@@ -26,7 +26,7 @@ function LoginController($rootScope, $scope, AuthService, appConfig, $state, $lo
             if(res.redirect_url){
               $window.location.href = res.redirect_url || '/';
             }else{
-              $state.go('bitraz.main.analytics', {}, {location: 'replace'})
+              $state.go('app.main.analytics', {}, {location: 'replace'})
             }
           }
         }
@@ -54,7 +54,7 @@ function LoginController($rootScope, $scope, AuthService, appConfig, $state, $lo
     }else if($rootScope.userInfo.isClient){
       $window.location.href = '/Analytics';
     }else{
-      $state.go('bitraz.main.analytics', {}, {location: 'replace'})
+      $state.go('app.main.analytics', {}, {location: 'replace'})
     }
   }
 

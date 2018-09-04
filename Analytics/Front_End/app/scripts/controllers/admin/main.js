@@ -5,7 +5,7 @@
  */
 
 angular
-  .module('bitraz.controllers', ['bitraz.auth', 'bitraz.common.controllers', 'bitraz.campaigns', "angular-web-notification"])
+  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.campaigns', "angular-web-notification"])
   .controller('appCtrl', appCtrl)
   .controller('AppController', AppController)
   .controller('HeaderController', HeaderController)
@@ -76,7 +76,7 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, UsersCollecti
           { name:'Actions', cellTemplate:'<div>' +
                       '<a ng-click="grid.appScope.editCampaign(row.entity)">Edit</a>' +
                       '&nbsp;&nbsp;&nbsp;' +
-                      '<a ui-sref="bitraz.main.analytics({rid:row.entity.ReferenceNumber})" >View</a>' +
+                      '<a ui-sref="app.main.analytics({rid:row.entity.ReferenceNumber})" >View</a>' +
                       '</div>'
           },
           { name:'Export', cellTemplate:'<div>' +

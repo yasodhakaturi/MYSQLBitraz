@@ -1,4 +1,4 @@
-angular.module('bitraz.models', ['bitraz.models.common', "ngFileUpload"])
+angular.module('app.models', ['app.models.common', "ngFileUpload"])
   .factory('UsersCollectionModel', ['$http', '$q', 'appConfig', 'UserModel', function($http, $q, appConfig, UserModel) {
     "use strict";
     class Users {

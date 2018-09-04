@@ -1,4 +1,4 @@
-angular.module("bitraz.dashboard")
+angular.module("app.dashboard")
   .component("urlsGenerated", {
     templateUrl: "views/common/dashboard/urls_generated_tmpl.html",
     bindings: {

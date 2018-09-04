@@ -1,1 +1,1 @@
-angular.module('bitraz.models.common', []);
+angular.module('app.models.common', []);

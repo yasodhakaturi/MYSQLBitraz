@@ -1,4 +1,4 @@
-angular.module('bitraz.rid', ["ngResource"])
+angular.module('app.rid', ["ngResource"])
     .service('RidService', ["$resource", 'appConfig', function ($resource, appConfig) {
       return $resource(appConfig.apiEndPoint + '/api/rid/', {}, {
         getInfo: {

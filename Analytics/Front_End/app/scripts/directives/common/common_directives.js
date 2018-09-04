@@ -1,5 +1,5 @@
 angular
-    .module('bitraz.directives.common', [])
+    .module('app.directives.common', [])
     .directive('pageTitle', pageTitle)
     .directive('splashScreen', splashScreen)
     .directive('sideNavigation', sideNavigation)
