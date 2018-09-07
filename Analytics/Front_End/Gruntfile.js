@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
     // Configurable paths for the app
     var appConfig = {
-        app: 'app',
+        appName: 'app',
         dist: {'admin':'../dist/admin', 'analytics':'../dist/analytics', 'index':'../dist/index'}
     };
 
@@ -19,7 +19,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
 
         // Project settings
-        bitraz: appConfig,
+        app: appConfig,
 
         // The grunt server settings
         connect: {
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
                 },
             },
             js: {
-                files: ['<%= bitraz.app %>/scripts/{,*/}*.js'],
+                files: ['<%= app.appName %>/scripts/{,*/}*.js'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
@@ -82,9 +82,9 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= bitraz.app %>/**/*.html',
+                    '<%= app.appName %>/**/*.html',
                     '.tmp/styles/{,*/}*.css',
-                    '<%= bitraz.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= app.appName %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
         },
@@ -111,8 +111,8 @@ module.exports = function (grunt) {
                     dot: true,
                     src: [
                         '.tmp',
-                        '<%= bitraz.dist %>/**/{,*/}*',
-                        '!<%= bitraz.dist %>/.git*'
+                        '<%= app.dist %>/**/{,*/}*',
+                        '!<%= app.dist %>/.git*'
                     ]
                 }]
             },
@@ -125,8 +125,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         dot: true,
-                        cwd: '<%= bitraz.app %>',
-                        dest: '<%= bitraz.dist.index %>',
+                        cwd: '<%= app.appName %>',
+                        dest: '<%= app.dist.index %>',
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
@@ -142,28 +142,28 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: 'bower_components/fontawesome',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.index %>'
+                        dest: '<%= app.dist.index %>'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/bootstrap',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.index %>'
+                        dest: '<%= app.dist.index %>'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/angular-ui-grid',
                         src: ['*.eot', '*.svg', '*.ttf', '*.woff'],
-                        dest: '<%= bitraz.dist.index %>/styles'
+                        dest: '<%= app.dist.index %>/styles'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'app/fonts/pe-icon-7-stroke/',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.index %>'
+                        dest: '<%= app.dist.index %>'
                     },
                 ]
             },
@@ -172,8 +172,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         dot: true,
-                        cwd: '<%= bitraz.app %>',
-                        dest: '<%= bitraz.dist.admin %>',
+                        cwd: '<%= app.appName %>',
+                        dest: '<%= app.dist.admin %>',
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
@@ -189,28 +189,28 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: 'bower_components/fontawesome',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.admin %>'
+                        dest: '<%= app.dist.admin %>'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/bootstrap',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.admin %>'
+                        dest: '<%= app.dist.admin %>'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/angular-ui-grid',
                         src: ['*.eot', '*.svg', '*.ttf', '*.woff'],
-                        dest: '<%= bitraz.dist.admin %>/styles'
+                        dest: '<%= app.dist.admin %>/styles'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'app/fonts/pe-icon-7-stroke/',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.admin %>'
+                        dest: '<%= app.dist.admin %>'
                     },
                 ]
             },
@@ -219,8 +219,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         dot: true,
-                        cwd: '<%= bitraz.app %>',
-                        dest: '<%= bitraz.dist.analytics %>',
+                        cwd: '<%= app.appName %>',
+                        dest: '<%= app.dist.analytics %>',
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
@@ -236,33 +236,33 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: 'bower_components/fontawesome',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.analytics %>'
+                        dest: '<%= app.dist.analytics %>'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/bootstrap',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.analytics %>'
+                        dest: '<%= app.dist.analytics %>'
                     },{
                         expand: true,
                         dot: true,
                         cwd: 'bower_components/angular-ui-grid',
                         src: ['*.eot', '*.svg', '*.ttf', '*.woff'],
-                        dest: '<%= bitraz.dist.analytics %>/styles'
+                        dest: '<%= app.dist.analytics %>/styles'
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: 'app/fonts/pe-icon-7-stroke/',
                         src: ['fonts/*.*'],
-                        dest: '<%= bitraz.dist.analytics %>'
+                        dest: '<%= app.dist.analytics %>'
                     },
                 ]
             },
             styles: {
                 expand: true,
-                cwd: '<%= bitraz.app %>/styles',
+                cwd: '<%= app.appName %>/styles',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
             }
@@ -271,23 +271,23 @@ module.exports = function (grunt) {
         filerev: {
             index: {
                 src: [
-                    '<%= bitraz.dist.index %>/scripts/{,*/}*.js',
-                    '<%= bitraz.dist.index %>/styles/{,*/}*.css',
-                    '<%= bitraz.dist.index %>/styles/fonts/*'
+                    '<%= app.dist.index %>/scripts/{,*/}*.js',
+                    '<%= app.dist.index %>/styles/{,*/}*.css',
+                    '<%= app.dist.index %>/styles/fonts/*'
                 ]
             },
             admin: {
                 src: [
-                    '<%= bitraz.dist.admin %>/scripts/{,*/}*.js',
-                    '<%= bitraz.dist.admin %>/styles/{,*/}*.css',
-                    '<%= bitraz.dist.admin %>/styles/fonts/*'
+                    '<%= app.dist.admin %>/scripts/{,*/}*.js',
+                    '<%= app.dist.admin %>/styles/{,*/}*.css',
+                    '<%= app.dist.admin %>/styles/fonts/*'
                 ]
             },
             analytics: {
                 src: [
-                    '<%= bitraz.dist.analytics %>/scripts/{,*/}*.js',
-                    '<%= bitraz.dist.analytics %>/styles/{,*/}*.css',
-                    '<%= bitraz.dist.analytics %>/styles/fonts/*'
+                    '<%= app.dist.analytics %>/scripts/{,*/}*.js',
+                    '<%= app.dist.analytics %>/styles/{,*/}*.css',
+                    '<%= app.dist.analytics %>/styles/fonts/*'
                 ]
             }
         },
@@ -302,9 +302,9 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= bitraz.dist.index %>',
+                    cwd: '<%= app.dist.index %>',
                     src: ['*.html', 'views/{,*/}*.html'],
-                    dest: '<%= bitraz.dist.index %>'
+                    dest: '<%= app.dist.index %>'
                 }]
             },
             admin: {
@@ -317,9 +317,9 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= bitraz.dist.admin %>',
+                    cwd: '<%= app.dist.admin %>',
                     src: ['*.html', 'views/{,*/}*.html'],
-                    dest: '<%= bitraz.dist.admin %>'
+                    dest: '<%= app.dist.admin %>'
                 }]
             },
             analytics: {
@@ -332,9 +332,9 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= bitraz.dist.analytics %>',
+                    cwd: '<%= app.dist.analytics %>',
                     src: ['*.html', 'views/{,*/}*.html'],
-                    dest: '<%= bitraz.dist.analytics %>'
+                    dest: '<%= app.dist.analytics %>'
                 }]
             }
         },
@@ -342,24 +342,24 @@ module.exports = function (grunt) {
             index: {
                 src:['app/index.html'],
                 options: {
-                            dest: '<%= bitraz.dist.index %>'
+                            dest: '<%= app.dist.index %>'
                         }
             },
             admin: {
                 src:['app/admin.html'],
                 options: {
-                    dest: '<%= bitraz.dist.admin %>'
+                    dest: '<%= app.dist.admin %>'
                 }
             },
             analytics: {
                 src:['app/analytics.html'],
                 options: {
-                    dest: '<%= bitraz.dist.analytics %>'
+                    dest: '<%= app.dist.analytics %>'
                 }
             }
         },
         usemin: {
-            html: ['<%= bitraz.dist.index %>/index.html', '<%= bitraz.dist.admin %>/admin.html', '<%= bitraz.dist.analytics %>/analytics.html'],
+            html: ['<%= app.dist.index %>/index.html', '<%= app.dist.admin %>/admin.html', '<%= app.dist.analytics %>/analytics.html'],
         },
         ngAnnotate:{
             options: {
@@ -369,29 +369,29 @@ module.exports = function (grunt) {
         html2js:  {
             index:{
                 options: {
-                    base: '<%= bitraz.dist.index %>'
+                    base: '<%= app.dist.index %>'
                 },
-                src: ['<%= bitraz.dist.index %>/views/**/**.html'],
-                dest: '<%= bitraz.dist.index %>/scripts/templates.js',
-                module: 'bitraz.template'
+                src: ['<%= app.dist.index %>/views/**/**.html'],
+                dest: '<%= app.dist.index %>/scripts/templates.js',
+                module: 'app.template'
 
             },
             admin:{
                 options: {
-                    base: '<%= bitraz.dist.admin %>'
+                    base: '<%= app.dist.admin %>'
                 },
-                src: ['<%= bitraz.dist.admin %>/views/**/**.html'],
-                dest: '<%= bitraz.dist.admin %>/scripts/templates.js',
-                module: 'bitraz.template'
+                src: ['<%= app.dist.admin %>/views/**/**.html'],
+                dest: '<%= app.dist.admin %>/scripts/templates.js',
+                module: 'app.template'
 
             },
             analytics:{
                 options: {
-                    base: '<%= bitraz.dist.analytics %>'
+                    base: '<%= app.dist.analytics %>'
                 },
-                src: ['<%= bitraz.dist.analytics %>/views/**/**.html'],
-                dest: '<%= bitraz.dist.analytics %>/scripts/templates.js',
-                module: 'bitraz.template'
+                src: ['<%= app.dist.analytics %>/views/**/**.html'],
+                dest: '<%= app.dist.analytics %>/scripts/templates.js',
+                module: 'app.template'
 
             },
 

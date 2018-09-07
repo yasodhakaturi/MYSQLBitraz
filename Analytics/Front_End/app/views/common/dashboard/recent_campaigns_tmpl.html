@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                 <tr ng-if="$ctrl.data.length > 0" ng-repeat="campaign in $ctrl.data">
-                    <td><a class="text-success" ui-sref="bitraz.main.analytics({rid:campaign.rid})">{{campaign.title || "Campaign (" + campaign.rid + ")"}}</a>
+                    <td><a class="text-success" ui-sref="app.main.analytics({rid:campaign.rid})">{{campaign.title || "Campaign (" + campaign.rid + ")"}}</a>
                         <br/>
                         <small><i class="fa fa-clock-o"></i> Created {{campaign.createdOn | date: 'MM.dd.yyyy'}}</small>
                         <small ng-if="campaign.endDate"><i class="fa fa-clock-o"></i> Ended {{campaign.endDate | date: 'MM.dd.yyyy'}}</small>

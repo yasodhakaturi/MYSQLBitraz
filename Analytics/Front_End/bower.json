@@ -1,10 +1,10 @@
 {
-  "name": "bitraz",
+  "name": "Mobilytics.ae",
   "version": "1.0.0",
   "authors": [
     "Sirish Bitra"
   ],
-  "description": "bitraz",
+  "description": "Mobilytics.ae",
   "main": "app/index.html",
   "private": true,
   "ignore": [

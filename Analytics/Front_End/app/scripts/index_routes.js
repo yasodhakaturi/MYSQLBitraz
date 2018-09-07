@@ -140,7 +140,7 @@ angular.module('routes', [
   'highcharts-ng',
   'app.rid',
   'app.auth',
-  "bitraz.template"
+  "app.template"
 ])
     .config(configState)
     .run(function($rootScope, $state, appConfig, $location) {
@@ -154,7 +154,7 @@ angular.module('routes', [
 
           if ( isAuthenticationRequired ) {
             event.preventDefault();
-            $state.go('bitraz.main.login', {redirect_url: $location.$$absUrl});
+            $state.go('app.main.login', {redirect_url: $location.$$absUrl});
           }
         });
 

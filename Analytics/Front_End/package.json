@@ -1,7 +1,7 @@
 {
-  "name": "biTRAZ",
+  "name": "Mobilytics.ae",
   "version": "1.0.0",
-  "description": "biTRAZ",
+  "description": "Mobilytics.ae",
   "dependencies": {
     "grunt": "^0.4.5"
   },
