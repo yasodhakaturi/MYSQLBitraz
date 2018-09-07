@@ -49,6 +49,7 @@ namespace Analytics
         public Nullable<int> FK_RID { get; set; }
         public Nullable<int> FK_ClientID { get; set; }
         public Nullable<int> FK_City_Master_id { get; set; }
+        public string ACK { get; set; }
     
         public virtual client client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

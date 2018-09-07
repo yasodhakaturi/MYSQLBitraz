@@ -207,7 +207,7 @@ namespace Analytics
                 usersAndTokens.Remove(username);
             }
         }
-        public string RegisterCampaign(string CampaignName, string Password)
+        public string RegisterCampaign(string CampaignName, string Password, string WebHookUrl)
         {
             try
             {
@@ -243,14 +243,14 @@ namespace Analytics
                             if (CampaignName.Trim() != "" && Password.Trim() != "" && CampaignName != null && Password != null)
                             {
 
-                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, Password, cl_obj.PK_ClientID);
+                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, Password, cl_obj.PK_ClientID,WebHookUrl);
                                 //refnum.CampaignNumber = ReferenceNumber;
 
                             }
                             else if (CampaignName.Trim() != "" && (Password.Trim() == "" || Password==null))
                             {
 
-                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, "", cl_obj.PK_ClientID);
+                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, "", cl_obj.PK_ClientID,WebHookUrl);
                                 //refnum.CampaignNumber = ReferenceNumber;
 
                             }
@@ -416,7 +416,7 @@ namespace Analytics
                             // return "http://g0.pe/" + Hashid;
                             //string ShortUrl = "https://g0.pe/" + Hashid;
                             string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
-                            uiddata uidrec=dc.uiddatas.Where(x=>x.FK_RID==rid).Select(y=>y).SingleOrDefault();
+                            uiddata uidrec=dc.uiddatas.Where(x=>x.FK_RID==rid&&x.UniqueNumber==Hashid).Select(y=>y).SingleOrDefault();
                             ShortUrl1 sobj = new ShortUrl1();
                             sobj.shortUrl = ShortUrl;
                             sobj.ShortUrlId = uidrec.PK_Uid.ToString();

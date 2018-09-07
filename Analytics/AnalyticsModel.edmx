@@ -21,6 +21,18 @@
           <Property Name="Status" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" Precision="6" />
         </EntityType>
+        <EntityType Name="campaignhookurl">
+          <Key>
+            <PropertyRef Name="PK_HookID" />
+          </Key>
+          <Property Name="PK_HookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CampaignName" Type="longtext" />
+          <Property Name="HookURL" Type="longtext" />
+          <Property Name="Status" Type="varchar" MaxLength="45" />
+          <Property Name="FK_Rid" Type="int" />
+          <Property Name="FK_ClientID" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" Precision="6" />
+        </EntityType>
         <EntityType Name="city_blocks_ipv4_geolite2">
           <Key>
             <PropertyRef Name="PK_City_ID_IPV4" />
@@ -119,6 +131,21 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="PK_Hash_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HashID" Type="varchar" MaxLength="450" />
         </EntityType>
+        <EntityType Name="hitnotify">
+          <Key>
+            <PropertyRef Name="PK_HitNotifi" />
+          </Key>
+          <Property Name="PK_HitNotifi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastHitId" Type="int" />
+          <Property Name="LastAckID" Type="int" />
+          <Property Name="LastSuccHitDate" Type="datetime" Precision="6" />
+          <Property Name="LastSucAckDate" Type="datetime" Precision="6" />
+          <Property Name="NotifyCount" Type="int" />
+          <Property Name="AckFailureTime" Type="int" />
+          <Property Name="FK_Rid" Type="int" />
+          <Property Name="FK_ClientID" Type="int" />
+          <Property Name="FK_HookID" Type="int" />
+        </EntityType>
         <EntityType Name="locations_data">
           <Key>
             <PropertyRef Name="PK_LOC_ID" />
@@ -202,6 +229,7 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="FK_RID" Type="int" />
           <Property Name="FK_ClientID" Type="int" />
           <Property Name="FK_City_Master_id" Type="int" />
+          <Property Name="ACK" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -321,6 +349,18 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="hitnotify_ibfk_1">
+          <End Role="campaignhookurl" Type="Self.campaignhookurl" Multiplicity="0..1" />
+          <End Role="hitnotify" Type="Self.hitnotify" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="campaignhookurl">
+              <PropertyRef Name="PK_HookID" />
+            </Principal>
+            <Dependent Role="hitnotify">
+              <PropertyRef Name="FK_ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="InsertRIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
           <Parameter Name="CampaignName" Type="longtext" Mode="In" />
           <Parameter Name="referencenumber" Type="varchar" Mode="In" />
@@ -344,6 +384,8 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Parameter Name="FK_clientid" Type="int" Mode="In" />
           <Parameter Name="cookievalue" Type="varchar" Mode="In" />
           <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
+          <Parameter Name="hitnotify" Type="tinyint" Mode="In" />
+          <Parameter Name="PK_HookId" Type="int" Mode="In" />
         </Function>
         <Function Name="InsertUIDData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
           <Parameter Name="fk_rid" Type="int" Mode="In" />
@@ -365,12 +407,14 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
         </Function>
         <EntityContainer Name="shortenurlModelStoreContainer">
           <EntitySet Name="batchuploaddata" EntityType="Self.batchuploaddata" Schema="shortenurl" store:Type="Tables" />
+          <EntitySet Name="campaignhookurl" EntityType="Self.campaignhookurl" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="Self.city_blocks_ipv4_geolite2" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="client" EntityType="Self.client" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="cookietable" EntityType="Self.cookietable" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="errorlog" EntityType="Self.errorlog" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="freegeoipdata" EntityType="Self.freegeoipdata" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="hashidlist" EntityType="Self.hashidlist" Schema="shortenurl" store:Type="Tables" />
+          <EntitySet Name="hitnotify" EntityType="Self.hitnotify" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="locations_data" EntityType="Self.locations_data" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="loginhistory" EntityType="Self.loginhistory" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="master_location" EntityType="Self.master_location" Schema="shortenurl" store:Type="Tables" />
@@ -424,6 +468,10 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <AssociationSet Name="FK_UIDDATA_RIDDATA" Association="Self.FK_UIDDATA_RIDDATA">
             <End Role="riddata" EntitySet="riddata" />
             <End Role="uiddata" EntitySet="uiddata" />
+          </AssociationSet>
+          <AssociationSet Name="hitnotify_ibfk_1" Association="Self.hitnotify_ibfk_1">
+            <End Role="campaignhookurl" EntitySet="campaignhookurl" />
+            <End Role="hitnotify" EntitySet="hitnotify" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -617,6 +665,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <NavigationProperty Name="cookietables" Relationship="Self.FK_CookieTable_SHORTURLDATA" FromRole="shorturldata" ToRole="cookietable" />
           <NavigationProperty Name="riddata" Relationship="Self.FK_SHORTURLDATA_RIDDATA" FromRole="shorturldata" ToRole="riddata" />
           <NavigationProperty Name="uiddata" Relationship="Self.FK_SHORTURLDATA_UIDDATA" FromRole="shorturldata" ToRole="uiddata" />
+          <Property Name="ACK" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -826,6 +875,8 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <Parameter Name="FK_clientid" Mode="In" Type="Int32" />
             <Parameter Name="cookievalue" Mode="In" Type="String" />
             <Parameter Name="mobilenumber" Mode="In" Type="String" />
+            <Parameter Name="hitnotify" Mode="In" Type="SByte" />
+            <Parameter Name="PK_HookId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="InsertUIDData">
             <Parameter Name="fk_rid" Mode="In" Type="Int32" />
@@ -839,7 +890,54 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <Parameter Name="DateTo" Mode="In" Type="DateTime" />
             <Parameter Name="rid" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="campaignhookurls" EntityType="shortenurlModel.campaignhookurl" />
+          <EntitySet Name="hitnotifies" EntityType="shortenurlModel.hitnotify" />
+          <AssociationSet Name="hitnotify_ibfk_1" Association="shortenurlModel.hitnotify_ibfk_1">
+            <End Role="campaignhookurl" EntitySet="campaignhookurls" />
+            <End Role="hitnotify" EntitySet="hitnotifies" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="campaignhookurl">
+          <Key>
+            <PropertyRef Name="PK_HookID" />
+          </Key>
+          <Property Name="PK_HookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="HookURL" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="FK_Rid" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" />
+          <NavigationProperty Name="hitnotifies" Relationship="shortenurlModel.hitnotify_ibfk_1" FromRole="campaignhookurl" ToRole="hitnotify" />
+        </EntityType>
+        <EntityType Name="hitnotify">
+          <Key>
+            <PropertyRef Name="PK_HitNotifi" />
+          </Key>
+          <Property Name="PK_HitNotifi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastHitId" Type="Int32" />
+          <Property Name="LastAckID" Type="Int32" />
+          <Property Name="LastSuccHitDate" Type="DateTime" />
+          <Property Name="LastSucAckDate" Type="DateTime" />
+          <Property Name="NotifyCount" Type="Int32" />
+          <Property Name="AckFailureTime" Type="Int32" />
+          <Property Name="FK_Rid" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="FK_HookID" Type="Int32" />
+          <NavigationProperty Name="campaignhookurl" Relationship="shortenurlModel.hitnotify_ibfk_1" FromRole="hitnotify" ToRole="campaignhookurl" />
+        </EntityType>
+        <Association Name="hitnotify_ibfk_1">
+          <End Type="shortenurlModel.campaignhookurl" Role="campaignhookurl" Multiplicity="0..1" />
+          <End Type="shortenurlModel.hitnotify" Role="hitnotify" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="campaignhookurl">
+              <PropertyRef Name="PK_HookID" />
+            </Principal>
+            <Dependent Role="hitnotify">
+              <PropertyRef Name="FK_ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1003,6 +1101,7 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <EntitySetMapping Name="shorturldatas">
             <EntityTypeMapping TypeName="shortenurlModel.shorturldata">
               <MappingFragment StoreEntitySet="shorturldata">
+                <ScalarProperty Name="ACK" ColumnName="ACK" />
                 <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
@@ -1096,6 +1195,35 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
           <FunctionImportMapping FunctionImportName="InsertSHORTURLData" FunctionName="shortenurlModel.Store.InsertSHORTURLData" />
           <FunctionImportMapping FunctionImportName="InsertUIDData" FunctionName="shortenurlModel.Store.InsertUIDData" />
           <FunctionImportMapping FunctionImportName="spGetALLCOUNTS1" FunctionName="shortenurlModel.Store.spGetALLCOUNTS1" />
+          <EntitySetMapping Name="campaignhookurls">
+            <EntityTypeMapping TypeName="shortenurlModel.campaignhookurl">
+              <MappingFragment StoreEntitySet="campaignhookurl">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="HookURL" ColumnName="HookURL" />
+                <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+                <ScalarProperty Name="PK_HookID" ColumnName="PK_HookID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hitnotifies">
+            <EntityTypeMapping TypeName="shortenurlModel.hitnotify">
+              <MappingFragment StoreEntitySet="hitnotify">
+                <ScalarProperty Name="FK_HookID" ColumnName="FK_HookID" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
+                <ScalarProperty Name="AckFailureTime" ColumnName="AckFailureTime" />
+                <ScalarProperty Name="NotifyCount" ColumnName="NotifyCount" />
+                <ScalarProperty Name="LastSucAckDate" ColumnName="LastSucAckDate" />
+                <ScalarProperty Name="LastSuccHitDate" ColumnName="LastSuccHitDate" />
+                <ScalarProperty Name="LastAckID" ColumnName="LastAckID" />
+                <ScalarProperty Name="LastHitId" ColumnName="LastHitId" />
+                <ScalarProperty Name="PK_HitNotifi" ColumnName="PK_HitNotifi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

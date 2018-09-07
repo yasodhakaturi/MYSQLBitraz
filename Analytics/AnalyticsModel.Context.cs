@@ -43,6 +43,8 @@ namespace Analytics
         public virtual DbSet<tmp_rownum_update> tmp_rownum_update { get; set; }
         public virtual DbSet<uiddata> uiddatas { get; set; }
         public virtual DbSet<city_locations_geolite2> city_locations_geolite2 { get; set; }
+        public virtual DbSet<campaignhookurl> campaignhookurls { get; set; }
+        public virtual DbSet<hitnotify> hitnotifies { get; set; }
     
         public virtual int InsertRIDData(string campaignName, string referencenumber, string pwd, Nullable<int> clientid)
         {
@@ -65,7 +67,7 @@ namespace Analytics
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertRIDData", campaignNameParameter, referencenumberParameter, pwdParameter, clientidParameter);
         }
     
-        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, Nullable<long> ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber)
+        public virtual int InsertSHORTURLData(string ipv4, string ipv6, string browser, string browser_version, string latitude, string longitude, Nullable<long> ipnum, string req_url, string useragent, string hostname, string isMobiledevice, Nullable<int> fk_uid, Nullable<int> fk_rid, Nullable<int> fK_clientid, string cookievalue, string mobilenumber, Nullable<sbyte> hitnotify, Nullable<int> pK_HookId)
         {
             var ipv4Parameter = ipv4 != null ?
                 new ObjectParameter("ipv4", ipv4) :
@@ -131,7 +133,15 @@ namespace Analytics
                 new ObjectParameter("mobilenumber", mobilenumber) :
                 new ObjectParameter("mobilenumber", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSHORTURLData", ipv4Parameter, ipv6Parameter, browserParameter, browser_versionParameter, latitudeParameter, longitudeParameter, ipnumParameter, req_urlParameter, useragentParameter, hostnameParameter, isMobiledeviceParameter, fk_uidParameter, fk_ridParameter, fK_clientidParameter, cookievalueParameter, mobilenumberParameter);
+            var hitnotifyParameter = hitnotify.HasValue ?
+                new ObjectParameter("hitnotify", hitnotify) :
+                new ObjectParameter("hitnotify", typeof(sbyte));
+    
+            var pK_HookIdParameter = pK_HookId.HasValue ?
+                new ObjectParameter("PK_HookId", pK_HookId) :
+                new ObjectParameter("PK_HookId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSHORTURLData", ipv4Parameter, ipv6Parameter, browserParameter, browser_versionParameter, latitudeParameter, longitudeParameter, ipnumParameter, req_urlParameter, useragentParameter, hostnameParameter, isMobiledeviceParameter, fk_uidParameter, fk_ridParameter, fK_clientidParameter, cookievalueParameter, mobilenumberParameter, hitnotifyParameter, pK_HookIdParameter);
         }
     
         public virtual int InsertUIDData(Nullable<int> fk_rid, Nullable<int> fk_clientid, string referencenumber, string longurl, string mobilenumber)

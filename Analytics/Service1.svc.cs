@@ -292,7 +292,7 @@ namespace Analytics
                 return JsonConvert.SerializeObject(errobj);
             }
         }
-        public string RegisterOrGetCampaign(string CampaignName, string Password)
+        public string RegisterOrGetCampaign(string CampaignName, string Password, string WebHookUrl)
         {
             try
             {
@@ -321,14 +321,14 @@ namespace Analytics
                             if (CampaignName.Trim() != "" && Password.Trim() != "" && CampaignName!=null && Password!=null)
                             {
                                 
-                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, Password, cl_obj.PK_ClientID);
+                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, Password, cl_obj.PK_ClientID,WebHookUrl);
                                 refnum.ReferenceNumber = ReferenceNumber;
 
                             }
                             else if (CampaignName.Trim() != "" && Password.Trim() == "")
                             {
                                 
-                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, "", cl_obj.PK_ClientID);
+                                new DataInsertionBO().Insertriddata(CampaignName, ReferenceNumber, "", cl_obj.PK_ClientID,WebHookUrl);
                                 refnum.ReferenceNumber = ReferenceNumber;
 
                             }
