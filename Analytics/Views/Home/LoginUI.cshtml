@@ -3,7 +3,7 @@
 
 
 <!DOCTYPE html>
-<html ng-app="bitraz">
+<html ng-app="app">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Page title set in pageTitle directive -->
@@ -12,15 +12,15 @@
     <link rel="stylesheet" href="../dist/index/styles/style.css">  <!-- Body --> <!-- appCtrl controller with serveral data used in theme on diferent view -->
     <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/5078507E-87DB-C440-AF8E-2A3929120353/main.js" charset="UTF-8"></script>
     @*<script type="application/javascript">
-        (function () {
-            window.appConfig = {
-                env:'local',
-                appPath: '',
-                apiUrl: 'http://localhost:3000',
-                userInfo: {Id: null, UserName: '', isAdmin: false, isClient: false, isReadOnly: true}
-            }
-        })();
-    </script>*@
+            (function () {
+                window.appConfig = {
+                    env:'local',
+                    appPath: '',
+                    apiUrl: 'http://localhost:3000',
+                    userInfo: {Id: null, UserName: '', isAdmin: false, isClient: false, isReadOnly: true}
+                }
+            })();
+        </script>*@
 
 </head>
 <body ng-controller="appCtrl" class="{{$state.current.data.specialClass}} fixed-navbar hide-sidebar">

@@ -3,12 +3,12 @@
     ViewBag.Title = "Analytics";
 }
 <!DOCTYPE html>
-<html ng-app="bitraz">
+<html ng-app="app">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Page title set in pageTitle directive -->
-    <title page-title>biTRAZ :: trace your link</title> <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-     <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <title page-title>Mobilytics.ae :: trace your link</title> <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
     <link rel="stylesheet" href="../dist/analytics/styles/vendor.css">
     <link rel="stylesheet" href="../dist/analytics/styles/style.css">
 
@@ -32,7 +32,7 @@
         })();
     </script>
 </head>
-    @Html.Partial("~/Views/Analytics/AnalyticsUI.cshtml")
-    @*@Html.Partial("~/Views/Home/IndexUI.cshtml")*@
-    
+@Html.Partial("~/Views/Analytics/AnalyticsUI.cshtml")
+@*@Html.Partial("~/Views/Home/IndexUI.cshtml")*@
+
 </html>

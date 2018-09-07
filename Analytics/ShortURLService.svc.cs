@@ -32,7 +32,8 @@ namespace Analytics
         }
         public class ReferenceNumber1
         {
-            public string CampaignNumber { get; set; }
+            public string Message { get; set; }
+            public int CampaignNumber { get; set; }
         }
         public class ShortUrl1
         {
@@ -259,15 +260,16 @@ namespace Analytics
                             System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
                             ctx.OutgoingResponse.Headers.Add("token", token);
                             int CampaignNumber = dc.riddatas.Where(x => x.ReferenceNumber == ReferenceNumber).Select(y => y.PK_Rid).SingleOrDefault();
-                            // return "ReferenceNumber :" + ReferenceNumber;
+                            refnum.Message = "Campaign Registered Successfully.";
+                            refnum.CampaignNumber = CampaignNumber;
 
                             //refnum.ReferenceNumber = ReferenceNumber;
-                            return JsonConvert.SerializeObject("Campaign Registered Successfully.CampaignId is " + CampaignNumber);
+                            return JsonConvert.SerializeObject(refnum);
                         }
                         else
                         {
-                            err_obj.message = "CampaignName Already exists.";
-                            return JsonConvert.SerializeObject(err_obj);
+                            refnum.Message = "CampaignName Already exists.";
+                            return JsonConvert.SerializeObject(refnum);
                         }
                         //else
                         //{
@@ -280,14 +282,14 @@ namespace Analytics
                     }
                     else
                     {
-                        err_obj.message = "Please Pass valid token";
-                        return JsonConvert.SerializeObject(err_obj);
+                        refnum.Message = "Please Pass valid token";
+                        return JsonConvert.SerializeObject(refnum);
                     }
                 }
                 else
                 {
-                    err_obj.message = "Please Pass token.";
-                    return JsonConvert.SerializeObject(err_obj);
+                    refnum.Message = "Please Pass token.";
+                    return JsonConvert.SerializeObject(refnum);
                 }
             }
             catch (Exception ex)
