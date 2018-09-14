@@ -97,18 +97,20 @@ namespace Analytics.Helpers.BO
                 objr.CreatedBy = clientid;
                 dc.riddatas.Add(objr);
                 dc.SaveChanges();
-                
-                riddata objr1=new riddata();
-                objr1=dc.riddatas.Where(x=>x.CampaignName==CampaignName&&x.ReferenceNumber==referencenumber&&x.FK_ClientId==clientid).Select(y=>y).SingleOrDefault();
-                campaignhookurl objcamp = new campaignhookurl();
-                objcamp.CampaignName = CampaignName;
-                objcamp.HookURL = WebHookUrl;
-                objcamp.Status = "Active";
-                objcamp.FK_Rid = objr1.PK_Rid;
-                objcamp.FK_ClientID = objr1.FK_ClientId;
-                objcamp.UpdatedDate = utcdt;
-                dc.campaignhookurls.Add(objcamp);
-                dc.SaveChanges();
+                if (WebHookUrl != "" && WebHookUrl != null)
+                {
+                    riddata objr1 = new riddata();
+                    objr1 = dc.riddatas.Where(x => x.CampaignName == CampaignName && x.ReferenceNumber == referencenumber && x.FK_ClientId == clientid).Select(y => y).SingleOrDefault();
+                    campaignhookurl objcamp = new campaignhookurl();
+                    objcamp.CampaignName = CampaignName;
+                    objcamp.HookURL = WebHookUrl;
+                    objcamp.Status = "Active";
+                    objcamp.FK_Rid = objr1.PK_Rid;
+                    objcamp.FK_ClientID = objr1.FK_ClientId;
+                    objcamp.UpdatedDate = utcdt;
+                    dc.campaignhookurls.Add(objcamp);
+                    dc.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
