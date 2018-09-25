@@ -81,6 +81,7 @@ angular.module('app.models', ['app.models.common'])
             this.CreatedUserName = data.CreatedUserName || '';
             this.CreatedUserEmail = data.CreatedUserEmail || '';
             this.CreatedUserActiveState = data.CreatedUserActiveState || '';
+            this.WebHookURL = data.WebHookURL || '';
             this.HasPassword = !!data.HasPassword || false;
             this.IsActive = data.IsActive || false;
             this.Password = '';
@@ -96,8 +97,13 @@ angular.module('app.models', ['app.models.common'])
               if(this.Password !=''){
                 data.Pwd = this.Password
               }else{
-                 data.Pwd = false;
-               }
+                data.Pwd = false;
+              }
+
+              if(this.WebHookURL !=''){
+                data.WebHookURL = this.WebHookURL
+              }
+
               $http({
                 method: 'POST',
                 url: appConfig.apiEndPoint + '/Campaign/AddCampaign',
@@ -117,6 +123,9 @@ angular.module('app.models', ['app.models.common'])
                 data.Pwd = '';
               }else if(this.EditPassword && this.Password !=''){
                 data.Pwd = this.Password
+              }
+              if(this.WebHookURL !=''){
+                data.WebHookURL = this.WebHookURL
               }
               $http({
                 method: 'POST',

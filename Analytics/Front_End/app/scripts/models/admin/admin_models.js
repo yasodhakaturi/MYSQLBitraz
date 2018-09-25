@@ -151,6 +151,7 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
           this.CreatedUserName = data.CreatedUserName || '';
           this.CreatedUserEmail = data.CreatedUserEmail || '';
           this.CreatedUserActiveState = data.CreatedUserActiveState || '';
+          this.WebHookURL = data.WebHookURL || '';
           this.HasPassword = !!data.HasPassword || false;
           this.IsActive = data.IsActive || false;
           this.Password = '';
@@ -168,6 +169,11 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
             if(this.Password !=''){
               data.Pwd = this.Password
             }
+
+            if(this.WebHookURL !=''){
+              data.WebHookURL = this.WebHookURL
+            }
+
             $http({
               method: 'POST',
               url: appConfig.apiEndPoint + '/Campaign/AddCampaign',
@@ -189,6 +195,11 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
             }else if(this.EditPassword && this.Password !=''){
               data.Pwd = this.Password
             }
+
+            if(this.WebHookURL !=''){
+              data.WebHookURL = this.WebHookURL
+            }
+
             $http({
               method: 'POST',
               url: appConfig.apiEndPoint + '/Campaign/UpdateCampaign',
