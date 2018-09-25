@@ -82,7 +82,7 @@ angular.module("views/admin/campaigns/add_campaign.html", []).run(["$templateCac
     "\n" +
     "                    <div class=\"col-sm-9\">\n" +
     "                        <input type=\"text\" name=\"webhook\" placeholder=\"http[s]://urlpath\"\n" +
-    "                               class=\"form-control\" ng-model=\"$ctrl.newCampaign.WebHookURL\" ng-pattern=\"/([a-z0-9_\\-]{1,5}:\\/\\/)?(([a-z0-9_\\-]{1,}):([a-z0-9_\\-]{1,})\\@)?((www\\.)|([a-z0-9_\\-]{1,}\\.)+)?([a-z0-9_\\-]{3,})(\\.[a-z]{2,4})(\\/([a-z0-9_\\-]{1,}\\/)+)?([a-z0-9_\\-]{1,})?(\\.[a-z]{2,})?(([\\?\\&][a-z0-9_\\-]{1,}\\=[a-z0-9_\\-]{1,})+)?/gi\"/>\n" +
+    "                               class=\"form-control\" ng-model=\"$ctrl.newCampaign.WebHookURL\" ng-pattern=\"/^(http(s?):\\/\\/)?(((www\\.)?+[a-zA-Z0-9\\.\\-\\_]+(\\.[a-zA-Z]{2,3})+)|(\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b))(\\/[a-zA-Z0-9\\_\\-\\s\\.\\/\\?\\%\\#\\&\\=]*)?$/gi\"/>\n" +
     "                        <small class=\"form-text text-muted text-danger\"\n" +
     "                               ng-if=\"$ctrl.newCampaignForm.webhook.$invalid && $ctrl.newCampaignForm.webhook.$touched\">\n" +
     "                            <span ng-if=\"$ctrl.newCampaignForm.webhook.$error.pattern\">webhook url is not valid.</span>\n" +
@@ -188,7 +188,7 @@ angular.module("views/admin/campaigns/edit_campaign.html", []).run(["$templateCa
     "\n" +
     "                    <div class=\"col-sm-9\">\n" +
     "                        <input type=\"text\" name=\"webhook\" placeholder=\"http[s]://urlpath\"\n" +
-    "                               class=\"form-control\" ng-model=\"$ctrl.newCampaign.WebHookURL\" ng-pattern=\"/([a-z0-9_\\-]{1,5}:\\/\\/)?(([a-z0-9_\\-]{1,}):([a-z0-9_\\-]{1,})\\@)?((www\\.)|([a-z0-9_\\-]{1,}\\.)+)?([a-z0-9_\\-]{3,})(\\.[a-z]{2,4})(\\/([a-z0-9_\\-]{1,}\\/)+)?([a-z0-9_\\-]{1,})?(\\.[a-z]{2,})?(([\\?\\&][a-z0-9_\\-]{1,}\\=[a-z0-9_\\-]{1,})+)?/gi\"/>\n" +
+    "                               class=\"form-control\" ng-model=\"$ctrl.newCampaign.WebHookURL\" ng-pattern=\"/^(http(s?):\\/\\/)?(((www\\.)?+[a-zA-Z0-9\\.\\-\\_]+(\\.[a-zA-Z]{2,3})+)|(\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b))(\\/[a-zA-Z0-9\\_\\-\\s\\.\\/\\?\\%\\#\\&\\=]*)?$/gi\"/>\n" +
     "                        <small class=\"form-text text-muted text-danger\"\n" +
     "                               ng-if=\"$ctrl.newCampaignForm.webhook.$invalid && $ctrl.newCampaignForm.webhook.$touched\">\n" +
     "                            <span ng-if=\"$ctrl.newCampaignForm.webhook.$error.pattern\">webhook url is not valid.</span>\n" +
