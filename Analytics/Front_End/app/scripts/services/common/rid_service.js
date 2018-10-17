@@ -7,7 +7,7 @@ angular.module('app.rid', ["ngResource"])
         },
         validate: {
           method: 'POST',
-          url: appConfig.apiEndPoint + '/api/rid/validate/:id'
+          url: appConfig.apiEndPoint + '/api/rid/validate'
         },
         getSummary: {
           method: 'GET',
