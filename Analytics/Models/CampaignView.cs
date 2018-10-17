@@ -22,6 +22,7 @@ namespace Analytics.Models
         public string CampaignName { get; set; }
         public bool HasPassword { get; set; }
         public bool? IsActive { get; set; }
+        public string WebHookURL { get; set; }
         public string CreatedDate { get; set; }
         public DateTime? CreatedDateStr { get; set; }
         public int CreatedUserId { get; set; }

@@ -99,6 +99,7 @@ namespace Analytics.Controllers
                                               ReferenceNumber = c.ReferenceNumber,
                                               CampaignName = c.CampaignName,
                                               HasPassword = (c.Pwd != null && c.Pwd != string.Empty) ? true : false,
+
                                               //pwd = r.Pwd,
                                               IsActive = c.IsActive,
                                               CreatedDateStr = c.CreatedDate,
@@ -211,6 +212,7 @@ namespace Analytics.Controllers
                         {
                             obj_search = (from c in dc.riddatas
                                           join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
+                                          //join hook in dc.campaignhookurls on c1.PK_ClientID equals hook.FK_ClientID
                                           where c.CampaignName.ToString() != null && c.CampaignName.ToString() != ""
                                           select new CampaignView1()
                                           {
@@ -218,6 +220,7 @@ namespace Analytics.Controllers
                                               ReferenceNumber = c.ReferenceNumber,
                                               CampaignName = c.CampaignName,
                                               HasPassword = (c.Pwd != null && c.Pwd != string.Empty) ? true : false,
+                                              //WebHookURL=hook.HookURL,
                                               //pwd = r.Pwd,
                                               IsActive = c.IsActive,
                                               CreatedDateStr = c.CreatedDate,
@@ -227,6 +230,26 @@ namespace Analytics.Controllers
                                               CreatedUserName = c1.UserName,
                                               CreatedUserActiveState = c1.IsActive
                                           }).ToList();
+                                          
+                            //obj_search = (from c in dc.campaignhookurls
+                                          
+                            //              where c.FK_Rid = (dc.riddatas.Select(x=>x.PK_Rid))
+                            //              select new CampaignView1()
+                            //              {
+                            //                  Id = x.Id,
+                            //                  ReferenceNumber = x.ReferenceNumber,
+                            //                  CampaignName = x.CampaignName,
+                            //                  HasPassword = x.HasPassword,
+                            //                  WebHookURL = c.HookURL,
+                            //                  IsActive = x.IsActive,
+                            //                  CreatedDateStr = x.CreatedDateStr,
+                            //                  //CreatedDate = c.CreatedDate.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                            //                  CreatedUserId = x.CreatedUserId,
+                            //                  CreatedUserEmail = x.CreatedUserEmail,
+                            //                  CreatedUserName = x.CreatedUserName,
+                            //                  CreatedUserActiveState = x.CreatedUserActiveState
+
+                            //              }).ToList();
                         }
                         else
                         {
@@ -257,6 +280,7 @@ namespace Analytics.Controllers
                                        CampaignName = x.CampaignName,
                                        HasPassword = x.HasPassword,
                                        //pwd = r.Pwd,
+                                       WebHookURL="web",
                                        IsActive = x.IsActive,
                                        //CreatedDate = x.CreatedDate.ToString(),
                                        CreatedDate = x.CreatedDateStr.Value.ToString("yyyy-MM-ddThh:mm:ss"),
@@ -288,7 +312,7 @@ namespace Analytics.Controllers
 
         //public JsonResult AddCampaign([FromBody]JToken jObject)
         [System.Web.Mvc.HttpPost]
-        public JsonResult AddCampaign(string CampaignName, string CreatedUserId, string Pwd, bool IsActive)
+        public JsonResult AddCampaign(string CampaignName, string CreatedUserId, string Pwd, bool IsActive, string WebHookURL)
         {
             riddata obj = new riddata();
             CampaignView1 obj_search = new CampaignView1();
@@ -331,9 +355,27 @@ namespace Analytics.Controllers
                             obj.FK_ClientId = cid;
                             dc.riddatas.Add(obj);
                             dc.SaveChanges();
+                    if(WebHookURL!=null && WebHookURL!="")
+                    {
+
+                        riddata objr1 = new riddata();
+                        objr1 = dc.riddatas.Where(x => x.CampaignName == CampaignName && x.ReferenceNumber == ReferenceNumber && x.FK_ClientId == cid).Select(y => y).SingleOrDefault();
+                            campaignhookurl objcamp = new campaignhookurl();
+                            objcamp.CampaignName = CampaignName;
+                            objcamp.HookURL = WebHookURL;
+                            objcamp.Status = "Active";
+                            objcamp.FK_Rid = objr1.PK_Rid;
+                            objcamp.FK_ClientID = objr1.FK_ClientId;
+                            objcamp.UpdatedDate = DateTime.UtcNow;
+                            dc.campaignhookurls.Add(objcamp);
+                            dc.SaveChanges();
+                        
+                    }
+
                         
                         obj_search = (from c in dc.riddatas
                                       join c1 in dc.clients on c.FK_ClientId equals c1.PK_ClientID
+                                      join ch in dc.campaignhookurls on c.PK_Rid equals ch.FK_Rid
                                       where c.ReferenceNumber == ReferenceNumber
                                       select new CampaignView1()
                                       {
@@ -342,6 +384,7 @@ namespace Analytics.Controllers
                                           CampaignName = c.CampaignName,
                                           HasPassword = (c.Pwd != null && c.Pwd != string.Empty) ? true : false,
                                           //pwd = r.Pwd,
+                                          WebHookURL=ch.HookURL,
                                           IsActive = c.IsActive,
                                           CreatedDateStr = c.CreatedDate,
                                           CreatedUserId = c1.PK_ClientID,
