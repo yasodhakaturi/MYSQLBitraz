@@ -96,7 +96,7 @@ function AnalyticsController($rootScope, $scope, RidService, $state, $location) 
     }
   };
 
-  if(!($rootScope.userInfo && $rootScope.userInfo.user_id)){
+  if(!($rootScope.userInfo && $rootScope.userInfo.user_id >= 0)){
     $state.go('app.main.login', {redirect_url: $location.$$absUrl});
   }else{
     $scope.init()
