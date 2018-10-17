@@ -14,12 +14,13 @@ angular
     .controller('ContactController', ContactController)
     .controller('FeatureController', FeatureController)
 
-    .controller('AnalyticsController', AnalyticsController);
+    .controller('AnalyticsController', AnalyticsControllerIndex);
 
 
 function AppController($http, $scope) {}
 
 function ClientController($http, $scope) {}
+
 function ContactController($http, $scope) {}
 
 function HeaderController($rootScope,$window, $scope, $state, AuthService, appConfig) {
@@ -38,12 +39,14 @@ function HeaderController($rootScope,$window, $scope, $state, AuthService, appCo
   }
 }
 function FeatureController($http, $scope) {}
+
 function HomeController($http, $scope) {}
+
 function appCtrl($http, $scope) {
   //console.log($scope, $http)
 }
 
-function AnalyticsController($rootScope, $scope, RidService, $state, $location) {
+function AnalyticsControllerIndex($rootScope, $scope, RidService, $state, $location) {
   $scope.rid = {};
   $scope.isLoaded = false;
   $rootScope.pageLoading = true;
@@ -96,10 +99,11 @@ function AnalyticsController($rootScope, $scope, RidService, $state, $location) 
     }
   };
 
-  if(!($rootScope.userInfo && $rootScope.userInfo.user_id >= 0)){
-    $state.go('app.main.login', {redirect_url: $location.$$absUrl});
-  }else{
+  if($rootScope.userInfo && $rootScope.userInfo.user_id >= 0){
     $scope.init()
+  }else{
+    $state.go('app.main.login', {redirect_url: $location.$$absUrl});
+
   }
 
 }

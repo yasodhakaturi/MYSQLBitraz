@@ -5,7 +5,7 @@
  */
 
 angular
-  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.campaigns'])
+  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.common.controllers.analytics', 'app.campaigns'])
     .controller('appCtrl', appCtrl)
     .controller('AppController', AppController)
     .controller('HeaderController', HeaderController)

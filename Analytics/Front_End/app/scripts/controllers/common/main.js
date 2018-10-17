@@ -1,6 +1,9 @@
 angular
   .module('app.common.controllers', ['app.auth', 'ngMap'])
   .controller('LoginController', LoginController)
+
+angular
+  .module('app.common.controllers.analytics', ['app.auth', 'ngMap', 'app.common.controllers'])
   .controller('AnalyticsController', AnalyticsController);
 
 
@@ -98,7 +101,8 @@ function AnalyticsController($rootScope, $state, $scope, CampaignService, $locat
     }
 
   };
-  if($rootScope.userInfo && $rootScope.userInfo.user_id){
+
+  if($rootScope.userInfo && $rootScope.userInfo.user_id >= 0){
     $scope.init();
   }
 }
