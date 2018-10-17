@@ -32,17 +32,17 @@ namespace Analytics.Controllers
             //try
             //{
             //    HttpWebRequest webRequest; HttpWebResponse WebResp; Stream response; StreamReader data;
-                
-                
-            //    webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
+
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser1&Api_Key=WFsAnOaJXENAkUERUGLrVXh3kzEFps1zF9f2N7ZSUQ");
 
             //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testpassword&Api_Key=6ZuD3zVvSFGFWDWd0254dwW03ZoBiNF4DgzomnxPhZ8");
 
-                
-            //   // webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser&Api_Key=6gLqU53pOxhcXghYEBxjnKtT/wqKnXugfWz24f7yQ");
 
-                
+            //     webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/AuthenticateUser?Email=testuser@gmail.com&Password=testuser&Api_Key=6gLqU53pOxhcXghYEBxjnKtT/wqKnXugfWz24f7yQ");
+
+
             //    webRequest.Method = "POST";
             //    webRequest.KeepAlive = true;
             //    //webRequest.Timeout = 100000;
@@ -64,115 +64,98 @@ namespace Analytics.Controllers
             //    string token = WebResp.Headers["token"];
 
 
-               // webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign10&Password=teastcampaign5");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign8&Password=testpassword");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign10&Password=teastcampaign5");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign8&Password=testpassword");
 
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign5&Password=testpassword");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign11&Password=testpassword11");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign5&Password=testpassword");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/RegisterCampaign?CampaignName=testcampaign25&Password=testpassword25&WebHookUrl=");
 
-                //webRequest.Method = "GET";
-                ////webRequest.Timeout = 12000;
-                //webRequest.ContentType = "application/json";
-                ////webRequest.Headers.Add("Api_key", api_key);
-                //webRequest.Headers.Add("token", token);
-                //WebResp = (HttpWebResponse)webRequest.GetResponse();
-                ////api_key = WebResp.Headers["Api_key"];
-                //token = WebResp.Headers["token"];
-                //response = WebResp.GetResponseStream();
-                //data = new StreamReader(response);
-                //string strres = data.ReadToEnd();
-                //var json = JObject.Parse(strres);
-                //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
-                //string RegisterCampaignResult = (string)json["RegisterCampaignResult"];
-                //string ReferenceNumber = (string)json["ReferenceNumber"];
-               // ReferenceNumber1 ReferenceNumberjson = JsonConvert.DeserializeObject<ReferenceNumber1>(ReferenceNumberResult);
-                //string ReferenceNumber = ReferenceNumberjson.ReferenceNumber;
-
-
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignId=2&Type=message&longurlorMessage=https://google.com&mobilenumber=853185468");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign5&Type=url&longurlorMessage=https://google.com&mobilenumber=8331878564");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetShortUrl?CampaignId=3&Type=url&longurlorMessage=https://google.com&mobilenumber=8331870564");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign8&Type=message&longurlorMessage=smsbm.ae&mobilenumber=0");
-
-                //webRequest.Method = "GET";
-                ////webRequest.Timeout = 12000;
-                //webRequest.ContentType = "application/json";
-                ////webRequest.Headers.Add("Api_key", api_key);
-                //webRequest.Headers.Add("token", token);
-                //WebResp = (HttpWebResponse)webRequest.GetResponse();
-                ////api_key = WebResp.Headers["Api_key"];
-                //token = WebResp.Headers["token"];
-                //Stream response1 = WebResp.GetResponseStream();
-                //data = new StreamReader(response1);
-                //string strres1 = data.ReadToEnd();
-                //var json1 = JObject.Parse(strres1);
-
-                //string GetShortUrlResult = (string)json1["GetShortUrlResult"];
-
-                //ShortUrl ShortUrljson = JsonConvert.DeserializeObject<ShortUrl>(GetShortUrlResult);
-                //string ShortUrl = ShortUrljson.shortUrl;
-
-                // webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetALLCampaigns");
-
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetALLCampaigns");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetALLCampaigns");
-
-                //webRequest.Method = "GET";
-                ////webRequest.Timeout = 12000;
-                //webRequest.ContentType = "application/json";
-                ////webRequest.Headers.Add("Api_key", api_key);
-                //webRequest.Headers.Add("token", token);
-                //WebResp = (HttpWebResponse)webRequest.GetResponse();
-                ////api_key = WebResp.Headers["Api_key"];
-                //token = WebResp.Headers["token"];
-                //response = WebResp.GetResponseStream();
-                //data = new StreamReader(response);
-                //strres = data.ReadToEnd();
-                //json = JObject.Parse(strres);
-                ////string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
-                //string GetALLCampaignsResult = (string)json["GetAllCampaignsResult"];
-                ////string ReferenceNumber = (string)json["ReferenceNumber"];
-                //List<CampaignsList> campaigns = JsonConvert.DeserializeObject<List<CampaignsList>>(GetALLCampaignsResult);
-
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetCampaignReferenceNumber?CampaignName=testcampaign5&Password=testpassword");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetCampaignReferenceNumber?CampaignName=testcampaign5&Password=testpassword5");
+            //    webRequest.Method = "GET";
+            //    //webRequest.Timeout = 12000;
+            //    webRequest.ContentType = "application/json";
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
+            //    WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
+            //    response = WebResp.GetResponseStream();
+            //    data = new StreamReader(response);
+            //    string strres = data.ReadToEnd();
+            //    var json = JObject.Parse(strres);
+            //    //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
+            //    string RegisterCampaignResult = (string)json["RegisterCampaignResult"];
+            //    //string ReferenceNumber = (string)json["ReferenceNumber"];
+            //    //ReferenceNumber1 ReferenceNumberjson = JsonConvert.DeserializeObject<ReferenceNumber1>(ReferenceNumberResult);
+            //    //string ReferenceNumber = ReferenceNumberjson.ReferenceNumber;
 
 
-                //webRequest.Method = "GET";
-                ////webRequest.Timeout = 12000;
-                //webRequest.ContentType = "application/json";
-                ////webRequest.Headers.Add("Api_key", api_key);
-                //webRequest.Headers.Add("token", token);
-                //WebResp = (HttpWebResponse)webRequest.GetResponse();
-                ////api_key = WebResp.Headers["Api_key"];
-                //token = WebResp.Headers["token"];
-                //response = WebResp.GetResponseStream();
-                //data = new StreamReader(response);
-                //string strres = data.ReadToEnd();
-                //JObject json = JObject.Parse(strres);
-                ////string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
-                //string CampaignReferenceNumber = (string)json["GetCampaignReferenceNumberResult"];
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignId=2&Type=message&longurlorMessage=https://google.com&mobilenumber=853185468");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.mobilytics.ae/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign5&Type=url&longurlorMessage=https://google.com&mobilenumber=8331878564");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetShortUrl?CampaignId=3&Type=url&longurlorMessage=https://google.com&mobilenumber=8331870564");
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetShortUrl?CampaignName=testcampaign8&Type=message&longurlorMessage=smsbm.ae&mobilenumber=0");
+
+            //    webRequest.Method = "GET";
+            //    //webRequest.Timeout = 12000;
+            //    webRequest.ContentType = "application/json";
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
+            //    WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
+            //    Stream response1 = WebResp.GetResponseStream();
+            //    data = new StreamReader(response1);
+            //    string strres1 = data.ReadToEnd();
+            //    var json1 = JObject.Parse(strres1);
+
+            //    string GetShortUrlResult = (string)json1["GetShortUrlResult"];
+
+            //    ShortUrl ShortUrljson = JsonConvert.DeserializeObject<ShortUrl>(GetShortUrlResult);
+            //    string ShortUrl = ShortUrljson.shortUrl;
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetALLCampaigns");
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://test.bitraz.com/ShortURLService.svc/GetALLCampaigns");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetALLCampaigns");
+
+            //    webRequest.Method = "GET";
+            //    //webRequest.Timeout = 12000;
+            //    webRequest.ContentType = "application/json";
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
+            //    WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
+            //    response = WebResp.GetResponseStream();
+            //    data = new StreamReader(response);
+            //    strres = data.ReadToEnd();
+            //    json = JObject.Parse(strres);
+            //    //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
+            //    string GetALLCampaignsResult = (string)json["GetAllCampaignsResult"];
+            //    //string ReferenceNumber = (string)json["ReferenceNumber"];
+            //    List<CampaignsList> campaigns = JsonConvert.DeserializeObject<List<CampaignsList>>(GetALLCampaignsResult);
 
 
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetCampaignAnalyticsData?CampaignReferenceNumber=6");
-                //webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetCampaignAnalyticsData?CampaignReferenceNumber=05993");
 
-                //webRequest.Method = "GET";
-                ////webRequest.Timeout = 12000;
-                //webRequest.ContentType = "application/json";
-                ////webRequest.Headers.Add("Api_key", api_key);
-                //webRequest.Headers.Add("token", token);
-                //WebResp = (HttpWebResponse)webRequest.GetResponse();
-                ////api_key = WebResp.Headers["Api_key"];
-                //token = WebResp.Headers["token"];
-                //response = WebResp.GetResponseStream();
-                //data = new StreamReader(response);
-                //strres = data.ReadToEnd();
-                //json = JObject.Parse(strres);
-                ////string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
-                //string CampaignAnalyticsDataResult = (string)json["GetCampaignAnalyticsDataResult"];
-                ////string ReferenceNumber = (string)json["ReferenceNumber"];
-                //List<CampaignsList> CampaignAnalyticsData = JsonConvert.DeserializeObject<List<CampaignsList>>(CampaignAnalyticsDataResult);
+
+            //    //webRequest = (HttpWebRequest)WebRequest.Create("http://localhost:3000/ShortURLService.svc/GetCampaignAnalyticsData?CampaignId=6");
+            //    webRequest = (HttpWebRequest)WebRequest.Create("http://mobilytics.ae/ShortURLService.svc/GetCampaignAnalyticsData?CampaignId=3");
+
+            //    webRequest.Method = "GET";
+            //    //webRequest.Timeout = 12000;
+            //    webRequest.ContentType = "application/json";
+            //    //webRequest.Headers.Add("Api_key", api_key);
+            //    webRequest.Headers.Add("token", token);
+            //    WebResp = (HttpWebResponse)webRequest.GetResponse();
+            //    //api_key = WebResp.Headers["Api_key"];
+            //    token = WebResp.Headers["token"];
+            //    response = WebResp.GetResponseStream();
+            //    data = new StreamReader(response);
+            //    strres = data.ReadToEnd();
+            //    json = JObject.Parse(strres);
+            //    //string ReferenceNumberResult = (string)json["RegisterOrGetCampaignResult"];
+            //    string CampaignAnalyticsDataResult = (string)json["GetCampaignAnalyticsDataResult"];
+            //    //string ReferenceNumber = (string)json["ReferenceNumber"];
+            //    List<CampaignsList> CampaignAnalyticsData = JsonConvert.DeserializeObject<List<CampaignsList>>(CampaignAnalyticsDataResult);
 
 
             //}
