@@ -20,7 +20,7 @@
                     </div>
                 </form>
             </div>
-            <div ng-if="rid.id && (isAuthorized || !hasAuthentication)">
+            <div ng-if="isLoaded && rid.id && !error && (isAuthorized || !hasAuthentication)">
                 <analytics-layout campaign-id="rid.id" ></analytics-layout>
             </div>
         </div>

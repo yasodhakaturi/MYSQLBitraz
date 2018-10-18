@@ -3,11 +3,18 @@ angular.module('app.rid', ["ngResource"])
       return $resource(appConfig.apiEndPoint + '/api/rid/', {}, {
         getInfo: {
           method: 'GET',
-          url: appConfig.apiEndPoint + '/auth/ReferenceInfo?rid=:id'
+          url: appConfig.apiEndPoint + '/auth/ReferenceInfo',
+          params:{
+            rid:'@id'
+          }
         },
         validate: {
           method: 'POST',
-          url: appConfig.apiEndPoint + '/auth/ReferenceInfoValidate'
+          url: appConfig.apiEndPoint + '/auth/ReferenceInfoValidate',
+          data:{
+            rid:'@id',
+            password:'@password'
+          }
         },
         getSummary: {
           method: 'GET',

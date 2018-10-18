@@ -64,16 +64,19 @@ function AnalyticsControllerIndex($rootScope, $scope, RidService, $state, $locat
     }
   };
 
-  $scope.validateRid = (model = {rid:$scope.rid.id}) => {
+  $scope.validateRid = (model = {id:$scope.rid.id}) => {
     $scope.error = '';
+    $scope.isAuthorized = false;
+    $scope.hasAuthentication = true;
+    console.log($scope.isAuthorized, $scope.hasAuthentication, model)
     if(!$scope.isAuthorized && $scope.hasAuthentication && model.password){
       RidService.validate(model).$promise.then((resp) => {
-        $scope.isLoaded = true;
         $rootScope.pageLoading = false;
         $scope.isAuthorized = resp.success ? true: false;
         if(!$scope.isAuthorized){
           $scope.error = 'Invalid Authorization';
         }
+        $scope.isLoaded = true;
       }, (err) => {
         $scope.isLoaded = true;
         $rootScope.pageLoading = false;
@@ -87,6 +90,9 @@ function AnalyticsControllerIndex($rootScope, $scope, RidService, $state, $locat
         $rootScope.pageLoading = false;
         $scope.hasAuthentication = !!resp.has_authentication;
         $scope.isAuthorized = !!resp.is_authorized;
+        if(!$scope.isAuthorized && $scope.hasAuthentication){
+          $scope.error = 'Invalid Authorization';
+        }
       }, (err) => {
         $scope.isLoaded = true;
         $rootScope.pageLoading = false;
