@@ -64,7 +64,7 @@ function AnalyticsControllerIndex($rootScope, $scope, RidService, $state, $locat
     }
   };
 
-  $scope.validateRid = (model = {id:$scope.rid.id}) => {
+  $scope.validateRid = (model = {rid:$scope.rid.id}) => {
     $scope.error = '';
     if(!$scope.isAuthorized && $scope.hasAuthentication && model.password){
       RidService.validate(model).$promise.then((resp) => {

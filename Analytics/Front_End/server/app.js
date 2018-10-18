@@ -57,11 +57,11 @@ app.all("*", function (req, res, next) {
    var users = require("./mock_data/chance/admin/users");
    res.json( users.get() );
   }
-  else if( /\/api\/rid\/info\/\w*$/.exec(p)){
+  else if( /\/auth\/ReferenceInfo/.exec(p)){
     var rid = require("./mock_data/chance/rid");
     res.json( rid.get() );
   }
- else if( /\/api\/rid\/validate\/\w*$/.exec(p)){
+ else if( /\/auth\/ReferenceInfoValidate/.exec(p)){
     var rid = require("./mock_data/chance/rid");
     res.json( rid.post() );
   }
