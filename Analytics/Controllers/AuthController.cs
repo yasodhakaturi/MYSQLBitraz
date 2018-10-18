@@ -290,7 +290,7 @@ namespace Analytics.Controllers
         }
 
          [System.Web.Http.HttpPost]
-        public JsonResult Validate(string rid, string password)
+        public JsonResult ReferenceInfoValidate(string rid, string password)
         {
             try
             {
