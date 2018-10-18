@@ -290,13 +290,13 @@ namespace Analytics.Controllers
         }
 
          [System.Web.Http.HttpPost]
-        public JsonResult ReferenceInfoPost(string rid, string pwd)
+        public JsonResult Validate(string rid, string password)
         {
             try
             {
-                if (pwd != "")
+                if (password != "")
                 {
-                    riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.Pwd == pwd && x.IsActive == true).Select(y => y).SingleOrDefault();
+                    riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.Pwd == password && x.IsActive == true).Select(y => y).SingleOrDefault();
                     Analytics_Share objana = new Analytics_Share();
                     if (objrid != null)
                     {
