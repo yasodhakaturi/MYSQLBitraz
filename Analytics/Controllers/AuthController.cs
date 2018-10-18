@@ -244,5 +244,104 @@ namespace Analytics.Controllers
                 return Json(message);
             }
         }
+
+
+        public JsonResult ReferenceInfo(string rid)
+        {
+            try
+            {
+                riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.IsActive == true).Select(y => y).SingleOrDefault();
+                Analytics_Share objana = new Analytics_Share();
+                if (objrid != null)
+                {
+                    objana.rid = objrid.ReferenceNumber;
+                    if (objrid.Pwd != null)
+                        objana.has_authentication = true;
+                    else
+                        objana.has_authentication = false;
+                    if (Session["analyticsshare"] != null)
+                        objana.is_authorized = true;
+                    else
+                        objana.is_authorized = false;
+                    return Json(objana, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Error obj_err = new Error();
+                    Errormessage errmesobj = new Errormessage();
+                    errmesobj.message = "Please Access Correct Campaign Link..";
+                    obj_err.error = errmesobj;
+
+                    return Json(obj_err, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+         [System.Web.Http.HttpPost]
+        public JsonResult ReferenceInfoPost(string rid, string pwd)
+        {
+            try
+            {
+                if (pwd != "")
+                {
+                    riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.Pwd == pwd && x.IsActive == true).Select(y => y).SingleOrDefault();
+                    Analytics_Share objana = new Analytics_Share();
+                    if (objrid != null)
+                    {
+                        objana.rid = objrid.ReferenceNumber;
+                        if (objrid.Pwd != null)
+                        {
+                            objana.has_authentication = true;
+                            Session["analyticsshare"] = rid;
+                            objana.is_authorized = true;
+                        }
+
+
+                        return Json(objana, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        objana.rid = rid;
+                        objana.has_authentication = false;
+                        objana.is_authorized = false;
+
+                        return Json(objana, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    Error obj_err = new Error();
+                    Errormessage errmesobj = new Errormessage();
+                    errmesobj.message = "Please enter password";
+                    obj_err.error = errmesobj;
+
+                    return Json(obj_err, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }

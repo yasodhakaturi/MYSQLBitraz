@@ -11,4 +11,10 @@ namespace Analytics.Models
         public string user_role { get; set; }
         public string user_name { get; set; }
     }
+    public class Analytics_Share
+    {
+        public string rid { get; set; }
+        public bool has_authentication { get; set; }
+        public bool is_authorized { get; set; }
+    }
 }

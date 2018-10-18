@@ -971,6 +971,6 @@ C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL docum
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\obj\Debug\Analytics.csprojResolveAssemblyReference.cache
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\obj\Debug\Analytics.dll
 C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\obj\Debug\Analytics.pdb
-C:\Users\yasodha\Documents\Visual Studio 2013\Projects\Yasodha Shorten URL documents\MYSQLProjec\MYSQLBitrazwor\Analytics\obj\Debug\Analytics.csprojResolveAssemblyReference.cache
