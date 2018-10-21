@@ -5,7 +5,7 @@
  */
 
 angular
-  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.campaigns', "angular-web-notification"])
+  .module('app.controllers', ['app.auth', 'app.common.controllers', 'app.common.controllers.analytics', 'app.campaigns', "angular-web-notification"])
   .controller('appCtrl', appCtrl)
   .controller('AppController', AppController)
   .controller('HeaderController', HeaderController)

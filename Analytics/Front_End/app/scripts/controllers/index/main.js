@@ -68,7 +68,7 @@ function AnalyticsControllerIndex($rootScope, $scope, RidService, $state, $locat
     $scope.error = '';
     $scope.isAuthorized = false;
     $scope.hasAuthentication = true;
-    console.log($scope.isAuthorized, $scope.hasAuthentication, model)
+
     if(!$scope.isAuthorized && $scope.hasAuthentication && model.password){
       RidService.validate(model).$promise.then((resp) => {
         $rootScope.pageLoading = false;
