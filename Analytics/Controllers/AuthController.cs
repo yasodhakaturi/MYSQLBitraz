@@ -246,11 +246,11 @@ namespace Analytics.Controllers
         }
 
 
-        public JsonResult ReferenceInfo(string rid)
+        public JsonResult ReferenceInfo(string id)
         {
             try
             {
-                riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.IsActive == true).Select(y => y).SingleOrDefault();
+                riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == id && x.IsActive == true).Select(y => y).SingleOrDefault();
                 Analytics_Share objana = new Analytics_Share();
                 if (objrid != null)
                 {
@@ -259,7 +259,7 @@ namespace Analytics.Controllers
                         objana.has_authentication = true;
                     else
                         objana.has_authentication = false;
-                    if (Session["analyticsshare"] != null)
+                    if ((Session["analyticsshare"] != null && objrid.Pwd != null) || (Session["analyticsshare"] == null && objrid.Pwd == null))
                         objana.is_authorized = true;
                     else
                         objana.is_authorized = false;
@@ -290,13 +290,13 @@ namespace Analytics.Controllers
         }
 
          [System.Web.Http.HttpPost]
-        public JsonResult ReferenceInfoValidate(string rid, string password)
+        public JsonResult ReferenceInfoValidate(string id, string password)
         {
             try
             {
                 if (password != "")
                 {
-                    riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.Pwd == password && x.IsActive == true).Select(y => y).SingleOrDefault();
+                    riddata objrid = dc.riddatas.Where(x => x.ReferenceNumber == id && x.Pwd == password && x.IsActive == true).Select(y => y).SingleOrDefault();
                     Analytics_Share objana = new Analytics_Share();
                     if (objrid != null)
                     {
@@ -304,7 +304,7 @@ namespace Analytics.Controllers
                         if (objrid.Pwd != null)
                         {
                             objana.has_authentication = true;
-                            Session["analyticsshare"] = rid;
+                            Session["analyticsshare"] = id;
                             objana.is_authorized = true;
                         }
 
@@ -313,7 +313,7 @@ namespace Analytics.Controllers
                     }
                     else
                     {
-                        objana.rid = rid;
+                        objana.rid = id;
                         objana.has_authentication = false;
                         objana.is_authorized = false;
 
