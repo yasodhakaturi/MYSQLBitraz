@@ -565,12 +565,12 @@ namespace Analytics.Helpers.BO
        {
            if(value!=null)
            stringBuilder.Append(value.Replace(',', ' '));
-           stringBuilder.Append(", ");
+           stringBuilder.Append(",");
        }
 
        public void WriteColumnName_Download()
        {
-           string columnNames = "MobileNumber, ShortUrl";
+           string columnNames = "MobileNumber,ShortUrl";
            HttpContext.Current.Response.Write(columnNames);
            HttpContext.Current.Response.Write(Environment.NewLine);
        }

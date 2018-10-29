@@ -725,7 +725,7 @@ namespace Analytics.Controllers
                                                 //ShortUrl="https://g0.pe/" + u.UniqueNumber
                                             }).ToList();
                 //var grid = new System.Web.UI.WebControls.GridView();
-                string filename = objb.BatchName;
+                string filename = objb.BatchName.Replace(" ", string.Empty);
                 //export data in excel format
                 //grid.DataSource = objd;
                 //grid.DataBind();
@@ -739,7 +739,8 @@ namespace Analytics.Controllers
                 //Response.End();
 
                 //export data in csv format
-                string attachment = "attachment; filename=" + filename + ".csv";
+                //string attachment = "attachment; filename=" + filename + ".csv";
+                string attachment = "attachment; filename=" + filename + ".txt";
                 HttpContext.Response.Clear();
                 HttpContext.Response.ClearHeaders();
                 HttpContext.Response.ClearContent();
