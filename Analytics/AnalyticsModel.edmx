@@ -177,6 +177,15 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="endIpNum" Type="bigint" Nullable="false" />
           <Property Name="locId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="messagelinks">
+          <Key>
+            <PropertyRef Name="PK_LinkID" />
+          </Key>
+          <Property Name="PK_LinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShortUrlId" Type="int" />
+          <Property Name="LinkTag" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Precision="6" />
+        </EntityType>
         <EntityType Name="riddata">
           <Key>
             <PropertyRef Name="PK_Rid" />
@@ -227,6 +236,60 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Property Name="FK_City_Master_id" Type="int" />
           <Property Name="ACK" Type="varchar" MaxLength="45" />
           <Property Name="ACKDATE" Type="datetime" Precision="6" />
+        </EntityType>
+        <EntityType Name="stat_counts">
+          <Key>
+            <PropertyRef Name="PK_Stat" />
+          </Key>
+          <Property Name="PK_Stat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TotalUsers" Type="int" />
+          <Property Name="UniqueUsers" Type="int" />
+          <Property Name="UniqueUsersToday" Type="int" />
+          <Property Name="UsersToday" Type="int" />
+          <Property Name="UniqueUsersYesterday" Type="int" />
+          <Property Name="UsersYesterday" Type="int" />
+          <Property Name="UniqueUsersLast7days" Type="int" />
+          <Property Name="UsersLast7days" Type="int" />
+          <Property Name="TotalVisits" Type="int" />
+          <Property Name="VisitsToday" Type="int" />
+          <Property Name="UniqueVisitsToday" Type="int" />
+          <Property Name="VisitsYesterday" Type="int" />
+          <Property Name="UniqueVisitsYesterday" Type="int" />
+          <Property Name="UniqueVisitsLast7day" Type="int" />
+          <Property Name="VisitsLast7days" Type="int" />
+          <Property Name="TotalCamapigns" Type="int" />
+          <Property Name="CampaignsLast7days" Type="int" />
+          <Property Name="CampaignsMonth" Type="int" />
+          <Property Name="UrlTotal_Today" Type="int" />
+          <Property Name="UrlPercent_Today" Type="double" />
+          <Property Name="VisitsTotal_Today" Type="int" />
+          <Property Name="VisitsPercent_Today" Type="double" />
+          <Property Name="RevisitsTotal_Today" Type="int" />
+          <Property Name="RevisitsPercent_Today" Type="double" />
+          <Property Name="NoVisitsTotal_Today" Type="int" />
+          <Property Name="NoVisitsPercent_Today" Type="double" />
+          <Property Name="UrlTotal_Week" Type="int" />
+          <Property Name="UrlPercent_Week" Type="double" />
+          <Property Name="VisitsTotal_Week" Type="int" />
+          <Property Name="VisitsPercent_Week" Type="double" />
+          <Property Name="RevisitsTotal_Week" Type="int" />
+          <Property Name="RevisitsPercent_Week" Type="double" />
+          <Property Name="NoVisitsTotal_Week" Type="int" />
+          <Property Name="NoVisitsPercent_Week" Type="double" />
+          <Property Name="UrlTotal_Month" Type="int" />
+          <Property Name="UrlTotalPercent_Month" Type="double" />
+          <Property Name="VisitsTotal_Month" Type="int" />
+          <Property Name="VisitsPercent_Month" Type="double" />
+          <Property Name="RevisitsTotal_Month" Type="int" />
+          <Property Name="RevisitsPercent_Month" Type="double" />
+          <Property Name="NoVisitsTotal_Month" Type="int" />
+          <Property Name="NoVisitsPercent_Month" Type="double" />
+          <Property Name="DaysCount_Week" Type="int" />
+          <Property Name="DaysCount_Month" Type="int" />
+          <Property Name="FK_Rid" Type="int" />
+          <Property Name="FK_ClientID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Precision="0" />
+          <Property Name="UniqueVisits" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -392,12 +455,18 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <Parameter Name="mobilenumber" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetALLCOUNTS1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
-          <Parameter Name="DateFrom" Type="datetime" Mode="In" />
-          <Parameter Name="DateTo" Type="datetime" Mode="In" />
+          <Parameter Name="DateFrom" Type="varchar" Mode="In" />
+          <Parameter Name="DateTo" Type="varchar" Mode="In" />
+          <Parameter Name="rid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetCampaignStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
           <Parameter Name="rid" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetCampaignSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
-          <Parameter Name="rid" Type="longtext" Mode="In" />
+          <Parameter Name="rid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetDashBoardStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
+          <Parameter Name="FkClientId" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetDashBoardSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="shortenurl">
           <Parameter Name="FkClientId" Type="int" Mode="In" />
@@ -415,8 +484,10 @@ warning 6002: The table/view 'def.shortenurl.city_locations_geolite2' does not h
           <EntitySet Name="locations_data" EntityType="Self.locations_data" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="loginhistory" EntityType="Self.loginhistory" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="master_location" EntityType="Self.master_location" Schema="shortenurl" store:Type="Tables" />
+          <EntitySet Name="messagelinks" EntityType="Self.messagelinks" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="riddata" EntityType="Self.riddata" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="shorturldata" EntityType="Self.shorturldata" Schema="shortenurl" store:Type="Tables" />
+          <EntitySet Name="stat_counts" EntityType="Self.stat_counts" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="tmp_rownum_update" EntityType="Self.tmp_rownum_update" Schema="shortenurl" store:Type="Tables" />
           <EntitySet Name="uiddata" EntityType="Self.uiddata" Schema="shortenurl" store:Type="Tables" />
@@ -779,8 +850,8 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <Parameter Name="mobilenumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetALLCOUNTS1">
-            <Parameter Name="DateFrom" Mode="In" Type="DateTime" />
-            <Parameter Name="DateTo" Mode="In" Type="DateTime" />
+            <Parameter Name="DateFrom" Mode="In" Type="String" />
+            <Parameter Name="DateTo" Mode="In" Type="String" />
             <Parameter Name="rid" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="campaignhookurls" EntityType="shortenurlModel.campaignhookurl" />
@@ -806,6 +877,14 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             <End Role="uiddata" EntitySet="uiddatas" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
           </AssociationSet>
+          <EntitySet Name="messagelinks" EntityType="shortenurlModel.messagelink" />
+          <FunctionImport Name="spGetCampaignStats">
+          <Parameter Name="rid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetDashBoardStats">
+          <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
           </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
@@ -932,6 +1011,69 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="messagelink">
+          <Key>
+            <PropertyRef Name="PK_LinkID" />
+          </Key>
+          <Property Name="PK_LinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShortUrlId" Type="Int32" />
+          <Property Name="LinkTag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="stat_counts">
+          <Key>
+            <PropertyRef Name="PK_Stat" />
+          </Key>
+          <Property Name="PK_Stat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalUsers" Type="Int32" />
+          <Property Name="UniqueUsers" Type="Int32" />
+          <Property Name="UniqueUsersToday" Type="Int32" />
+          <Property Name="UsersToday" Type="Int32" />
+          <Property Name="UniqueUsersYesterday" Type="Int32" />
+          <Property Name="UsersYesterday" Type="Int32" />
+          <Property Name="UniqueUsersLast7days" Type="Int32" />
+          <Property Name="UsersLast7days" Type="Int32" />
+          <Property Name="TotalVisits" Type="Int32" />
+          <Property Name="VisitsToday" Type="Int32" />
+          <Property Name="UniqueVisitsToday" Type="Int32" />
+          <Property Name="VisitsYesterday" Type="Int32" />
+          <Property Name="UniqueVisitsYesterday" Type="Int32" />
+          <Property Name="UniqueVisitsLast7day" Type="Int32" />
+          <Property Name="VisitsLast7days" Type="Int32" />
+          <Property Name="TotalCamapigns" Type="Int32" />
+          <Property Name="CampaignsLast7days" Type="Int32" />
+          <Property Name="CampaignsMonth" Type="Int32" />
+          <Property Name="UrlTotal_Today" Type="Int32" />
+          <Property Name="UrlPercent_Today" Type="Double" />
+          <Property Name="VisitsTotal_Today" Type="Int32" />
+          <Property Name="VisitsPercent_Today" Type="Double" />
+          <Property Name="RevisitsTotal_Today" Type="Int32" />
+          <Property Name="RevisitsPercent_Today" Type="Double" />
+          <Property Name="NoVisitsTotal_Today" Type="Int32" />
+          <Property Name="NoVisitsPercent_Today" Type="Double" />
+          <Property Name="UrlTotal_Week" Type="Int32" />
+          <Property Name="UrlPercent_Week" Type="Double" />
+          <Property Name="VisitsTotal_Week" Type="Int32" />
+          <Property Name="VisitsPercent_Week" Type="Double" />
+          <Property Name="RevisitsTotal_Week" Type="Int32" />
+          <Property Name="RevisitsPercent_Week" Type="Double" />
+          <Property Name="NoVisitsTotal_Week" Type="Int32" />
+          <Property Name="NoVisitsPercent_Week" Type="Double" />
+          <Property Name="UrlTotal_Month" Type="Int32" />
+          <Property Name="UrlTotalPercent_Month" Type="Double" />
+          <Property Name="VisitsTotal_Month" Type="Int32" />
+          <Property Name="VisitsPercent_Month" Type="Double" />
+          <Property Name="RevisitsTotal_Month" Type="Int32" />
+          <Property Name="RevisitsPercent_Month" Type="Double" />
+          <Property Name="NoVisitsTotal_Month" Type="Int32" />
+          <Property Name="NoVisitsPercent_Month" Type="Double" />
+          <Property Name="DaysCount_Week" Type="Int32" />
+          <Property Name="DaysCount_Month" Type="Int32" />
+          <Property Name="FK_Rid" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" />
+          <Property Name="UniqueVisits" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1212,6 +1354,73 @@ FROM `city_locations_geolite2` AS `city_locations_geolite2`</DefiningQuery>
                 <ScalarProperty Name="Ipv6" ColumnName="Ipv6" />
                 <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
                 <ScalarProperty Name="PK_Shorturl" ColumnName="PK_Shorturl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="messagelinks">
+            <EntityTypeMapping TypeName="shortenurlModel.messagelink">
+              <MappingFragment StoreEntitySet="messagelinks">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LinkTag" ColumnName="LinkTag" />
+                <ScalarProperty Name="ShortUrlId" ColumnName="ShortUrlId" />
+                <ScalarProperty Name="PK_LinkID" ColumnName="PK_LinkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetCampaignStats" FunctionName="shortenurlModel.Store.spGetCampaignStats" />
+          <FunctionImportMapping FunctionImportName="spGetDashBoardStats" FunctionName="shortenurlModel.Store.spGetDashBoardStats" />
+          <EntitySetMapping Name="stat_counts">
+            <EntityTypeMapping TypeName="shortenurlModel.stat_counts">
+              <MappingFragment StoreEntitySet="stat_counts">
+                <ScalarProperty Name="UniqueVisits" ColumnName="UniqueVisits" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
+                <ScalarProperty Name="DaysCount_Month" ColumnName="DaysCount_Month" />
+                <ScalarProperty Name="DaysCount_Week" ColumnName="DaysCount_Week" />
+                <ScalarProperty Name="NoVisitsPercent_Month" ColumnName="NoVisitsPercent_Month" />
+                <ScalarProperty Name="NoVisitsTotal_Month" ColumnName="NoVisitsTotal_Month" />
+                <ScalarProperty Name="RevisitsPercent_Month" ColumnName="RevisitsPercent_Month" />
+                <ScalarProperty Name="RevisitsTotal_Month" ColumnName="RevisitsTotal_Month" />
+                <ScalarProperty Name="VisitsPercent_Month" ColumnName="VisitsPercent_Month" />
+                <ScalarProperty Name="VisitsTotal_Month" ColumnName="VisitsTotal_Month" />
+                <ScalarProperty Name="UrlTotalPercent_Month" ColumnName="UrlTotalPercent_Month" />
+                <ScalarProperty Name="UrlTotal_Month" ColumnName="UrlTotal_Month" />
+                <ScalarProperty Name="NoVisitsPercent_Week" ColumnName="NoVisitsPercent_Week" />
+                <ScalarProperty Name="NoVisitsTotal_Week" ColumnName="NoVisitsTotal_Week" />
+                <ScalarProperty Name="RevisitsPercent_Week" ColumnName="RevisitsPercent_Week" />
+                <ScalarProperty Name="RevisitsTotal_Week" ColumnName="RevisitsTotal_Week" />
+                <ScalarProperty Name="VisitsPercent_Week" ColumnName="VisitsPercent_Week" />
+                <ScalarProperty Name="VisitsTotal_Week" ColumnName="VisitsTotal_Week" />
+                <ScalarProperty Name="UrlPercent_Week" ColumnName="UrlPercent_Week" />
+                <ScalarProperty Name="UrlTotal_Week" ColumnName="UrlTotal_Week" />
+                <ScalarProperty Name="NoVisitsPercent_Today" ColumnName="NoVisitsPercent_Today" />
+                <ScalarProperty Name="NoVisitsTotal_Today" ColumnName="NoVisitsTotal_Today" />
+                <ScalarProperty Name="RevisitsPercent_Today" ColumnName="RevisitsPercent_Today" />
+                <ScalarProperty Name="RevisitsTotal_Today" ColumnName="RevisitsTotal_Today" />
+                <ScalarProperty Name="VisitsPercent_Today" ColumnName="VisitsPercent_Today" />
+                <ScalarProperty Name="VisitsTotal_Today" ColumnName="VisitsTotal_Today" />
+                <ScalarProperty Name="UrlPercent_Today" ColumnName="UrlPercent_Today" />
+                <ScalarProperty Name="UrlTotal_Today" ColumnName="UrlTotal_Today" />
+                <ScalarProperty Name="CampaignsMonth" ColumnName="CampaignsMonth" />
+                <ScalarProperty Name="CampaignsLast7days" ColumnName="CampaignsLast7days" />
+                <ScalarProperty Name="TotalCamapigns" ColumnName="TotalCamapigns" />
+                <ScalarProperty Name="VisitsLast7days" ColumnName="VisitsLast7days" />
+                <ScalarProperty Name="UniqueVisitsLast7day" ColumnName="UniqueVisitsLast7day" />
+                <ScalarProperty Name="UniqueVisitsYesterday" ColumnName="UniqueVisitsYesterday" />
+                <ScalarProperty Name="VisitsYesterday" ColumnName="VisitsYesterday" />
+                <ScalarProperty Name="UniqueVisitsToday" ColumnName="UniqueVisitsToday" />
+                <ScalarProperty Name="VisitsToday" ColumnName="VisitsToday" />
+                <ScalarProperty Name="TotalVisits" ColumnName="TotalVisits" />
+                <ScalarProperty Name="UsersLast7days" ColumnName="UsersLast7days" />
+                <ScalarProperty Name="UniqueUsersLast7days" ColumnName="UniqueUsersLast7days" />
+                <ScalarProperty Name="UsersYesterday" ColumnName="UsersYesterday" />
+                <ScalarProperty Name="UniqueUsersYesterday" ColumnName="UniqueUsersYesterday" />
+                <ScalarProperty Name="UsersToday" ColumnName="UsersToday" />
+                <ScalarProperty Name="UniqueUsersToday" ColumnName="UniqueUsersToday" />
+                <ScalarProperty Name="UniqueUsers" ColumnName="UniqueUsers" />
+                <ScalarProperty Name="TotalUsers" ColumnName="TotalUsers" />
+                <ScalarProperty Name="PK_Stat" ColumnName="PK_Stat" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

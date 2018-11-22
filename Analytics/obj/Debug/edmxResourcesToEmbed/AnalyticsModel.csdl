@@ -304,8 +304,8 @@
       <Parameter Name="mobilenumber" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="spGetALLCOUNTS1">
-      <Parameter Name="DateFrom" Mode="In" Type="DateTime" />
-      <Parameter Name="DateTo" Mode="In" Type="DateTime" />
+      <Parameter Name="DateFrom" Mode="In" Type="String" />
+      <Parameter Name="DateTo" Mode="In" Type="String" />
       <Parameter Name="rid" Mode="In" Type="Int32" />
     </FunctionImport>
     <EntitySet Name="campaignhookurls" EntityType="shortenurlModel.campaignhookurl" />
@@ -331,6 +331,14 @@
       <End Role="uiddata" EntitySet="uiddatas" />
       <End Role="shorturldata" EntitySet="shorturldatas" />
     </AssociationSet>
+    <EntitySet Name="messagelinks" EntityType="shortenurlModel.messagelink" />
+    <FunctionImport Name="spGetCampaignStats">
+      <Parameter Name="rid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardStats">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
   </EntityContainer>
   <EntityType Name="campaignhookurl">
     <Key>
@@ -457,4 +465,67 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="messagelink">
+    <Key>
+      <PropertyRef Name="PK_LinkID" />
+    </Key>
+    <Property Name="PK_LinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShortUrlId" Type="Int32" />
+    <Property Name="LinkTag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="stat_counts">
+    <Key>
+      <PropertyRef Name="PK_Stat" />
+    </Key>
+    <Property Name="PK_Stat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TotalUsers" Type="Int32" />
+    <Property Name="UniqueUsers" Type="Int32" />
+    <Property Name="UniqueUsersToday" Type="Int32" />
+    <Property Name="UsersToday" Type="Int32" />
+    <Property Name="UniqueUsersYesterday" Type="Int32" />
+    <Property Name="UsersYesterday" Type="Int32" />
+    <Property Name="UniqueUsersLast7days" Type="Int32" />
+    <Property Name="UsersLast7days" Type="Int32" />
+    <Property Name="TotalVisits" Type="Int32" />
+    <Property Name="VisitsToday" Type="Int32" />
+    <Property Name="UniqueVisitsToday" Type="Int32" />
+    <Property Name="VisitsYesterday" Type="Int32" />
+    <Property Name="UniqueVisitsYesterday" Type="Int32" />
+    <Property Name="UniqueVisitsLast7day" Type="Int32" />
+    <Property Name="VisitsLast7days" Type="Int32" />
+    <Property Name="TotalCamapigns" Type="Int32" />
+    <Property Name="CampaignsLast7days" Type="Int32" />
+    <Property Name="CampaignsMonth" Type="Int32" />
+    <Property Name="UrlTotal_Today" Type="Int32" />
+    <Property Name="UrlPercent_Today" Type="Double" />
+    <Property Name="VisitsTotal_Today" Type="Int32" />
+    <Property Name="VisitsPercent_Today" Type="Double" />
+    <Property Name="RevisitsTotal_Today" Type="Int32" />
+    <Property Name="RevisitsPercent_Today" Type="Double" />
+    <Property Name="NoVisitsTotal_Today" Type="Int32" />
+    <Property Name="NoVisitsPercent_Today" Type="Double" />
+    <Property Name="UrlTotal_Week" Type="Int32" />
+    <Property Name="UrlPercent_Week" Type="Double" />
+    <Property Name="VisitsTotal_Week" Type="Int32" />
+    <Property Name="VisitsPercent_Week" Type="Double" />
+    <Property Name="RevisitsTotal_Week" Type="Int32" />
+    <Property Name="RevisitsPercent_Week" Type="Double" />
+    <Property Name="NoVisitsTotal_Week" Type="Int32" />
+    <Property Name="NoVisitsPercent_Week" Type="Double" />
+    <Property Name="UrlTotal_Month" Type="Int32" />
+    <Property Name="UrlTotalPercent_Month" Type="Double" />
+    <Property Name="VisitsTotal_Month" Type="Int32" />
+    <Property Name="VisitsPercent_Month" Type="Double" />
+    <Property Name="RevisitsTotal_Month" Type="Int32" />
+    <Property Name="RevisitsPercent_Month" Type="Double" />
+    <Property Name="NoVisitsTotal_Month" Type="Int32" />
+    <Property Name="NoVisitsPercent_Month" Type="Double" />
+    <Property Name="DaysCount_Week" Type="Int32" />
+    <Property Name="DaysCount_Month" Type="Int32" />
+    <Property Name="FK_Rid" Type="Int32" />
+    <Property Name="FK_ClientID" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" />
+    <Property Name="UniqueVisits" Type="Int32" />
+  </EntityType>
 </Schema>

@@ -9,7 +9,7 @@ using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 //using System.Data.Sqlclient;
-using System.Linq;
+using System.Linq;  
 using System.Web;
 using System.Web.Mvc;
 
@@ -29,7 +29,7 @@ namespace Analytics.Controllers
 
             return View(obj);
         }
-        public JsonResult GETSummary(int cid,string rid)
+        public JsonResult GETSummary1(int cid,string rid)
         {
 
             DashBoardSummary obj = new DashBoardSummary();
@@ -554,10 +554,450 @@ namespace Analytics.Controllers
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
-        //public ActionResult Analytics()
-        //{
+        public JsonResult GETSummary(int cid, string rid)
+        {
 
-        //    return View();
-        //}
+            DashBoardStats obj = new DashBoardStats();
+
+            try
+            {
+                if (Session["id"] != null)
+                {
+                    if (Session["id"] != null && rid == null)
+                    {
+                        //int c_id = (int)Session["id"];
+
+                        //if (cid != "" && cid != null)
+                        //{
+                        string role = Helper.CurrentUserRole;
+                        MySqlDataReader myReader;
+                        if (role.ToLower() != "admin")
+                        {
+                            client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                            if (obj_client != null)
+                            {
+                                string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                                // create and open a connection object
+                                lSQLConn = new MySqlConnection(connStr);
+                                lSQLConn.Open();
+                                lSQLCmd.CommandType = CommandType.StoredProcedure;
+                                lSQLCmd.CommandTimeout = 600;
+                                lSQLCmd.CommandText = "spGetDashBoardStats";
+                                lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                                lSQLCmd.Connection = lSQLConn;
+                                //myReader = lSQLCmd.ExecuteReader();
+                            }
+                        }
+                        else
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardStats";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkClientId", "0"));
+                            lSQLCmd.Connection = lSQLConn;
+                        }
+                        myReader = lSQLCmd.ExecuteReader();
+                        
+                        uniqueUsersToday1 uniqueUsersToday = ((IObjectContextAdapter)dc)
+                              .ObjectContext
+                              .Translate<uniqueUsersToday1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                        myReader.NextResult();
+                        uniqueVisits1 uniqueVisits = ((IObjectContextAdapter)dc)
+                             .ObjectContext
+                             .Translate<uniqueVisits1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                        myReader.NextResult();
+                        List<uniqueVisitsToday1> uniqueVisitsToday = ((IObjectContextAdapter)dc)
+                             .ObjectContext
+                             .Translate<uniqueVisitsToday1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                        myReader.NextResult();
+                        //List<uniqueVisitsLast7day1> uniqueVisitsLast7day = ((IObjectContextAdapter)dc)
+                        //    .ObjectContext
+                        //    .Translate<uniqueVisitsLast7day1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                        //myReader.NextResult();
+                        //List<visitsLast7days1> visitsLast7days = ((IObjectContextAdapter)dc)
+                        //    .ObjectContext
+                        //    .Translate<visitsLast7days1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                        //myReader.NextResult();
+                        List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
+                       .ObjectContext
+                       .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                        myReader.NextResult();
+                        today1 today1 = ((IObjectContextAdapter)dc)
+                       .ObjectContext
+                       .Translate<today1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                       
+                        stat_counts  st_obj_res=new stat_counts();
+                        if(Helper.CurrentUserRole=="admin")
+                        st_obj_res=dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid==0).SingleOrDefault();
+                        else
+                        {
+                        List<stat_counts> st_obj = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid!=0).ToList();
+                        st_obj_res = (from s in st_obj
+                                  group s by s.FK_ClientID into r
+                                  select new stat_counts()
+                                  {
+TotalUsers=r.Sum(x=>x.TotalUsers),
+UniqueUsers=r.Sum(x=>x.UniqueUsers),
+//UniqueUsersToday=r.Sum(x=>x.UniqueUsersToday),
+UsersToday=r.Sum(x=>x.UsersToday),
+UniqueUsersYesterday=r.Sum(x=>x.UniqueUsersYesterday),
+UsersYesterday=r.Sum(x=>x.UsersYesterday),
+UniqueUsersLast7days=r.Sum(x=>x.UniqueUsersLast7days),
+UsersLast7days=r.Sum(x=>x.UsersLast7days),
+
+TotalVisits=r.Sum(x=>x.TotalVisits),
+VisitsToday=r.Sum(x=>x.VisitsToday),
+VisitsYesterday=r.Sum(x=>x.VisitsYesterday),
+UniqueVisitsYesterday=r.Sum(x=>x.UniqueVisitsYesterday),
+UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day) + r.Sum(x => x.UniqueVisitsYesterday) + uniqueVisitsToday.Sum(x => x.uniqueVisitsToday),
+VisitsLast7days=r.Sum(x=>x.VisitsLast7days)+r.Sum(x=>x.VisitsYesterday)+r.Sum(x=>x.VisitsToday),
+//UniqueVisitsLast7day=r.Sum(x=>x.UniqueVisitsLast7day),
+//VisitsLast7days=r.Sum(x=>x.VisitsLast7days),
+TotalCamapigns=r.Sum(x=>x.TotalCamapigns),
+CampaignsLast7days=r.Sum(x=>x.CampaignsLast7days),
+CampaignsMonth=r.Sum(x=>x.CampaignsMonth),
+UrlTotal_Today=r.Sum(x=>x.UrlTotal_Today),
+UrlPercent_Today=r.Sum(x=>x.UrlPercent_Today),
+VisitsTotal_Today=r.Sum(x=>x.VisitsTotal_Today),
+VisitsPercent_Today=r.Sum(x=>x.VisitsPercent_Today),
+
+UrlTotal_Week = r.Sum(x => x.UrlTotal_Week),
+UrlPercent_Week = r.Sum(x => x.UrlPercent_Week),
+VisitsTotal_Week = r.Sum(x => x.VisitsTotal_Week),
+VisitsPercent_Week = r.Sum(x => x.VisitsPercent_Week),
+RevisitsTotal_Week=r.Sum(x=>x.RevisitsTotal_Week),
+RevisitsPercent_Week=r.Sum(x=>x.RevisitsPercent_Week),
+NoVisitsTotal_Week=r.Sum(x=>x.NoVisitsTotal_Week),
+NoVisitsPercent_Week=r.Sum(x=>x.NoVisitsPercent_Week),
+
+UrlTotal_Month = r.Sum(x => x.UrlTotal_Month),
+UrlTotalPercent_Month = r.Sum(x => x.UrlTotalPercent_Month),
+VisitsTotal_Month = r.Sum(x => x.VisitsTotal_Month),
+VisitsPercent_Month = r.Sum(x => x.VisitsPercent_Month),
+RevisitsTotal_Month = r.Sum(x => x.RevisitsTotal_Month),
+RevisitsPercent_Month = r.Sum(x => x.RevisitsPercent_Month),
+NoVisitsTotal_Month = r.Sum(x => x.NoVisitsTotal_Month),
+NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
+                                  }).SingleOrDefault();
+                   }
+                      totalUrls_stat totalUrls = new totalUrls_stat();
+                      totalUrls.count = st_obj_res.TotalUsers;
+                      users_stat users = new users_stat();
+                      users.total = st_obj_res.TotalUsers;
+                      users.uniqueUsers = st_obj_res.UniqueUsers;
+                      users.uniqueUsersToday = uniqueUsersToday.uniqueUsersToday;
+                      users.usersToday = st_obj_res.UsersToday;
+                      users.uniqueUsersYesterday = st_obj_res.UniqueUsersYesterday;
+                      users.usersYesterday = st_obj_res.UsersYesterday;
+                      users.uniqueUsersLast7days = st_obj_res.UniqueUsersLast7days;
+                      users.usersLast7days = st_obj_res.UsersLast7days;
+                      visits_stat visits = new visits_stat();
+                      visits.total = st_obj_res.TotalVisits;
+                      visits.uniqueVisits = uniqueVisits.uniqueVisits;
+                      visits.uniqueVisitsToday = uniqueVisitsToday.Sum(x => x.uniqueVisitsToday);
+                      visits.visitsToday = st_obj_res.VisitsToday;
+                      visits.uniqueVisitsYesterday = st_obj_res.UniqueVisitsYesterday;
+                      visits.visitsYesterday = st_obj_res.VisitsYesterday;
+                      //visits.uniqueVisitsLast7days =(st_obj_res.FK_Rid!=0)?st_obj_res.UniqueVisitsLast7day:(uniqueVisitsToday.Sum(x => x.uniqueVisitsToday)+st_obj_res.UniqueVisitsYesterday+st_obj_res.UniqueVisitsLast7day);
+                      //visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYesterday + st_obj_res.VisitsLast7days);
+                      visits.uniqueVisitsLast7days = st_obj_res.UniqueVisitsLast7day;
+                      visits.visitsLast7days = st_obj_res.VisitsLast7days;
+                      campaigns_stat campaigns = new campaigns_stat();
+                      campaigns.total = st_obj_res.TotalCamapigns;
+                      campaigns.campaignsLast7days = st_obj_res.CampaignsLast7days;
+                      campaigns.campaignsMonth = st_obj_res.CampaignsMonth;
+                      today2 today2 = new today2();
+                      today2.urlTotal = st_obj_res.UrlTotal_Today;
+                      today2.urlPercent = st_obj_res.UrlPercent_Today;
+                      today2.visitsTotal = st_obj_res.VisitsTotal_Today;
+                      today2.visitsPercent = st_obj_res.VisitsPercent_Today;
+                      today_stat today = new today_stat();
+                      today.urlTotal = today2.urlTotal;
+                      today.urlPercent = today2.urlPercent;
+                      today.visitsTotal = today2.visitsTotal;
+                      today.visitsPercent = today2.visitsPercent;
+                      today.revisitsTotal = today1.revisitsTotal;
+                      today.revisitsPercent = today1.revisitsPercent;
+                      today.noVisitsTotal = today1.noVisitsTotal;
+                      today.noVisitsPercent = today1.noVisitsPercent;
+                      last7days_stat last7days = new last7days_stat();
+                      last7days.urlTotal = st_obj_res.UrlTotal_Week;
+                      last7days.urlPercent = st_obj_res.UrlPercent_Week;
+                      last7days.visitsTotal = st_obj_res.VisitsTotal_Week;
+                      last7days.visitsPercent = st_obj_res.VisitsPercent_Week;
+                      last7days.revisitsTotal = st_obj_res.RevisitsTotal_Week;
+                      last7days.revisitsPercent = st_obj_res.RevisitsPercent_Week;
+                      last7days.noVisitsTotal = st_obj_res.NoVisitsTotal_Week;
+                      last7days.noVisitsPercent = st_obj_res.NoVisitsPercent_Week;
+                      month_stat month = new month_stat();
+                      month.urlTotal = st_obj_res.UrlTotal_Month;
+                      month.urlPercent = st_obj_res.UrlTotalPercent_Month;
+                      month.visitsTotal = st_obj_res.VisitsTotal_Month;
+                      month.visitsPercent = st_obj_res.VisitsPercent_Month;
+                      month.revisitsTotal = st_obj_res.RevisitsTotal_Month;
+                      month.revisitsPercent = st_obj_res.RevisitsPercent_Month;
+                      month.noVisitsTotal = st_obj_res.NoVisitsTotal_Month;
+                      month.noVisitsPercent = st_obj_res.NoVisitsPercent_Month;
+
+
+                      List<recentCampaigns_stat> objr = (from r in recentCampaigns
+                                                         select new recentCampaigns_stat()
+                                                      {
+                                                          id = r.id,
+                                                          rid = r.rid,
+                                                          visits = r.visits,
+                                                          users = r.users,
+                                                          status = r.status,
+                                                          //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                          createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                                                          endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+                                                      }).ToList();
+
+                        activities_stat obj_act = new activities_stat();
+                        obj_act.today = today;
+                        obj_act.last7days = last7days;
+                        obj_act.month = month;
+
+                        obj.totalUrls = totalUrls;
+                        obj.users = users;
+                        obj.visits = visits;
+                        obj.campaigns = campaigns;
+                        obj.recentCampaigns = objr;
+                        obj.activities = obj_act;
+
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+                        //}
+                        //else
+                        //{
+                        //    return Json(obj);
+                        //}
+                    }
+                    else if (Session["id"] != null && rid != null && rid != "")
+                    {
+                        //if (cid != "" && cid != null)
+                        //{
+                        //int c_id = (int)Session["id"];
+
+                        //CampaignSummary objc = new CampaignSummary();
+                        string role = Helper.CurrentUserRole;
+                        //client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        riddata objr = new riddata();
+                        if (role.ToLower() == "admin")
+                            objr = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(y => y).SingleOrDefault();
+                        else
+                            objr = dc.riddatas.Where(x => x.ReferenceNumber == rid && x.FK_ClientId == cid).Select(y => y).SingleOrDefault();
+
+
+                        if (objr != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            MySqlDataReader myReader;
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetCampaignStats";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@rid", objr.PK_Rid));
+                            lSQLCmd.Connection = lSQLConn;
+                            myReader = lSQLCmd.ExecuteReader();
+
+
+                            uniqueUsersToday1 uniqueUsersToday = ((IObjectContextAdapter)dc)
+                              .ObjectContext
+                              .Translate<uniqueUsersToday1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                            myReader.NextResult();
+                            uniqueVisits1 uniqueVisits = ((IObjectContextAdapter)dc)
+                                 .ObjectContext
+                                 .Translate<uniqueVisits1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                            myReader.NextResult();
+                            List<uniqueVisitsToday1> uniqueVisitsToday = ((IObjectContextAdapter)dc)
+                                 .ObjectContext
+                                 .Translate<uniqueVisitsToday1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                            myReader.NextResult();
+                           // List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
+                           //.ObjectContext
+                           //.Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                           // myReader.NextResult();
+                            //List<uniqueVisitsLast7day1> uniqueVisitsLast7day = ((IObjectContextAdapter)dc)
+                            //.ObjectContext
+                            //.Translate<uniqueVisitsLast7day1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                            //myReader.NextResult();
+                            //List<visitsLast7days1> visitsLast7days = ((IObjectContextAdapter)dc)
+                            //    .ObjectContext
+                            //    .Translate<visitsLast7days1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+                            //myReader.NextResult();
+                            today1 today1 = ((IObjectContextAdapter)dc)
+                           .ObjectContext
+                           .Translate<today1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                            stat_counts  st_obj_res=new stat_counts();
+                            if (Helper.CurrentUserRole == "admin")
+                                st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid == 0).SingleOrDefault();
+                            else
+                            {
+                                List<stat_counts> st_obj = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid != 0).ToList();
+                                st_obj_res = (from s in st_obj
+                                              group s by s.FK_ClientID into r
+                                              select new stat_counts()
+                                              {
+                                                  TotalUsers = r.Sum(x => x.TotalUsers),
+                                                  UniqueUsers = r.Sum(x => x.UniqueUsers),
+                                                  //UniqueUsersToday=r.Sum(x=>x.UniqueUsersToday),
+                                                  UsersToday = r.Sum(x => x.UsersToday),
+                                                  UniqueUsersYesterday = r.Sum(x => x.UniqueUsersYesterday),
+                                                  UsersYesterday = r.Sum(x => x.UsersYesterday),
+                                                  UniqueUsersLast7days = r.Sum(x => x.UniqueUsersLast7days) + r.Sum(x => x.UniqueUsersYesterday) + uniqueUsersToday.uniqueUsersToday,
+                                                  UsersLast7days = r.Sum(x => x.UsersLast7days) + r.Sum(x=>x.UsersYesterday) + r.Sum(x=>x.UsersToday),
+
+                                                  TotalVisits = r.Sum(x => x.TotalVisits),
+                                                  VisitsToday = r.Sum(x => x.VisitsToday),
+                                                  VisitsYesterday = r.Sum(x => x.VisitsYesterday),
+                                                  UniqueVisitsYesterday = r.Sum(x => x.UniqueVisitsYesterday),
+                                                  UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day) + r.Sum(x => x.UniqueVisitsYesterday) + uniqueVisitsToday.Sum(x => x.uniqueVisitsToday),
+                                                  VisitsLast7days = r.Sum(x => x.VisitsLast7days) + r.Sum(x => x.VisitsYesterday) + r.Sum(x => x.VisitsToday),
+                                                  //UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day),
+                                                  //VisitsLast7days = r.Sum(x => x.VisitsLast7days),
+                                                  TotalCamapigns = r.Sum(x => x.TotalCamapigns),
+                                                  CampaignsLast7days = r.Sum(x => x.CampaignsLast7days),
+                                                  CampaignsMonth = r.Sum(x => x.CampaignsMonth),
+                                                  UrlTotal_Today = r.Sum(x => x.UrlTotal_Today),
+                                                  UrlPercent_Today = r.Sum(x => x.UrlPercent_Today),
+                                                  VisitsTotal_Today = r.Sum(x => x.VisitsTotal_Today),
+                                                  VisitsPercent_Today = r.Sum(x => x.VisitsPercent_Today),
+
+                                                  UrlTotal_Week = r.Sum(x => x.UrlTotal_Week),
+                                                  UrlPercent_Week = r.Sum(x => x.UrlPercent_Week),
+                                                  VisitsTotal_Week = r.Sum(x => x.VisitsTotal_Week),
+                                                  VisitsPercent_Week = r.Sum(x => x.VisitsPercent_Week),
+                                                  RevisitsTotal_Week = r.Sum(x => x.RevisitsTotal_Week),
+                                                  RevisitsPercent_Week = r.Sum(x => x.RevisitsPercent_Week),
+                                                  NoVisitsTotal_Week = r.Sum(x => x.NoVisitsTotal_Week),
+                                                  NoVisitsPercent_Week = r.Sum(x => x.NoVisitsPercent_Week),
+
+                                                  UrlTotal_Month = r.Sum(x => x.UrlTotal_Month),
+                                                  UrlTotalPercent_Month = r.Sum(x => x.UrlTotalPercent_Month),
+                                                  VisitsTotal_Month = r.Sum(x => x.VisitsTotal_Month),
+                                                  VisitsPercent_Month = r.Sum(x => x.VisitsPercent_Month),
+                                                  RevisitsTotal_Month = r.Sum(x => x.RevisitsTotal_Month),
+                                                  RevisitsPercent_Month = r.Sum(x => x.RevisitsPercent_Month),
+                                                  NoVisitsTotal_Month = r.Sum(x => x.NoVisitsTotal_Month),
+                                                  NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
+                                              }).SingleOrDefault();
+                            }
+                            totalUrls_stat totalUrls = new totalUrls_stat();
+                            totalUrls.count = st_obj_res.TotalUsers;
+                            users_stat users = new users_stat();
+                            users.total = st_obj_res.TotalUsers;
+                            users.uniqueUsers = st_obj_res.UniqueUsers;
+                            users.uniqueUsersToday = uniqueUsersToday.uniqueUsersToday;
+                            users.usersToday = st_obj_res.UsersToday;
+                            users.uniqueUsersYesterday = st_obj_res.UniqueUsersYesterday;
+                            users.usersYesterday = st_obj_res.UsersYesterday;
+                            users.uniqueUsersLast7days = st_obj_res.UniqueUsersLast7days;
+                            users.usersLast7days = st_obj_res.UsersLast7days;
+                            visits_stat visits = new visits_stat();
+                            visits.total = st_obj_res.TotalVisits;
+                            visits.uniqueVisits = uniqueVisits.uniqueVisits;
+                            visits.uniqueVisitsToday = uniqueVisitsToday.Sum(x => x.uniqueVisitsToday);
+                            visits.visitsToday = st_obj_res.VisitsToday;
+                            visits.uniqueVisitsYesterday = st_obj_res.UniqueVisitsYesterday;
+                            visits.visitsYesterday = st_obj_res.VisitsYesterday;
+                            visits.uniqueVisitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.UniqueVisitsLast7day : (uniqueVisitsToday.Sum(x => x.uniqueVisitsToday) + st_obj_res.UniqueVisitsYesterday + st_obj_res.UniqueVisitsLast7day);
+                            visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYesterday + st_obj_res.VisitsLast7days);
+                            //visits.uniqueVisitsLast7days = st_obj_res.UniqueVisitsLast7day;
+                            //visits.visitsLast7days = st_obj_res.VisitsLast7days;
+                            campaigns_stat campaigns = new campaigns_stat();
+                            campaigns.total = st_obj_res.TotalCamapigns;
+                            campaigns.campaignsLast7days = st_obj_res.CampaignsLast7days;
+                            campaigns.campaignsMonth = st_obj_res.CampaignsMonth;
+                            today2 today2 = new today2();
+                            today2.urlTotal = st_obj_res.UrlTotal_Today;
+                            today2.urlPercent = st_obj_res.UrlPercent_Today;
+                            today2.visitsTotal = st_obj_res.VisitsTotal_Today;
+                            today2.visitsPercent = st_obj_res.VisitsPercent_Today;
+                            today_stat today = new today_stat();
+                            today.urlTotal = today2.urlTotal;
+                            today.urlPercent = today2.urlPercent;
+                            today.visitsTotal = today2.visitsTotal;
+                            today.visitsPercent = today2.visitsPercent;
+                            today.revisitsTotal = today1.revisitsTotal;
+                            today.revisitsPercent = today1.revisitsPercent;
+                            today.noVisitsTotal = today1.noVisitsTotal;
+                            today.noVisitsPercent = today1.noVisitsPercent;
+                            last7days_stat last7days = new last7days_stat();
+                            last7days.urlTotal = st_obj_res.UrlTotal_Week;
+                            last7days.urlPercent = st_obj_res.UrlPercent_Week;
+                            last7days.visitsTotal = st_obj_res.VisitsTotal_Week;
+                            last7days.visitsPercent = st_obj_res.VisitsPercent_Week;
+                            last7days.revisitsTotal = st_obj_res.RevisitsTotal_Week;
+                            last7days.revisitsPercent = st_obj_res.RevisitsPercent_Week;
+                            last7days.noVisitsTotal = st_obj_res.NoVisitsTotal_Week;
+                            last7days.noVisitsPercent = st_obj_res.NoVisitsPercent_Week;
+                            month_stat month = new month_stat();
+                            month.urlTotal = st_obj_res.UrlTotal_Month;
+                            month.urlPercent = st_obj_res.UrlTotalPercent_Month;
+                            month.visitsTotal = st_obj_res.VisitsTotal_Month;
+                            month.visitsPercent = st_obj_res.VisitsPercent_Month;
+                            month.revisitsTotal = st_obj_res.RevisitsTotal_Month;
+                            month.revisitsPercent = st_obj_res.RevisitsPercent_Month;
+                            month.noVisitsTotal = st_obj_res.NoVisitsTotal_Month;
+                            month.noVisitsPercent = st_obj_res.NoVisitsPercent_Month;
+
+
+                            
+                            activities_stat obj_act = new activities_stat();
+                            obj_act.today = today;
+                            obj_act.last7days = last7days;
+                            obj_act.month = month; 
+
+                            obj.totalUrls = totalUrls;
+                            obj.users = users;
+                            obj.visits = visits;
+                            obj.campaigns = campaigns;
+                            obj.activities = obj_act;
+
+                            
+
+                        }
+                        return Json(obj, JsonRequestBehavior.AllowGet);
+
+                    }
+                    //else
+                    //{
+                    //    Error obj_err = new Error();
+                    //    Errormessage errmesobj = new Errormessage();
+                    //    errmesobj.message = "unauthorized user.";
+                    //    obj_err.error = errmesobj;
+
+                    //    return Json(obj_err, JsonRequestBehavior.AllowGet);
+                    //}
+                }
+                {
+                    Error obj_err = new Error();
+                    Errormessage errmesobj = new Errormessage();
+                    errmesobj.message = "Session Expired.";
+                    obj_err.error = errmesobj;
+                    return Json(obj_err, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

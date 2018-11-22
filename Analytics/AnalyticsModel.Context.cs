@@ -45,6 +45,8 @@ namespace Analytics
         public virtual DbSet<campaignhookurl> campaignhookurls { get; set; }
         public virtual DbSet<hitnotify> hitnotifies { get; set; }
         public virtual DbSet<shorturldata> shorturldatas { get; set; }
+        public virtual DbSet<messagelink> messagelinks { get; set; }
+        public virtual DbSet<stat_counts> stat_counts { get; set; }
     
         public virtual int InsertRIDData(string campaignName, string referencenumber, string pwd, Nullable<int> clientid)
         {
@@ -169,21 +171,39 @@ namespace Analytics
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertUIDData", fk_ridParameter, fk_clientidParameter, referencenumberParameter, longurlParameter, mobilenumberParameter);
         }
     
-        public virtual int spGetALLCOUNTS1(Nullable<System.DateTime> dateFrom, Nullable<System.DateTime> dateTo, Nullable<int> rid)
+        public virtual int spGetALLCOUNTS1(string dateFrom, string dateTo, Nullable<int> rid)
         {
-            var dateFromParameter = dateFrom.HasValue ?
+            var dateFromParameter = dateFrom != null ?
                 new ObjectParameter("DateFrom", dateFrom) :
-                new ObjectParameter("DateFrom", typeof(System.DateTime));
+                new ObjectParameter("DateFrom", typeof(string));
     
-            var dateToParameter = dateTo.HasValue ?
+            var dateToParameter = dateTo != null ?
                 new ObjectParameter("DateTo", dateTo) :
-                new ObjectParameter("DateTo", typeof(System.DateTime));
+                new ObjectParameter("DateTo", typeof(string));
     
             var ridParameter = rid.HasValue ?
                 new ObjectParameter("rid", rid) :
                 new ObjectParameter("rid", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetALLCOUNTS1", dateFromParameter, dateToParameter, ridParameter);
+        }
+    
+        public virtual int spGetCampaignStats(Nullable<int> rid)
+        {
+            var ridParameter = rid.HasValue ?
+                new ObjectParameter("rid", rid) :
+                new ObjectParameter("rid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetCampaignStats", ridParameter);
+        }
+    
+        public virtual int spGetDashBoardStats(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetDashBoardStats", fkClientIdParameter);
         }
     }
 }

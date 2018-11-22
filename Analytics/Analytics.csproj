@@ -389,6 +389,9 @@
     <Compile Include="master_location.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="messagelink.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\appUrlModel.cs" />
     <Compile Include="Models\BrowserWiseData.cs" />
     <Compile Include="Models\CampaignsList.cs" />
@@ -397,6 +400,7 @@
     <Compile Include="Models\ClientView.cs" />
     <Compile Include="Models\CountryWiseData.cs" />
     <Compile Include="Models\CountsData.cs" />
+    <Compile Include="Models\DashBoardStats.cs" />
     <Compile Include="Models\DashBoardSummary.cs" />
     <Compile Include="Models\DayWiseData.cs" />
     <Compile Include="Models\DeviceWiseData.cs" />
@@ -420,6 +424,9 @@
       <DependentUpon>ShortURLService.svc</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="stat_counts.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="sysdiagram.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
