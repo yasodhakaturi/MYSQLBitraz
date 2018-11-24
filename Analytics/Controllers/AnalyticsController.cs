@@ -839,58 +839,61 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                            .ObjectContext
                            .Translate<today1>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
                             stat_counts  st_obj_res=new stat_counts();
-                            if (Helper.CurrentUserRole == "admin")
+                            if (Helper.CurrentUserRole == "admin" && rid==null)
                                 st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid == 0).SingleOrDefault();
                             else
                             {
-                                List<stat_counts> st_obj = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid != 0).ToList();
-                                st_obj_res = (from s in st_obj
-                                              group s by s.FK_ClientID into r
-                                              select new stat_counts()
-                                              {
-                                                  TotalUsers = r.Sum(x => x.TotalUsers),
-                                                  UniqueUsers = r.Sum(x => x.UniqueUsers),
-                                                  //UniqueUsersToday=r.Sum(x=>x.UniqueUsersToday),
-                                                  UsersToday = r.Sum(x => x.UsersToday),
-                                                  UniqueUsersYesterday = r.Sum(x => x.UniqueUsersYesterday),
-                                                  UsersYesterday = r.Sum(x => x.UsersYesterday),
-                                                  UniqueUsersLast7days = r.Sum(x => x.UniqueUsersLast7days) + r.Sum(x => x.UniqueUsersYesterday) + uniqueUsersToday.uniqueUsersToday,
-                                                  UsersLast7days = r.Sum(x => x.UsersLast7days) + r.Sum(x=>x.UsersYesterday) + r.Sum(x=>x.UsersToday),
+                                
+                                st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid == objr.PK_Rid).SingleOrDefault();
+                                //List<stat_counts> st_obj = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid 1=0).ToList();
 
-                                                  TotalVisits = r.Sum(x => x.TotalVisits),
-                                                  VisitsToday = r.Sum(x => x.VisitsToday),
-                                                  VisitsYesterday = r.Sum(x => x.VisitsYesterday),
-                                                  UniqueVisitsYesterday = r.Sum(x => x.UniqueVisitsYesterday),
-                                                  UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day) + r.Sum(x => x.UniqueVisitsYesterday) + uniqueVisitsToday.Sum(x => x.uniqueVisitsToday),
-                                                  VisitsLast7days = r.Sum(x => x.VisitsLast7days) + r.Sum(x => x.VisitsYesterday) + r.Sum(x => x.VisitsToday),
-                                                  //UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day),
-                                                  //VisitsLast7days = r.Sum(x => x.VisitsLast7days),
-                                                  TotalCamapigns = r.Sum(x => x.TotalCamapigns),
-                                                  CampaignsLast7days = r.Sum(x => x.CampaignsLast7days),
-                                                  CampaignsMonth = r.Sum(x => x.CampaignsMonth),
-                                                  UrlTotal_Today = r.Sum(x => x.UrlTotal_Today),
-                                                  UrlPercent_Today = r.Sum(x => x.UrlPercent_Today),
-                                                  VisitsTotal_Today = r.Sum(x => x.VisitsTotal_Today),
-                                                  VisitsPercent_Today = r.Sum(x => x.VisitsPercent_Today),
+                                //st_obj_res = (from s in st_obj
+                                //              group s by s.FK_ClientID into r
+                                //              select new stat_counts()
+                                //              {
+                                //                  TotalUsers = r.Sum(x => x.TotalUsers),
+                                //                  UniqueUsers = r.Sum(x => x.UniqueUsers),
+                                //                  //UniqueUsersToday=r.Sum(x=>x.UniqueUsersToday),
+                                //                  UsersToday = r.Sum(x => x.UsersToday),
+                                //                  UniqueUsersYesterday = r.Sum(x => x.UniqueUsersYesterday),
+                                //                  UsersYesterday = r.Sum(x => x.UsersYesterday),
+                                //                  UniqueUsersLast7days = r.Sum(x => x.UniqueUsersLast7days) + r.Sum(x => x.UniqueUsersYesterday) + uniqueUsersToday.uniqueUsersToday,
+                                //                  UsersLast7days = r.Sum(x => x.UsersLast7days) + r.Sum(x=>x.UsersYesterday) + r.Sum(x=>x.UsersToday),
 
-                                                  UrlTotal_Week = r.Sum(x => x.UrlTotal_Week),
-                                                  UrlPercent_Week = r.Sum(x => x.UrlPercent_Week),
-                                                  VisitsTotal_Week = r.Sum(x => x.VisitsTotal_Week),
-                                                  VisitsPercent_Week = r.Sum(x => x.VisitsPercent_Week),
-                                                  RevisitsTotal_Week = r.Sum(x => x.RevisitsTotal_Week),
-                                                  RevisitsPercent_Week = r.Sum(x => x.RevisitsPercent_Week),
-                                                  NoVisitsTotal_Week = r.Sum(x => x.NoVisitsTotal_Week),
-                                                  NoVisitsPercent_Week = r.Sum(x => x.NoVisitsPercent_Week),
+                                //                  TotalVisits = r.Sum(x => x.TotalVisits),
+                                //                  VisitsToday = r.Sum(x => x.VisitsToday),
+                                //                  VisitsYesterday = r.Sum(x => x.VisitsYesterday),
+                                //                  UniqueVisitsYesterday = r.Sum(x => x.UniqueVisitsYesterday),
+                                //                  UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day) + r.Sum(x => x.UniqueVisitsYesterday) + uniqueVisitsToday.Sum(x => x.uniqueVisitsToday),
+                                //                  VisitsLast7days = r.Sum(x => x.VisitsLast7days) + r.Sum(x => x.VisitsYesterday) + r.Sum(x => x.VisitsToday),
+                                //                  //UniqueVisitsLast7day = r.Sum(x => x.UniqueVisitsLast7day),
+                                //                  //VisitsLast7days = r.Sum(x => x.VisitsLast7days),
+                                //                  TotalCamapigns = r.Sum(x => x.TotalCamapigns),
+                                //                  CampaignsLast7days = r.Sum(x => x.CampaignsLast7days),
+                                //                  CampaignsMonth = r.Sum(x => x.CampaignsMonth),
+                                //                  UrlTotal_Today = r.Sum(x => x.UrlTotal_Today),
+                                //                  UrlPercent_Today = r.Sum(x => x.UrlPercent_Today),
+                                //                  VisitsTotal_Today = r.Sum(x => x.VisitsTotal_Today),
+                                //                  VisitsPercent_Today = r.Sum(x => x.VisitsPercent_Today),
 
-                                                  UrlTotal_Month = r.Sum(x => x.UrlTotal_Month),
-                                                  UrlTotalPercent_Month = r.Sum(x => x.UrlTotalPercent_Month),
-                                                  VisitsTotal_Month = r.Sum(x => x.VisitsTotal_Month),
-                                                  VisitsPercent_Month = r.Sum(x => x.VisitsPercent_Month),
-                                                  RevisitsTotal_Month = r.Sum(x => x.RevisitsTotal_Month),
-                                                  RevisitsPercent_Month = r.Sum(x => x.RevisitsPercent_Month),
-                                                  NoVisitsTotal_Month = r.Sum(x => x.NoVisitsTotal_Month),
-                                                  NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
-                                              }).SingleOrDefault();
+                                //                  UrlTotal_Week = r.Sum(x => x.UrlTotal_Week),
+                                //                  UrlPercent_Week = r.Sum(x => x.UrlPercent_Week),
+                                //                  VisitsTotal_Week = r.Sum(x => x.VisitsTotal_Week),
+                                //                  VisitsPercent_Week = r.Sum(x => x.VisitsPercent_Week),
+                                //                  RevisitsTotal_Week = r.Sum(x => x.RevisitsTotal_Week),
+                                //                  RevisitsPercent_Week = r.Sum(x => x.RevisitsPercent_Week),
+                                //                  NoVisitsTotal_Week = r.Sum(x => x.NoVisitsTotal_Week),
+                                //                  NoVisitsPercent_Week = r.Sum(x => x.NoVisitsPercent_Week),
+
+                                //                  UrlTotal_Month = r.Sum(x => x.UrlTotal_Month),
+                                //                  UrlTotalPercent_Month = r.Sum(x => x.UrlTotalPercent_Month),
+                                //                  VisitsTotal_Month = r.Sum(x => x.VisitsTotal_Month),
+                                //                  VisitsPercent_Month = r.Sum(x => x.VisitsPercent_Month),
+                                //                  RevisitsTotal_Month = r.Sum(x => x.RevisitsTotal_Month),
+                                //                  RevisitsPercent_Month = r.Sum(x => x.RevisitsPercent_Month),
+                                //                  NoVisitsTotal_Month = r.Sum(x => x.NoVisitsTotal_Month),
+                                //                  NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
+                                //              }).SingleOrDefault();
                             }
                             totalUrls_stat totalUrls = new totalUrls_stat();
                             totalUrls.count = st_obj_res.TotalUsers;

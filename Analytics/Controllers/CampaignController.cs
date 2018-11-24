@@ -373,6 +373,7 @@ namespace Analytics.Controllers
                         objnew.UniqueUsersLast7days = 0;
                         objnew.UsersLast7days = 0;
                         objnew.TotalVisits = 0;
+                        objnew.UniqueVisits = 0;
                         objnew.VisitsToday = 0;
                         objnew.UniqueVisitsToday = 0;
                         objnew.VisitsYesterday = 0;
@@ -414,7 +415,7 @@ namespace Analytics.Controllers
                         //for admin case
                         int clientid;
                         if (Helper.CurrentUserRole == "admin")
-                            clientid = cid;
+                            clientid = Helper.CurrentUserId;
                         else
                             clientid = dc.clients.Where(x => x.Role == "admin").Select(y => y.PK_ClientID).SingleOrDefault();
                         stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == clientid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
@@ -442,6 +443,7 @@ namespace Analytics.Controllers
                             objad.UniqueUsersLast7days = 0;
                             objad.UsersLast7days = 0;
                             objad.TotalVisits = 0;
+                            objad.UniqueVisits = 0;
                             objad.VisitsToday = 0;
                             objad.UniqueVisitsToday = 0;
                             objad.VisitsYesterday = 0;
