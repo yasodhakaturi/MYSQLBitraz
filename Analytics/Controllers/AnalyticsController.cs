@@ -844,7 +844,7 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                             else
                             {
                                 
-                                st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid == objr.PK_Rid).SingleOrDefault();
+                                st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == objr.FK_ClientId && x.FK_Rid == objr.PK_Rid).SingleOrDefault();
                                 //List<stat_counts> st_obj = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid 1=0).ToList();
 
                                 //st_obj_res = (from s in st_obj
