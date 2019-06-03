@@ -29,7 +29,7 @@ namespace Analytics.Controllers
 
             return View(obj);
         }
-        public JsonResult GETSummary1(int cid,string rid)
+        public JsonResult GETSummary(int cid,string rid)
         {
 
             DashBoardSummary obj = new DashBoardSummary();
@@ -554,7 +554,7 @@ namespace Analytics.Controllers
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
-        public JsonResult GETSummary(int cid, string rid)
+        public JsonResult GETSummary1(int cid, string rid)
         {
 
             DashBoardStats obj = new DashBoardStats();

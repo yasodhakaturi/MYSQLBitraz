@@ -417,7 +417,9 @@ namespace Analytics
                             ctx.OutgoingResponse.Headers.Add("token", token);
                             // return "http://g0.pe/" + Hashid;
                             //string ShortUrl = "https://g0.pe/" + Hashid;
-                            string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
+                            //string ShortUrl = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
+
+                            string ShortUrl = "g0.ae/" + Hashid;
                             uiddata uidrec=dc.uiddatas.Where(x=>x.FK_RID==rid&&x.UniqueNumber==Hashid).Select(y=>y).SingleOrDefault();
                             ShortUrl1 sobj = new ShortUrl1();
                             sobj.shortUrl = ShortUrl;
