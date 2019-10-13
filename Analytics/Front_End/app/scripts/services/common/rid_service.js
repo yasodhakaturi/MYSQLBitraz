@@ -20,6 +20,47 @@ angular.module('app.rid', ["ngResource"])
           method: 'GET',
           url: appConfig.apiEndPoint + '/Analytics/GETSummary'
         },
+
+        getSummaryTotalUrls: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_TotalUrls'
+        },
+
+        getSummaryUsersCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_UsersCount'
+        },
+
+        getSummaryVisitsCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_VisitsCount'
+        },
+
+        getSummaryCampaignsCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_CampaignsCount'
+        },
+
+        getSummaryRecentCampaignsCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_RecentCampaignsCount'
+        },
+
+        getSummaryActivityTodayCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_ActivityCount_Today'
+        },
+
+        getSummaryActivityWeekCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_ActivityCount_Week'
+        },
+
+        getSummaryActivityMonthCount: {
+          method: 'GET',
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_ActivityCount_Month'
+        },
+
         getCounts: {
           method: 'GET',
           url: appConfig.apiEndPoint + '/Analytics/GETAllCounts'

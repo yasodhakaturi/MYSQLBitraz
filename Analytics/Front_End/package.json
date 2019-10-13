@@ -19,7 +19,7 @@
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.0.0",
-    "grunt-html2js": "^0.3.6",
+    "grunt-html2js": "^0.6.0",
     "grunt-ng-annotate": "^3.0.0",
     "grunt-usemin": "^2.4.0",
     "jshint-stylish": "^1.0.0",

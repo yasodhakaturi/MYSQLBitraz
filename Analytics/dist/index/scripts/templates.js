@@ -1,70 +1,74 @@
-angular.module('app.template', ['views/common/analytics.html', 'views/common/dashboard/activities_tmpl.html', 'views/common/dashboard/dashboard_tmpl.html', 'views/common/dashboard/logged_users_tmpl.html', 'views/common/dashboard/recent_campaigns_tmpl.html', 'views/common/dashboard/total_campaigns_tmpl.html', 'views/common/dashboard/total_users_tmpl.html', 'views/common/dashboard/total_visits_tmpl.html', 'views/common/dashboard/urls_generated_tmpl.html', 'views/common/directives/analytics_layout.html', 'views/common/header-dashboard.html', 'views/common/login.html', 'views/common/navigation.html', 'views/common/panel_tools.html', 'views/index/analytics.html', 'views/index/clients.html', 'views/index/contact.html', 'views/index/features.html', 'views/index/index.html', 'views/index/index_header.html']);
+angular.module("app.template", ["views/common/analytics.html", "views/common/dashboard/activities_tmpl.html", "views/common/dashboard/dashboard_tmpl.html", "views/common/dashboard/logged_users_tmpl.html", "views/common/dashboard/recent_campaigns_tmpl.html", "views/common/dashboard/total_campaigns_tmpl.html", "views/common/dashboard/total_users_tmpl.html", "views/common/dashboard/total_visits_tmpl.html", "views/common/dashboard/urls_generated_tmpl.html", "views/common/directives/analytics_layout.html", "views/common/header-dashboard.html", "views/common/login.html", "views/common/navigation.html", "views/common/panel_tools.html", "views/index/analytics.html", "views/index/clients.html", "views/index/contact.html", "views/index/features.html", "views/index/index.html", "views/index/index_header.html"]);
 
-angular.module("views/common/analytics.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/analytics.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/analytics.html",
     "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\" ng-if=\"isLoaded\"> <div class=\"row\"> <div class=\"col-lg-12 text-right\"> <span> Choose a Campaign</span> <select name=\"selectedCampaign\" ng-model=\"selectedCampaign\" ng-change=\"campaignChange(selectedCampaign)\"> <option value=\"{{campaign.ReferenceNumber}}\" ng-repeat=\"campaign in campaigns\" ng-selected=\"campaign.ReferenceNumber == selectedCampaign\"> {{campaign.CampaignName || \"Campaign (\" + campaign.ReferenceNumber + \")\"}} : {{campaign.CreatedDate | date: 'MM.dd.yyyy'}} </select> </div> </div> <div class=\"row\"> <div class=\"col-lg-12\"> <analytics-layout campaign-id=\"selectedCampaign\"></analytics-layout> </div> </div> <div class=\"row\"> <div class=\"col-lg-12\"> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/common/dashboard/activities_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/activities_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/activities_tmpl.html",
     "<div class=\"hpanel\">\n" +
-    "    <div class=\"panel-heading\" ng-if=\"$ctrl.header\">\n" +
-    "        <div class=\"panel-tools\">\n" +
-    "        </div>\n" +
-    "        Activity\n" +
+    "  <div class=\"panel-heading\" ng-if=\"$ctrl.header\">\n" +
+    "    <div class=\"panel-tools\">\n" +
     "    </div>\n" +
-    "    <div class=\"panel-body list\">\n" +
-    "\n" +
-    "        <div class=\"pull-right\">\n" +
-    "            <a ng-click=\"$ctrl.show('today')\" class=\"btn btn-xs btn-default\" ng-class=\"{'text-success': $ctrl.state == 'today'}\">Today</a>\n" +
-    "            <a ng-click=\"$ctrl.show('last7days')\" class=\"btn btn-xs btn-default \" ng-class=\"{'text-success': $ctrl.state == 'last7days'}\">Week</a>\n" +
-    "            <a ng-click=\"$ctrl.show('month')\" class=\"btn btn-xs btn-default\" ng-class=\"{'text-success': $ctrl.state == 'month'}\">Month</a>\n" +
-    "        </div>\n" +
-    "        <div class=\"panel-title\">Last Activity</div>\n" +
-    "        <div class=\"list-item-container\" style=\"width: 100%\">\n" +
-    "            <div class=\"list-item\">\n" +
-    "                <h3 class=\"no-margins font-extra-bold text-success\" ng-bind=\"$ctrl.activeData.urlTotal || 0 | number\"></h3>\n" +
-    "                <small>Total Urls Generated</small>\n" +
-    "                <div class=\"pull-right font-bold\">{{$ctrl.activeData.urlPercent || 0 | number}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
-    "            </div>\n" +
-    "            <div class=\"list-item\">\n" +
-    "                <h3 class=\"no-margins font-extra-bold text-color3\" ng-bind=\"$ctrl.activeData.visitsTotal || 0 | number\"></h3>\n" +
-    "                <small>visited</small>\n" +
-    "                <div class=\"pull-right font-bold\">{{$ctrl.activeData.visitsPercent || 0 | number}}% <i class=\"fa fa-level-down text-color3\"></i></div>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"list-item\">\n" +
-    "                <h3 class=\"no-margins font-extra-bold text-info\" ng-bind=\"$ctrl.activeData.revisitsTotal || 0 | number\"></h3>\n" +
-    "                <small>Revisited</small>\n" +
-    "                <div class=\"pull-right font-bold\">{{$ctrl.activeData.revisitsPercent || 0}}% <i class=\"fa fa-bolt text-color3\"></i></div>\n" +
-    "            </div>\n" +
-    "            <div class=\"list-item\" ng-if=\"$ctrl.header\">\n" +
-    "                <h3 class=\"no-margins font-extra-bold text-warning\" ng-bind=\"$ctrl.activeData.noVisitsTotal || 0 | number\"></h3>\n" +
-    "                <small>Never Visited</small>\n" +
-    "                <div class=\"pull-right font-bold\">{{$ctrl.activeData.noVisitsPercent || 0}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "\n" +
+    "    Activity\n" +
+    "  </div>\n" +
+    "  <div class=\"panel-body list\">\n" +
+    "    <div class=\"pull-right\">\n" +
+    "      <a ng-click=\"$ctrl.show('today')\" class=\"btn btn-xs btn-default\" ng-class=\"{'text-success': $ctrl.state == 'today'}\">Today</a>\n" +
+    "      <a ng-click=\"$ctrl.show('last7days')\" class=\"btn btn-xs btn-default \" ng-class=\"{'text-success': $ctrl.state == 'last7days'}\">Week</a>\n" +
+    "      <a ng-click=\"$ctrl.show('month')\" class=\"btn btn-xs btn-default\" ng-class=\"{'text-success': $ctrl.state == 'month'}\">Month</a>\n" +
     "    </div>\n" +
-    "</div>");
+    "    <div class=\"text-center h-200\" ng-if=\"$root.pageActivityLoading\">\n" +
+    "      <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "    </div>\n" +
+    "    <div  ng-if=\"!$root.pageActivityLoading\">\n" +
+    "      <div class=\"panel-title\">Last Activity</div>\n" +
+    "      <div class=\"list-item-container\" style=\"width: 100%\">\n" +
+    "        <div class=\"list-item\">\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-success\" ng-bind=\"$ctrl.data.urlTotal || 0 | number\"></h3>\n" +
+    "          <small>Total Urls Generated</small>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data.urlPercent || 0 | number}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-item\">\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-color3\" ng-bind=\"$ctrl.data.visitsTotal || 0 | number\"></h3>\n" +
+    "          <small>visited</small>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data.visitsPercent || 0 | number}}% <i class=\"fa fa-level-down text-color3\"></i></div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"list-item\">\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-info\" ng-bind=\"$ctrl.data.revisitsTotal || 0 | number\"></h3>\n" +
+    "          <small>Revisited</small>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data.revisitsPercent || 0}}% <i class=\"fa fa-bolt text-color3\"></i></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-item\" ng-if=\"$ctrl.header\">\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-warning\" ng-bind=\"$ctrl.data.noVisitsTotal || 0 | number\"></h3>\n" +
+    "          <small>Never Visited</small>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data.noVisitsPercent || 0}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/dashboard_tmpl.html",
     "<div class=\"dashboard-container col-sm-12\" ng-if=\"$ctrl.config && $ctrl.config.type == 'all'\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <urls-generated data=\"$ctrl.data.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
+    "            <urls-generated data=\"$ctrl.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-users data=\"$ctrl.data.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
+    "            <total-users data=\"$ctrl.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-visits data=\"$ctrl.data.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
+    "            <total-visits data=\"$ctrl.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-campaigns data=\"$ctrl.data.campaigns\" is-campaign=\"!!$ctrl.config.campaignId\"></total-campaigns>\n" +
+    "            <total-campaigns data=\"$ctrl.campaigns\" is-campaign=\"!!$ctrl.config.campaignId\"></total-campaigns>\n" +
     "        </div>\n" +
     "\n" +
     "\n" +
@@ -72,11 +76,11 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "    <div class=\"row\">\n" +
     "\n" +
     "        <div class=\"col-lg-6\">\n" +
-    "            <recent-campaigns data=\"$ctrl.data.recentCampaigns\"></recent-campaigns>\n" +
+    "            <recent-campaigns data=\"$ctrl.recentCampaigns\"></recent-campaigns>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3\">\n" +
-    "            <activities data=\"$ctrl.data.activities\" header=\"true\" is-campaign=\"!!$ctrl.config.campaignId\"></activities>\n" +
+    "            <activities data=\"$ctrl.activities\" state=\"$ctrl.activityState\" header=\"true\" is-campaign=\"!!$ctrl.config.campaignId\" on-type-change=\"$ctrl.activityStateChange\"></activities>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3\">\n" +
@@ -89,23 +93,24 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "<div class=\"dashboard-container col-sm-12\" ng-if=\"$ctrl.config && $ctrl.config.type == 'campaign'\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <urls-generated data=\"$ctrl.data.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
+    "            <urls-generated data=\"$ctrl.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-users data=\"$ctrl.data.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
+    "            <total-users data=\"$ctrl.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-visits data=\"$ctrl.data.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
+    "            <total-visits data=\"$ctrl.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <activities data=\"$ctrl.data.activities\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
+    "            <activities data=\"$ctrl.activities\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
     "        </div>\n" +
     "\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/logged_users_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/logged_users_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/logged_users_tmpl.html",
     "<div class=\"hpanel\">\n" +
     "    <div class=\"panel-heading\">\n" +
@@ -148,17 +153,19 @@ angular.module("views/common/dashboard/logged_users_tmpl.html", []).run(["$templ
     "</div>");
 }]);
 
-angular.module("views/common/dashboard/recent_campaigns_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/recent_campaigns_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/recent_campaigns_tmpl.html",
     "<div class=\"hpanel\">\n" +
     "    <div class=\"panel-heading\">\n" +
     "        <div class=\"panel-tools\">\n" +
-    "\n" +
     "        </div>\n" +
     "        Recent campaigns\n" +
     "    </div>\n" +
     "    <div class=\"panel-body list\">\n" +
-    "        <div class=\"table-responsive project-list\">\n" +
+    "        <div class=\"text-center h-200\" ng-if=\"$root.pageRecentCampaignsLoading\">\n" +
+    "            <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "        </div>\n" +
+    "        <div class=\"table-responsive project-list\" ng-if=\"!$root.pageRecentCampaignsLoading\">\n" +
     "            <table class=\"table table-striped\">\n" +
     "                <thead>\n" +
     "                <tr>\n" +
@@ -187,13 +194,18 @@ angular.module("views/common/dashboard/recent_campaigns_tmpl.html", []).run(["$t
     "            </table>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "\n" +
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/total_campaigns_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/total_campaigns_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/total_campaigns_tmpl.html",
     "<div class=\"hpanel stats\">\n" +
-    "    <div class=\"panel-body h-200\">\n" +
+    "    <div class=\"panel-body text-center h-200\" ng-if=\"$root.pageCampaignsLoading\">\n" +
+    "        <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "    </div>\n" +
+    "    <div class=\"panel-body h-200\"  ng-if=\"!$root.pageCampaignsLoading\">\n" +
     "        <div class=\"stats-title pull-left\">\n" +
     "            <h4>Total Campaigns</h4>\n" +
     "        </div>\n" +
@@ -218,61 +230,78 @@ angular.module("views/common/dashboard/total_campaigns_tmpl.html", []).run(["$te
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/total_users_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/total_users_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/total_users_tmpl.html",
     "<div class=\"hpanel stats\">\n" +
-    "    <div class=\"panel-body h-200\">\n" +
-    "        <div class=\"stats-title pull-left\">\n" +
-    "            <h4>Total Users</h4>\n" +
-    "        </div>\n" +
-    "        <div class=\"stats-icon pull-right\">\n" +
-    "            <i class=\"pe-7s-share fa-4x\"></i>\n" +
-    "        </div>\n" +
-    "        <div class=\"m-t-xl\">\n" +
-    "            <h3 class=\"m-b-xs text-success\" ng-bind=\"$ctrl.data.total || 0 | number\"></h3>\n" +
-    "                            <span class=\"font-bold no-margins\" ng-if=\"$ctrl.isCampaign\">\n" +
+    "  <div class=\"panel-body text-center h-200\" ng-if=\"$root.pageUsersLoading\">\n" +
+    "    <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "  </div>\n" +
+    "  <div class=\"panel-body h-200\" ng-if=\"!$root.pageUsersLoading\">\n" +
+    "    <div class=\"stats-title pull-left\">\n" +
+    "      <h4>Total Users</h4>\n" +
+    "    </div>\n" +
+    "    <div class=\"stats-icon pull-right\">\n" +
+    "      <i class=\"pe-7s-share fa-4x\"></i>\n" +
+    "    </div>\n" +
+    "    <div class=\"m-t-xl\">\n" +
+    "      <h3 class=\"m-b-xs text-success\" ng-bind=\"$ctrl.data.total || 0 | number\"></h3>\n" +
+    "      <span class=\"font-bold no-margins\" ng-if=\"$ctrl.isCampaign\">\n" +
     "                                Unique users in this campaign\n" +
     "                            </span>\n" +
-    "                            <span class=\"font-bold no-margins\" ng-if=\"!$ctrl.isCampaign\">\n" +
+    "      <span class=\"font-bold no-margins\" ng-if=\"!$ctrl.isCampaign\">\n" +
     "                                Unique users across all campaigns\n" +
     "                            </span>\n" +
     "\n" +
-    "            <div class=\"progress m-t-xs full progress-small\">\n" +
+    "      <div class=\"progress m-t-xs full progress-small\">\n" +
     "\n" +
-    "                <div style=\"width: {{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}%\" aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}\"\n" +
-    "                     role=\"progressbar\" class=\" progress-bar progress-bar-success\" tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueUsers + ' of ' + $ctrl.data.total + ' - ')}}{{((($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1)) * 100) | number}}%\">\n" +
-    "                    <span class=\"sr-only\">{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}% Unique Users</span>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"col-xs-4\">\n" +
-    "                    <small class=\"stats-label\">Today </small>\n" +
-    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueUsersToday || 0)}} Unique Users of {{$ctrl.data.usersToday || 0}} total\">{{$ctrl.data.uniqueUsersToday || 0}}/<span class=\"text-success\">{{$ctrl.data.usersToday || 0}}</span> </span></h6>\n" +
-    "                </div>\n" +
-    "\n" +
-    "                <div class=\"col-xs-4\">\n" +
-    "                    <small class=\"stats-label\">Yesterday</small>\n" +
-    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.usersYesterday || 0)}} Unique Users of {{$ctrl.data.usersYesterday || 0}} total\">{{$ctrl.data.usersYesterday || 0}}/<span class=\"text-success\">{{$ctrl.data.usersYesterday || 0}}</span></span></h6>\n" +
-    "                </div>\n" +
-    "\n" +
-    "                <div class=\"col-xs-4\">\n" +
-    "                    <small class=\"stats-label\">Last 7 Days</small>\n" +
-    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueUsersLast7days || 0)}} Unique Users of {{$ctrl.data.usersLast7days || 0}} total\">{{$ctrl.data.uniqueUsersLast7days || 0}}/<span class=\"text-success\">{{$ctrl.data.usersLast7days || 0}}</span></span></h6>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
+    "        <div style=\"width: {{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}%\" aria-valuemax=\"100\"\n" +
+    "             aria-valuemin=\"0\" aria-valuenow=\"{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}\"\n" +
+    "             role=\"progressbar\" class=\" progress-bar progress-bar-success\" tooltip-popup-delay='500'\n" +
+    "             tooltip-placement=\"bottom\"\n" +
+    "             uib-tooltip=\"{{($ctrl.data.uniqueUsers + ' of ' + $ctrl.data.total + ' - ')}}{{((($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1)) * 100) | number}}%\">\n" +
+    "          <span class=\"sr-only\">{{($ctrl.data.uniqueUsers || 0)/($ctrl.data.total || 1) * 100}}% Unique Users</span>\n" +
     "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-xs-4\">\n" +
+    "          <small class=\"stats-label\">Today</small>\n" +
+    "          <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\"\n" +
+    "                    uib-tooltip=\"{{($ctrl.data.uniqueUsersToday || 0)}} Unique Users of {{$ctrl.data.usersToday || 0}} total\">{{$ctrl.data.uniqueUsersToday || 0}}/<span\n" +
+    "                  class=\"text-success\">{{$ctrl.data.usersToday || 0}}</span> </span></h6>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"col-xs-4\">\n" +
+    "          <small class=\"stats-label\">Yesterday</small>\n" +
+    "          <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\"\n" +
+    "                    uib-tooltip=\"{{($ctrl.data.usersYesterday || 0)}} Unique Users of {{$ctrl.data.usersYesterday || 0}} total\">{{$ctrl.data.usersYesterday || 0}}/<span\n" +
+    "                  class=\"text-success\">{{$ctrl.data.usersYesterday || 0}}</span></span></h6>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"col-xs-4\">\n" +
+    "          <small class=\"stats-label\">Last 7 Days</small>\n" +
+    "          <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\"\n" +
+    "                    uib-tooltip=\"{{($ctrl.data.uniqueUsersLast7days || 0)}} Unique Users of {{$ctrl.data.usersLast7days || 0}} total\">{{$ctrl.data.uniqueUsersLast7days || 0}}/<span\n" +
+    "                  class=\"text-success\">{{$ctrl.data.usersLast7days || 0}}</span></span></h6>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "  </div>\n" +
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/total_visits_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/total_visits_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/total_visits_tmpl.html",
     "<div class=\"hpanel stats\">\n" +
-    "    <div class=\"panel-body h-200\">\n" +
+    "    <div class=\"panel-body text-center h-200\" ng-if=\"$root.pageVisitsLoading\">\n" +
+    "        <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "    </div>\n" +
+    "    <div class=\"panel-body h-200\"  ng-if=\"!$root.pageVisitsLoading\">\n" +
     "        <div class=\"stats-title pull-left\">\n" +
     "            <h4>Total Visits</h4>\n" +
     "        </div>\n" +
@@ -310,27 +339,32 @@ angular.module("views/common/dashboard/total_visits_tmpl.html", []).run(["$templ
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/dashboard/urls_generated_tmpl.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/dashboard/urls_generated_tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/dashboard/urls_generated_tmpl.html",
     "<div class=\"hpanel\">\n" +
-    "    <div class=\"panel-body text-center h-200\">\n" +
-    "        <i class=\"pe-7s-graph1 fa-4x\"></i>\n" +
+    "  <div class=\"panel-body text-center h-200\" ng-if=\"$root.pageTotalUrlsLoading\">\n" +
+    "    <span>Loading <i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "  </div>\n" +
+    "  <div class=\"panel-body text-center h-200\" ng-if=\"!$root.pageTotalUrlsLoading\">\n" +
+    "    <i class=\"pe-7s-graph1 fa-4x\"></i>\n" +
     "\n" +
-    "        <h1 class=\"m-xs\" ng-bind=\"$ctrl.data.count || 0 | number\"></h1>\n" +
+    "    <h1 class=\"m-xs\" ng-bind=\"$ctrl.data.count || 0 | number\"></h1>\n" +
     "\n" +
-    "        <h3 class=\"font-extra-bold no-margins text-success\">\n" +
-    "            Url's Generated\n" +
-    "        </h3>\n" +
-    "        <small>Total number of urls generated</small>\n" +
-    "    </div>\n" +
+    "    <h3 class=\"font-extra-bold no-margins text-success\">\n" +
+    "      Url's Generated\n" +
+    "    </h3>\n" +
+    "    <small>Total number of urls generated</small>\n" +
+    "  </div>\n" +
     "\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("views/common/directives/analytics_layout.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/directives/analytics_layout.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/directives/analytics_layout.html",
     "<section class=\"anlaytics-layout-container \" style=\"padding-top:0px;\">\n" +
     "    <div ng-show=\"!$ctrl.loading\">\n" +
@@ -481,52 +515,52 @@ angular.module("views/common/directives/analytics_layout.html", []).run(["$templ
     "</section>");
 }]);
 
-angular.module("views/common/header-dashboard.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/header-dashboard.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/header-dashboard.html",
     "<div id=\"logo\" class=\"light-version\"> <span> bi <span class=\"part2\">TRAZ</span> </span> </div> <nav role=\"navigation\"> <!-- <minimaliza-menu></minimaliza-menu> --> <div class=\"small-logo\"> <span class=\"text-primary\">bi <span class=\"part2\">TRAZ</span></span> </div> <div class=\"mobile-menu\"> <button type=\"button\" class=\"navbar-toggle mobile-menu-toggle\" data-toggle=\"collapse\" data-target=\"#mobile-collapse\"> <i class=\"fa fa-chevron-down\"></i> </button> <div class=\"collapse mobile-navbar\" id=\"mobile-collapse\"> <ul class=\"nav navbar-nav\"> <li> <a href=\"#\">Login</a> </li> </ul> </div> </div> <div class=\"navbar-right\"> <ul class=\"nav navbar-nav no-borders\"> <li> <a> <i class=\"pe-7s-upload pe-rotate-90\"></i> </a> </li> </ul> </div> </nav>");
 }]);
 
-angular.module("views/common/login.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/login.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/login.html",
     "<div class=\"login-container\"> <div class=\"row\" ng-if=\"!($root.userInfo && $root.userInfo.user_id)\"> <div class=\"col-md-12\"> <div class=\"text-center m-b-md\" style=\"border: 1px solid transparent\"> <h3>LOGIN</h3> <!-- <small> This is the best app ever!</small> --> </div> <div class=\"hpanel\"> <div class=\"panel-body\"> <form name=\"loginForm\" id=\"loginForm\" novalidate ng-submit=\"login(loginForm)\"> <div class=\"form-group\"> <label class=\"control-label\" for=\"username\">Username</label> <input type=\"text\" placeholder=\"name@your_domain.com\" title=\"Please enter you username\" ng-model=\"uname\" ng-required=\"true\" value=\"\" name=\"username\" id=\"username\" class=\"form-control\"> </div> <span ng-if=\"loginForm.username.$touched && loginForm.username.$error.required\" class=\"text-danger\">Name is required</span> <div class=\"form-group\"> <label class=\"control-label\" for=\"password\">Password</label> <input type=\"password\" title=\"Please enter your password\" ng-required=\"true\" ng-model=\"pswd\" name=\"password\" id=\"password\" class=\"form-control\"> </div> <span ng-if=\"loginForm.password.$touched && loginForm.password.$error.required\" class=\"text-danger\">Password is required</span> <button class=\"btn btn-success btn-block\" type=\"submit\"><span ng-show=\"!loading\">Login</span><span ng-show=\"loading\"><i class=\"fa fa-spinner fa-spin\"></i> </span></button> <span class=\"text-danger\" ng-if=\"loginError\" class=\"text-danger\">Error: {{loginError}} </span> </form> </div> </div> </div> </div> <div class=\"row\" ng-if=\"$root.userInfo && $root.userInfo.user_id\"> <div class=\"col-md-12\" style=\"padding-top: 40px\"> <div class=\"hpanel\"> <div class=\"panel-body\"> <div> <button class=\"btn btn-success btn-block\" ng-click=\"redirectUser()\" ng-if=\"$root.userInfo.isAdmin\">Go to Admin</button> </div> <div> <button class=\"btn btn-success btn-block\" ng-click=\"redirectUser()\" ng-if=\"!$root.userInfo.isAdmin\">Go to Analytics</button> </div> </div> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/common/navigation.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/navigation.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/navigation.html",
     "<div id=\"navigation\"> <div class=\"profile-picture\"> <div class=\"stats-label text-color\"> <span class=\"font-extra-bold font-uppercase\">Username</span> <div class=\"dropdown\" uib-dropdown> <a uib-dropdown-toggle href=\"#\"> <small class=\"text-muted\">Founder of App <b class=\"caret\"></b></small> </a> <ul uib-dropdown-menu class=\"animated flipInX m-t-xs\"> <li><a>Item</a></li> </ul> </div> </div> </div> <ul side-navigation class=\"nav metismenu\" id=\"side-menu\"> <li ui-sref-active=\"active\"> <a ui-sref=\"dashboard\"> <span class=\"nav-label\">Dashboard</span></a> </li> </ul> </div>");
 }]);
 
-angular.module("views/common/panel_tools.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/common/panel_tools.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/common/panel_tools.html",
     "<!-- This is template for panel tools --><!-- It contains collapse function (showhide) and close function (closebox) --><!-- All function is handled from directive panelTools in directives.js file --> <div class=\"panel-tools\"> <a ng-click=\"showhide()\"><i class=\"fa fa-chevron-up\"></i></a> <a ng-click=\"closebox()\"><i class=\"fa fa-times\"></i></a> </div>");
 }]);
 
-angular.module("views/index/analytics.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/analytics.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/analytics.html",
     "<div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\" ng-show=\"isLoaded\"> <div ng-if=\"!isAuthorized\"> <form novalidate name=\"ridRequest\"> <div class=\"col-sm-12\"> <div class=\"row ng-hide\"> <label>Reference Id: <input type=\"hidden\" name=\"referenceId\" ng-model=\"rid.id\" ng-required=\"true\" ng-change=\"\"></label> </div> <div class=\"row\" ng-if=\"hasAuthentication\"> <label>Password: <input type=\"password\" name=\"referencePswd\" ng-model=\"rid.password\" ng-required=\"true\"></label> </div> <div class=\"row\" ng-show=\"hasAuthentication\"> <label><input type=\"submit\" ng-click=\"validateRid(rid)\" value=\"Verify\"></label> </div> <span class=\"text-danger\" ng-if=\"error\"> error: {{error}}</span> </div> </form> </div> <div ng-if=\"isLoaded && rid.id && !error && (isAuthorized || !hasAuthentication)\"> <analytics-layout campaign-id=\"rid.id\"></analytics-layout> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/index/clients.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/clients.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/clients.html",
     "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/index/contact.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/contact.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/contact.html",
     "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/index/features.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/features.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/features.html",
     "<!-- Navigation --><!-- <aside id=\"menu\" ng-include=\"'views/common/navigation.html'\"></aside> --><!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/index/index.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/index.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/index.html",
     "<!-- Main Wrapper --> <div id=\"wrapper\"> <div class=\"content\" animate-panel effect=\"zoomIn\"> <div class=\"row\"> <div class=\"col-lg-12 text-center m-t-md\"> <h2> Welcome to Mobilytics.ae 1 </h2> <p>Special <strong>Analytic Trace Application</strong> for your mobile marketing campaigns.</p> <p> <a ui-sref=\"app.main.analytics\">Analytics Page</a> </p> </div> </div> </div> </div>");
 }]);
 
-angular.module("views/index/index_header.html", []).run(["$templateCache", function ($templateCache) {
+angular.module("views/index/index_header.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/index/index_header.html",
     "<div id=\"logo\" class=\"light-version\"> <a ng-href=\"#\"><span class=\"logo\">mobilytics.ae</span></a> </div> <nav role=\"navigation\"> <!-- <minimaliza-menu></minimaliza-menu> --> <div class=\"small-logo\"> <a ng-href=\"#\"><span class=\"logo\">mobilytics.ae</span></a> </div> <div class=\"mobile-menu\"> <button type=\"button\" class=\"navbar-toggle mobile-menu-toggle\" data-toggle=\"collapse\" data-target=\"#mobile-collapse\"> <i class=\"fa fa-chevron-down\"></i> </button> <div class=\"collapse mobile-navbar\" id=\"mobile-collapse\"> <ul class=\"nav navbar-nav\"> <!--<li ng-class=\"{'active':active == 'home'}\"><a class=\"page-scroll\" ui-sref=\"app.main.index\">Home</a></li>--> <!--<li ng-class=\"{'active':active == 'features'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.features\">Features</a></li>--> <!--<li ng-class=\"{'active':active == 'clients'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.clients\">Clients </a></li>--> <!--<li ng-class=\"{'active':active == 'contact'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.contact\">Contact</a></li>--> <!--<li ng-class=\"{'active':active == 'login'}\" ng-show=\"!($root.userInfo && $root.userInfo.user_id)\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.login\">Sign In</a></li>--> <li ng-class=\"{'active':active == 'logout'}\" ng-show=\"$root.userInfo && $root.userInfo.user_id\"><a class=\"page-scroll\" page-scroll ng-click=\"logout()\">Log Out</a></li> </ul> </div> </div> <div class=\"navbar-default\"> <div class=\"navbar-right\"> <ul class=\"nav navbar-nav no-borders\"> <!--<li ng-class=\"{'active':active == 'home'}\"><a class=\"page-scroll\" ui-sref=\"app.main.index\">Home</a></li>--> <!--<li ng-class=\"{'active':active == 'features'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.features\">Features</a></li>--> <!--<li ng-class=\"{'active':active == 'clients'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.clients\">Clients </a></li>--> <!--<li ng-class=\"{'active':active == 'contact'}\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.contact\">Contact</a></li>--> <!--<li ng-class=\"{'active':active == 'login'}\" ng-show=\"!($root.userInfo && $root.userInfo.user_id)\"><a class=\"page-scroll\" page-scroll ui-sref=\"app.main.login\">Sign In</a></li>--> <li ng-class=\"{'active':active == 'logout'}\" ng-show=\"$root.userInfo && $root.userInfo.user_id\"><a class=\"page-scroll\" page-scroll ng-click=\"logout()\">Log Out</a></li> </ul> </div> </div> </nav>");
 }]);

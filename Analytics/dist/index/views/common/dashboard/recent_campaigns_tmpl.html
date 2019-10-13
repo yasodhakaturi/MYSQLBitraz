@@ -1,12 +1,14 @@
 <div class="hpanel">
     <div class="panel-heading">
         <div class="panel-tools">
-
         </div>
         Recent campaigns
     </div>
     <div class="panel-body list">
-        <div class="table-responsive project-list">
+        <div class="text-center h-200" ng-if="$root.pageRecentCampaignsLoading">
+            <span>Loading <i class="fa fa-spinner fa-spin"></i> </span>
+        </div>
+        <div class="table-responsive project-list" ng-if="!$root.pageRecentCampaignsLoading">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -35,4 +37,5 @@
             </table>
         </div>
     </div>
+
 </div>

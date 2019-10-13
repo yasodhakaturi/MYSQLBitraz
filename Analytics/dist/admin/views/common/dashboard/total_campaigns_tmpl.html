@@ -1,5 +1,8 @@
 <div class="hpanel stats">
-    <div class="panel-body h-200">
+    <div class="panel-body text-center h-200" ng-if="$root.pageCampaignsLoading">
+        <span>Loading <i class="fa fa-spinner fa-spin"></i> </span>
+    </div>
+    <div class="panel-body h-200"  ng-if="!$root.pageCampaignsLoading">
         <div class="stats-title pull-left">
             <h4>Total Campaigns</h4>
         </div>

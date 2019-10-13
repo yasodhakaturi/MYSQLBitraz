@@ -1,13 +1,16 @@
 <div class="hpanel">
-    <div class="panel-body text-center h-200">
-        <i class="pe-7s-graph1 fa-4x"></i>
+  <div class="panel-body text-center h-200" ng-if="$root.pageTotalUrlsLoading">
+    <span>Loading <i class="fa fa-spinner fa-spin"></i> </span>
+  </div>
+  <div class="panel-body text-center h-200" ng-if="!$root.pageTotalUrlsLoading">
+    <i class="pe-7s-graph1 fa-4x"></i>
 
-        <h1 class="m-xs" ng-bind="$ctrl.data.count || 0 | number"></h1>
+    <h1 class="m-xs" ng-bind="$ctrl.data.count || 0 | number"></h1>
 
-        <h3 class="font-extra-bold no-margins text-success">
-            Url's Generated
-        </h3>
-        <small>Total number of urls generated</small>
-    </div>
+    <h3 class="font-extra-bold no-margins text-success">
+      Url's Generated
+    </h3>
+    <small>Total number of urls generated</small>
+  </div>
 
 </div>
