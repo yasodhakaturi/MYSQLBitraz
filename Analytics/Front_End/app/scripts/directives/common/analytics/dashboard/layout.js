@@ -74,9 +74,9 @@ angular.module("app.dashboard", ['ui.router'])
           $ctrl.campaigns = res;
           $rootScope.pageCampaignsLoading = false;
         }, (err)=>{
-          $ctrl.visits = {};
+          $ctrl.campaigns = {};
           $rootScope.pageCampaignsLoading = false;
-          console.log("failed to get visits", err);
+          console.log("failed to get campaigns", err);
         });
       };
 
@@ -88,9 +88,9 @@ angular.module("app.dashboard", ['ui.router'])
           $ctrl.recentCampaigns = res;
           $rootScope.pageRecentCampaignsLoading = false;
         }, (err)=>{
-          $ctrl.visits = {};
+          $ctrl.recentCampaigns = {};
           $rootScope.pageRecentCampaignsLoading = false;
-          console.log("failed to get visits", err);
+          console.log("failed to get recent campaigns", err);
         });
       };
 
@@ -110,9 +110,9 @@ angular.module("app.dashboard", ['ui.router'])
           $ctrl.activities = res;
           $rootScope.pageActivityLoading = false;
         }, (err)=>{
-          $ctrl.visits = {};
+          $ctrl.activities = {};
           $rootScope.pageActivityLoading = false;
-          console.log("failed to get visits", err);
+          console.log("failed to get activity", err);
         });
       };
 

@@ -329,12 +329,12 @@ angular.module("views/common/dashboard/total_visits_tmpl.html", []).run(["$templ
     "\n" +
     "                <div class=\"col-xs-4\">\n" +
     "                    <small class=\"stats-label\">Yesterday</small>\n" +
-    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueVisitsYesterday || 0)}} Unique visits of {{$ctrl.data.visitsToday || 0}} total\">{{$ctrl.data.visitsYesterday || 0}}/<span class=\"text-success\">{{$ctrl.data.visitsYesterday || 0}}</span></span></h6>\n" +
+    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniquevisitsYesterday || 0)}} Unique visits of {{$ctrl.data.visitsToday || 0}} total\">{{$ctrl.data.visitsYesterday || 0}}/<span class=\"text-success\">{{$ctrl.data.visitsYesterday || 0}}</span></span></h6>\n" +
     "                </div>\n" +
     "\n" +
     "                <div class=\"col-xs-4\">\n" +
     "                    <small class=\"stats-label\">Last 7 Days</small>\n" +
-    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueVisitsLast7days || 0)}} Unique visits of {{$ctrl.data.visitsLast7days || 0}} total\">{{$ctrl.data.uniqueVisitsLast7days || 0}}/<span class=\"text-success\">{{$ctrl.data.visitsLast7days || 0}}</span></span></h6>\n" +
+    "                    <h6><span tooltip-popup-delay='500' tooltip-placement=\"bottom\" uib-tooltip=\"{{($ctrl.data.uniqueVisitsLast7day || 0)}} Unique visits of {{$ctrl.data.visitsLast7days || 0}} total\">{{$ctrl.data.uniqueVisitsLast7day || 0}}/<span class=\"text-success\">{{$ctrl.data.visitsLast7days || 0}}</span></span></h6>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
