@@ -114,6 +114,7 @@ namespace Analytics.Controllers
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
+       
         [System.Web.Http.HttpPost]
         public JsonResult Login(string uname, string password)
      //   [System.Web.Http.HttpPost]

@@ -554,6 +554,536 @@ namespace Analytics.Controllers
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult GETDashBoardSummary_TotalUrls(int cid)
+        {
+
+           totalUrls totalUrls1 = new totalUrls();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                     totalUrls1 = ((IObjectContextAdapter)dc)
+                          .ObjectContext
+                          .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+                   
+                }
+
+                return Json(totalUrls1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+     }
+
+        public JsonResult GETDashBoardSummary_UsersCount(int cid)
+        {
+
+            users users1 = new users();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    users1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(users1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GETDashBoardSummary_VisitsCount(int cid)
+        {
+
+            visits visits1 = new visits();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    visits1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(visits1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GETDashBoardSummary_CampaignsCount(int cid)
+        {
+
+            campaigns campaigns1 = new campaigns();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    campaigns1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<campaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(campaigns1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GETDashBoardSummary_RecentCampaignsCount(int cid)
+        {
+
+            recentCampaigns recentcampaigns1 = new recentCampaigns();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    recentcampaigns1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<recentCampaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(recentcampaigns1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GETDashBoardSummary_ActivityCount_Today(int cid)
+        {
+
+            today today1 = new today();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    today1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(today1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
+        public JsonResult GETDashBoardSummary_ActivityCount_Week(int cid)
+        {
+
+            last7days last7days1 = new last7days();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    last7days1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(last7days1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GETDashBoardSummary_ActivityCount_Month(int cid)
+        {
+
+            month month1 = new month();
+            try
+            {
+                if (Session["id"] != null)
+                {
+
+                    string role = Helper.CurrentUserRole;
+                    MySqlDataReader myReader;
+                    if (role.ToLower() != "admin")
+                    {
+                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+                        if (obj_client != null)
+                        {
+                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                            // create and open a connection object
+                            lSQLConn = new MySqlConnection(connStr);
+                            lSQLConn.Open();
+                            lSQLCmd.CommandType = CommandType.StoredProcedure;
+                            lSQLCmd.CommandTimeout = 600;
+                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
+                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+                            lSQLCmd.Connection = lSQLConn;
+                            //myReader = lSQLCmd.ExecuteReader();
+                        }
+                    }
+                    else
+                    {
+                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+                        // create and open a connection object
+                        lSQLConn = new MySqlConnection(connStr);
+                        lSQLConn.Open();
+                        lSQLCmd.CommandType = CommandType.StoredProcedure;
+                        lSQLCmd.CommandTimeout = 600;
+                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
+                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+                        lSQLCmd.Connection = lSQLConn;
+                    }
+                    myReader = lSQLCmd.ExecuteReader();
+
+                    month1 = ((IObjectContextAdapter)dc)
+                         .ObjectContext
+                         .Translate<month>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+                }
+
+                return Json(month1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+     //  start GetSummary1
         public JsonResult GETSummary1(int cid, string rid)
         {
 
@@ -1002,5 +1532,7 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
+     // end GetSummary1
+
     }
 }

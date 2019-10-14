@@ -38,7 +38,7 @@ namespace Analytics.Models
         public int uniqueVisitsToday { get; set; }
         public int visitsYesterday { get; set; }
         public int uniqueVisitsYesterday { get; set; }
-        public int uniqueVisitsLast7days { get; set; }
+        public int uniqueVisitsLast7day { get; set; }
         public int visitsLast7days { get; set; }
     }
     public class campaigns
