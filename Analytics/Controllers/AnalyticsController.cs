@@ -822,7 +822,8 @@ namespace Analytics.Controllers
         public JsonResult GETDashBoardSummary_RecentCampaignsCount(int cid)
         {
 
-            recentCampaigns recentcampaigns1 = new recentCampaigns();
+            List<recentCampaigns> objr = new List<recentCampaigns>();
+
             try
             {
                 if (Session["id"] != null)
@@ -863,14 +864,26 @@ namespace Analytics.Controllers
                     }
                     myReader = lSQLCmd.ExecuteReader();
 
-                    recentcampaigns1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<recentCampaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+                    List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
+                                               .ObjectContext
+                                               .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+        
+                                           objr = (from r in recentCampaigns
+                                                  select new recentCampaigns()
+                                                  {
+                                                      id = r.id,
+                                                      rid = r.rid,
+                                                      visits = r.visits,
+                                                      users = r.users,
+                                                      status = r.status,
+                                                      //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                      createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                                                      endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
 
-
+                                                  }).ToList();
                 }
 
-                return Json(recentcampaigns1, JsonRequestBehavior.AllowGet);
+                return Json(objr, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
