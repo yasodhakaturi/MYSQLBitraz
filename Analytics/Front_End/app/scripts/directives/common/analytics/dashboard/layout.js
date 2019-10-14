@@ -126,12 +126,22 @@ angular.module("app.dashboard", ['ui.router'])
       $ctrl.$onInit = ()=>{
         if($rootScope.userInfo && $rootScope.userInfo.user_id){
           // $ctrl.getSummary();
-          $ctrl.getUrlCounts();
-          $ctrl.getUsersCounts();
-          $ctrl.getVisitsCounts();
-          $ctrl.getCampaignsCounts();
-          $ctrl.getRecentCampaigns();
-          $ctrl.activityStateChange();
+          if($ctrl.config && $ctrl.config.type == 'campaign'){
+            $ctrl.getUrlCounts();
+            $ctrl.getUsersCounts();
+            $ctrl.getVisitsCounts();
+            // $ctrl.getCampaignsCounts();
+            // $ctrl.getRecentCampaigns();
+            $ctrl.activityStateChange();
+          }else{
+            $ctrl.getUrlCounts();
+            $ctrl.getUsersCounts();
+            $ctrl.getVisitsCounts();
+            $ctrl.getCampaignsCounts();
+            $ctrl.getRecentCampaigns();
+            $ctrl.activityStateChange();
+          }
+
         }
 
       };
