@@ -369,7 +369,7 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "            <total-visits data=\"$ctrl.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <activities data=\"$ctrl.activities\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
+    "            <activities data=\"$ctrl.activities\" state=\"$ctrl.activityState\"  on-type-change=\"$ctrl.activityStateChange\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
     "        </div>\n" +
     "\n" +
     "    </div>\n" +
