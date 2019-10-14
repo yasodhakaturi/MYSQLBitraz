@@ -43,7 +43,8 @@ angular.module('app.rid', ["ngResource"])
 
         getSummaryRecentCampaignsCount: {
           method: 'GET',
-          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_RecentCampaignsCount'
+          url: appConfig.apiEndPoint + '/Analytics/GETDashBoardSummary_RecentCampaignsCount',
+          isArray: true
         },
 
         getSummaryActivityTodayCount: {
