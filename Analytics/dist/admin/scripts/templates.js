@@ -796,17 +796,17 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "<div class=\"dashboard-container col-sm-12\" ng-if=\"$ctrl.config && $ctrl.config.type == 'all'\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <urls-generated data=\"$ctrl.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
+    "            <urls-generated data=\"$ctrl.data.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-users data=\"$ctrl.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
+    "            <total-users data=\"$ctrl.data.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-visits data=\"$ctrl.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
+    "            <total-visits data=\"$ctrl.data.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-campaigns data=\"$ctrl.campaigns\" is-campaign=\"!!$ctrl.config.campaignId\"></total-campaigns>\n" +
+    "            <total-campaigns data=\"$ctrl.data.campaigns\" is-campaign=\"!!$ctrl.config.campaignId\"></total-campaigns>\n" +
     "        </div>\n" +
     "\n" +
     "\n" +
@@ -814,11 +814,11 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "    <div class=\"row\">\n" +
     "\n" +
     "        <div class=\"col-lg-6\">\n" +
-    "            <recent-campaigns data=\"$ctrl.recentCampaigns\"></recent-campaigns>\n" +
+    "            <recent-campaigns data=\"$ctrl.data.recentCampaigns\"></recent-campaigns>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3\">\n" +
-    "            <activities data=\"$ctrl.activities\" state=\"$ctrl.activityState\" header=\"true\" is-campaign=\"!!$ctrl.config.campaignId\" on-type-change=\"$ctrl.activityStateChange\"></activities>\n" +
+    "            <activities data=\"$ctrl.data.activities\" header=\"true\" is-campaign=\"!!$ctrl.config.campaignId\"></activities>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-lg-3\">\n" +
@@ -831,16 +831,16 @@ angular.module("views/common/dashboard/dashboard_tmpl.html", []).run(["$template
     "<div class=\"dashboard-container col-sm-12\" ng-if=\"$ctrl.config && $ctrl.config.type == 'campaign'\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <urls-generated data=\"$ctrl.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
+    "            <urls-generated data=\"$ctrl.data.totalUrls\" is-campaign=\"!!$ctrl.config.campaignId\"></urls-generated>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-users data=\"$ctrl.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
+    "            <total-users data=\"$ctrl.data.users\" is-campaign=\"!!$ctrl.config.campaignId\"></total-users>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <total-visits data=\"$ctrl.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
+    "            <total-visits data=\"$ctrl.data.visits\" is-campaign=\"!!$ctrl.config.campaignId\"></total-visits>\n" +
     "        </div>\n" +
     "        <div class=\"col-lg-3 col-md-6\">\n" +
-    "            <activities data=\"$ctrl.activities\" state=\"$ctrl.activityState\"  on-type-change=\"$ctrl.activityStateChange\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
+    "            <activities data=\"$ctrl.data.activities\" is-campaign=\"!!$ctrl.config.campaignId\" header=\"false\"></activities>\n" +
     "        </div>\n" +
     "\n" +
     "    </div>\n" +
