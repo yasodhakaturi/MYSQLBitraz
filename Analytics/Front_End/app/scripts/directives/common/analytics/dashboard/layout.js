@@ -12,19 +12,19 @@ angular.module("app.dashboard", ['ui.router'])
       $ctrl.totalUrls = {};
       $ctrl.users = {};
       $ctrl.visits = {};
-      // $rootScope.pageLoading = true;
-      //
-      // $ctrl.getSummary = () => {
-      //   $rootScope.pageLoading = true;
-      //   let summaryDefer = RidService.getSummary($ctrl.getParams()).$promise;
-      //   summaryDefer.then((res)=>{
-      //     $ctrl.data = res;
-      //     $rootScope.pageLoading = false;
-      //   }, (err)=>{
-      //     $rootScope.pageLoading = false;
-      //     console.log("failed to get summary", err);
-      //   });
-      // };
+      $rootScope.pageLoading = true;
+
+      $ctrl.getSummary = () => {
+        $rootScope.pageLoading = true;
+        let summaryDefer = RidService.getSummary($ctrl.getParams()).$promise;
+        summaryDefer.then((res)=>{
+          $ctrl.data = res;
+          $rootScope.pageLoading = false;
+        }, (err)=>{
+          $rootScope.pageLoading = false;
+          console.log("failed to get summary", err);
+        });
+      };
 
       $ctrl.getUrlCounts = () => {
         $rootScope.pageTotalUrlsLoading = true;
@@ -125,22 +125,22 @@ angular.module("app.dashboard", ['ui.router'])
 
       $ctrl.$onInit = ()=>{
         if($rootScope.userInfo && $rootScope.userInfo.user_id){
-          // $ctrl.getSummary();
-          if($ctrl.config && $ctrl.config.type == 'campaign'){
-            $ctrl.getUrlCounts();
-            $ctrl.getUsersCounts();
-            $ctrl.getVisitsCounts();
-            // $ctrl.getCampaignsCounts();
-            // $ctrl.getRecentCampaigns();
-            $ctrl.activityStateChange();
-          }else{
-            $ctrl.getUrlCounts();
-            $ctrl.getUsersCounts();
-            $ctrl.getVisitsCounts();
-            $ctrl.getCampaignsCounts();
-            $ctrl.getRecentCampaigns();
-            $ctrl.activityStateChange();
-          }
+          $ctrl.getSummary();
+          // if($ctrl.config && $ctrl.config.type == 'campaign'){
+          //   $ctrl.getUrlCounts();
+          //   $ctrl.getUsersCounts();
+          //   $ctrl.getVisitsCounts();
+          //   // $ctrl.getCampaignsCounts();
+          //   // $ctrl.getRecentCampaigns();
+          //   $ctrl.activityStateChange();
+          // }else{
+          //   $ctrl.getUrlCounts();
+          //   $ctrl.getUsersCounts();
+          //   $ctrl.getVisitsCounts();
+          //   $ctrl.getCampaignsCounts();
+          //   $ctrl.getRecentCampaigns();
+          //   $ctrl.activityStateChange();
+          // }
 
         }
 
