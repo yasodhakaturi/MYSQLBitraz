@@ -708,34 +708,34 @@ namespace Analytics.Helpers.BO
                         //int uid_ID1 = GetNEXTAutoIncrementedID();
                         //swExtLogFile.Write(Environment.NewLine);
                         StringBuilder MyStringBuilder = new StringBuilder();
-                        MyStringBuilder.Append("PK_Uid,");
-                        MyStringBuilder.Append("FK_RID,");
-                        MyStringBuilder.Append("FK_ClientID,");
-                        MyStringBuilder.Append("ReferenceNumber,");
+                        MyStringBuilder.Append("PK_Uid<?>");
+                        MyStringBuilder.Append("FK_RID<?>");
+                        MyStringBuilder.Append("FK_ClientID<?>");
+                        MyStringBuilder.Append("ReferenceNumber<?>");
                         if (type.ToLower() != "message")
-                            MyStringBuilder.Append("LongurlorMessage,");
-                        MyStringBuilder.Append("MobileNumber,");
-                        MyStringBuilder.Append("Type,");
-                        MyStringBuilder.Append("CreatedDate,");
-                        MyStringBuilder.Append("UniqueNumber,");
-                        MyStringBuilder.Append("CreatedBy,");
+                            MyStringBuilder.Append("LongurlorMessage<?>");
+                        MyStringBuilder.Append("MobileNumber<?>");
+                        MyStringBuilder.Append("Type<?>");
+                        MyStringBuilder.Append("CreatedDate<?>");
+                        MyStringBuilder.Append("UniqueNumber<?>");
+                        MyStringBuilder.Append("CreatedBy<?>");
                         MyStringBuilder.Append("FK_Batchid");
                         MyStringBuilder.Append(Environment.NewLine);
                         //for (int i2 = 0; i2 < MobileNumbers.Count; i2++)
                         //{
                             for (int j2 = 0; j2 < MobileNumbers.Count; j2++)
                             {
-                                MyStringBuilder.Append(uid_ID + ",");//pk_uid
-                                MyStringBuilder.Append(objrid.PK_Rid.ToString() + ",");//fk_rid
-                                MyStringBuilder.Append(objrid.FK_ClientId.ToString() + ",");//fk_clientid
-                                MyStringBuilder.Append(ReferenceNumber + ",");//referencenumber
+                                MyStringBuilder.Append(uid_ID + "<?>");//pk_uid
+                                MyStringBuilder.Append(objrid.PK_Rid.ToString() + "<?>");//fk_rid
+                                MyStringBuilder.Append(objrid.FK_ClientId.ToString() + "<?>");//fk_clientid
+                                MyStringBuilder.Append(ReferenceNumber + "<?>");//referencenumber
                                 if (type.ToLower() != "message")
-                                MyStringBuilder.Append(LongurlorMessage.ToString() + ",");//longurl
-                                MyStringBuilder.Append(MobileNumbers[j2].ToString() + ",");//mobilenumber
-                                MyStringBuilder.Append(type.ToString() + ",");//type
-                                MyStringBuilder.Append(Helper.GetUTCTime().ToString() + ",");//createddate
-                                MyStringBuilder.Append(objh[j2].ToString() + ",");//uniquenumber
-                                MyStringBuilder.Append(Helper.CurrentUserId.ToString() + ",");//createdby
+                                    MyStringBuilder.Append(LongurlorMessage.ToString() + "<?>");//longurl
+                                MyStringBuilder.Append(MobileNumbers[j2].ToString() + "<?>");//mobilenumber
+                                MyStringBuilder.Append(type.ToString() + "<?>");//type
+                                MyStringBuilder.Append(Helper.GetUTCTime().ToString() + "<?>");//createddate
+                                MyStringBuilder.Append(objh[j2].ToString() + "<?>");//uniquenumber
+                                MyStringBuilder.Append(Helper.CurrentUserId.ToString() + "<?>");//createdby
                                 MyStringBuilder.Append(Convert.ToString(batchid));//batchid
                             //}
                             swExtLogFile.WriteLine(MyStringBuilder);
@@ -764,7 +764,8 @@ namespace Analytics.Helpers.BO
                         //var connection = myConnection as MySqlConnection;
                         //var bl = new MySqlBulkLoader(connection);
                         bl.TableName = "uiddata";
-                        bl.FieldTerminator = ",";
+                        bl.FieldTerminator = "<?>";
+                        //bl.EscapeCharacter = ',';
                         bl.LineTerminator = swExtLogFile.NewLine;
                         bl.FileName = path_tmp;
                         bl.NumberOfLinesToSkip = 1;

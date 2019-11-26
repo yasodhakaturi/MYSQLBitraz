@@ -177,6 +177,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -303,6 +304,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="activity_counts.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AnalyticsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -417,13 +421,40 @@
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>
+    <Compile Include="shorturlclickreference.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="shorturldata.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ShortURLService.svc.cs">
       <DependentUpon>ShortURLService.svc</DependentUpon>
     </Compile>
+    <Compile Include="spGetDashBoardSummary_ActivityCount_month_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_ActivityCount_Today_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_ActivityCount_week_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_CampaignsCount_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_RecentCampaignsCount_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_UsersCount_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetDashBoardSummary_VisitsCount_Result.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="stats_counts_today.cs">
+      <DependentUpon>AnalyticsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="stat_counts.cs">
       <DependentUpon>AnalyticsModel.tt</DependentUpon>
     </Compile>
