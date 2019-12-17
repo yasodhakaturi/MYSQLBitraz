@@ -32,6 +32,11 @@
         <AssociationConnector Association="shortenurlModel.FK_SHORTURLDATA_RIDDATA" />
         <AssociationConnector Association="shortenurlModel.FK_SHORTURLDATA_UIDDATA" />
         <EntityTypeShape EntityType="shortenurlModel.messagelink" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="shortenurlModel.activity_counts" Width="1.5" PointX="14.375" PointY="11.75" />
+        <EntityTypeShape EntityType="shortenurlModel.stats_counts_today" Width="1.5" PointX="10.25" PointY="14.75" />
+        <AssociationConnector Association="shortenurlModel.clientid" />
+        <AssociationConnector Association="shortenurlModel.fkrid" />
+        <EntityTypeShape EntityType="shortenurlModel.shorturlclickreference" Width="1.5" PointX="10.375" PointY="8.75" />
         <EntityTypeShape EntityType="shortenurlModel.stat_counts" Width="1.5" PointX="7.375" PointY="14.75" />
         </Diagram>
     </edmx:Diagrams>

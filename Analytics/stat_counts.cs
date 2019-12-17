@@ -63,5 +63,7 @@ namespace Analytics
         public Nullable<int> FK_ClientID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> UniqueVisits { get; set; }
+        public Nullable<int> RevisitsTotal_Yesterday { get; set; }
+        public Nullable<int> NoVisitsTotal_Yesterday { get; set; }
     }
 }

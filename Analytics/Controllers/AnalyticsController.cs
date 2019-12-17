@@ -12,6 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;  
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Caching;
 
 namespace Analytics.Controllers
 {
@@ -29,7 +30,8 @@ namespace Analytics.Controllers
 
             return View(obj);
         }
-        public JsonResult GETSummary(int cid,string rid)
+        public JsonResult GETSummary_SP(int cid,string rid)
+            //public JsonResult GETSummary(int cid,string rid)
         {
 
             DashBoardSummary obj = new DashBoardSummary();
@@ -554,548 +556,917 @@ namespace Analytics.Controllers
                 return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
         }
-
-        public JsonResult GETDashBoardSummary_TotalUrls(int cid)
+        public JsonResult GETDashBoardSummary_TotalUrls(int cid, string rid)
         {
 
-           totalUrls totalUrls1 = new totalUrls();
-            try
+            totalUrls totalUrls1 = new totalUrls();
+            stat_counts dc_st = new stat_counts(); List<stat_counts> dc_st1 = new List<stat_counts>();
+            string role = Helper.CurrentUserRole;
+            if (rid == null)
             {
-                if (Session["id"] != null)
+                if (role.ToLower() == "admin")
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
-                    {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
-                    }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                     totalUrls1 = ((IObjectContextAdapter)dc)
-                          .ObjectContext
-                          .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-                   
+                    dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                    if (dc_st != null)
+                    totalUrls1.count = (int)(dc_st.TotalUsers);
                 }
-
-                return Json(totalUrls1, JsonRequestBehavior.AllowGet);
+                else
+                {
+                    dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                    if (dc_st1 != null)
+                    totalUrls1.count = (int)(dc_st1.Select(x => x.TotalUsers).Sum());
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                int rid1 = Convert.ToInt32(rid);
+                string rid2 = Convert.ToString(rid);
+                rid1 = dc.riddatas.Where(x => x.ReferenceNumber == rid2).Select(x => x.PK_Rid).SingleOrDefault();
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == rid1).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
+                totalUrls1.count = (int)(dc_st.TotalUsers);
             }
 
-     }
-
-        public JsonResult GETDashBoardSummary_UsersCount(int cid)
+            return Json(totalUrls1, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GETDashBoardSummary_UsersCount(int cid, string rid)
         {
 
             users users1 = new users();
-            try
+            stat_counts dc_st = new stat_counts(); List<stat_counts> dc_st1 = new List<stat_counts>();
+            string role = Helper.CurrentUserRole;
+            if (rid == null)
             {
-                if (Session["id"] != null)
+                if (role.ToLower() == "admin")
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
+                    dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                    if (dc_st != null)
                     {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
+                        users1.total = (int)(dc_st.TotalUsers);
+                        users1.uniqueUsers = (int)(dc_st.UniqueUsers);
+                        users1.uniqueUsersToday = (int)(dc_st.UniqueUsersToday);
+                        users1.usersToday = (int)(dc_st.UsersToday);
+                        users1.uniqueUsersYesterday = (int)(dc_st.UniqueUsersYesterday);
+                        users1.usersYesterday = (int)(dc_st.UsersYesterday);
+                        users1.uniqueUsersLast7days = (int)(dc_st.UniqueUsersLast7days);
+                        users1.usersLast7days = (int)(dc_st.UsersLast7days);
                     }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    users1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
                 }
-
-                return Json(users1, JsonRequestBehavior.AllowGet);
+                else
+                {
+                    dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                    if (dc_st1 != null)
+                    {
+                        users1.total = (int)(dc_st1.Select(x => x.TotalUsers).Sum());
+                        users1.uniqueUsers = (int)(dc_st1.Select(x => x.UniqueUsers).Sum());
+                        users1.uniqueUsersToday = (int)(dc_st1.Select(x => x.UniqueUsersToday).Sum());
+                        users1.usersToday = (int)(dc_st1.Select(x => x.UsersToday).Sum());
+                        users1.uniqueUsersYesterday = (int)(dc_st1.Select(x => x.UniqueUsersYesterday).Sum());
+                        users1.usersYesterday = (int)(dc_st1.Select(x => x.UsersYesterday).Sum());
+                        users1.uniqueUsersLast7days = (int)(dc_st1.Select(x => x.UniqueUsersLast7days).Sum());
+                        users1.usersLast7days = (int)(dc_st1.Select(x => x.UsersLast7days).Sum());
+                    }
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                int rid1 = Convert.ToInt32(rid);
+                rid1 = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(x => x.PK_Rid).SingleOrDefault();
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == rid1).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
+                {
+                    users1.total = (int)(dc_st.TotalUsers);
+                    users1.uniqueUsers = (int)(dc_st.UniqueUsers);
+                    users1.uniqueUsersToday = (int)(dc_st.UniqueUsersToday);
+                    users1.usersToday = (int)(dc_st.UsersToday);
+                    users1.uniqueUsersYesterday = (int)(dc_st.UniqueUsersYesterday);
+                    users1.usersYesterday = (int)(dc_st.UsersYesterday);
+                    users1.uniqueUsersLast7days = (int)(dc_st.UniqueUsersLast7days);
+                    users1.usersLast7days = (int)(dc_st.UsersLast7days);
+                }
             }
+            return Json(users1, JsonRequestBehavior.AllowGet);
 
         }
-
-        public JsonResult GETDashBoardSummary_VisitsCount(int cid)
+        public JsonResult GETDashBoardSummary_VisitsCount(int cid, string rid)
         {
 
             visits visits1 = new visits();
-            try
+            stat_counts dc_st = new stat_counts(); List<stat_counts> dc_st1 = new List<stat_counts>();
+            string role = Helper.CurrentUserRole;
+            if (rid == null)
             {
-                if (Session["id"] != null)
+                if (role.ToLower() == "admin")
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
+                    dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                    if (dc_st != null)
                     {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
+                        visits1.total = (int)(dc_st.TotalVisits);
+                        visits1.uniqueVisits = (int)(dc_st.UniqueVisits);
+                        visits1.uniqueVisitsToday = (int)(dc_st.UniqueVisitsToday);
+                        visits1.visitsToday = (int)(dc_st.VisitsToday);
+                        visits1.uniqueVisitsYesterday = (int)(dc_st.UniqueVisitsYesterday);
+                        visits1.visitsYesterday = (int)(dc_st.VisitsYesterday);
+                        visits1.uniqueVisitsLast7day = (int)(dc_st.UniqueVisitsLast7day);
+                        visits1.visitsLast7days = (int)(dc_st.VisitsLast7days);
                     }
-                    else
+                }
+                else
+                {
+                    dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                    if (dc_st1 != null)
                     {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
+                        visits1.total = (int)(dc_st1.Select(x => x.TotalVisits).Sum());
+                        visits1.uniqueVisits = (int)(dc_st1.Select(x => x.UniqueVisits).Sum());
+                        visits1.uniqueVisitsToday = (int)(dc_st1.Select(x => x.UniqueVisitsToday).Sum());
+                        visits1.visitsToday = (int)(dc_st1.Select(x => x.VisitsToday).Sum());
+                        visits1.uniqueVisitsYesterday = (int)(dc_st1.Select(x => x.UniqueVisitsYesterday).Sum());
+                        visits1.visitsYesterday = (int)(dc_st1.Select(x => x.VisitsYesterday).Sum());
+                        visits1.uniqueVisitsLast7day = (int)(dc_st1.Select(x => x.UniqueVisitsLast7day).Sum());
+                        visits1.visitsLast7days = (int)(dc_st1.Select(x => x.VisitsLast7days).Sum());
                     }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    visits1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
                 }
 
-                return Json(visits1, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
+                int rid1 = Convert.ToInt32(rid);
+                rid1 = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(x => x.PK_Rid).SingleOrDefault();
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == rid1).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
+                {
+                    visits1.total = (int)(dc_st.TotalVisits);
+                    visits1.uniqueVisits = (int)(dc_st.UniqueVisits);
+                    visits1.uniqueVisitsToday = (int)(dc_st.UniqueVisitsToday);
+                    visits1.visitsToday = (int)(dc_st.VisitsToday);
+                    visits1.uniqueVisitsYesterday = (int)(dc_st.UniqueVisitsYesterday);
+                    visits1.visitsYesterday = (int)(dc_st.VisitsYesterday);
+                    visits1.uniqueVisitsLast7day = (int)(dc_st.UniqueVisitsLast7day);
+                    visits1.visitsLast7days = (int)(dc_st.VisitsLast7days);
+                }
 
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
             }
 
+            return Json(visits1, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GETDashBoardSummary_CampaignsCount(int cid)
         {
 
             campaigns campaigns1 = new campaigns();
-            try
+
+            List<stat_counts> dc_st1 = new List<stat_counts>();
+            stat_counts dc_st = new stat_counts();
+            string role = Helper.CurrentUserRole;
+            if (role.ToLower() != "admin")
             {
-                if (Session["id"] != null)
+                dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                if (dc_st1 != null)
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
-                    {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
-                    }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    campaigns1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<campaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
+                    campaigns1.total = (int)(dc_st1.Select(x=>x.TotalCamapigns).Sum());
+                    campaigns1.campaignsLast7days = (int)(dc_st1.Select(x=>x.CampaignsLast7days).Sum());
+                    campaigns1.campaignsMonth = (int)(dc_st1.Select(x=>x.CampaignsMonth).Sum());
                 }
-
-                return Json(campaigns1, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                dc_st1 = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).ToList();
+                if (dc_st1 != null)
+                {
+                    campaigns1.total = (int)(dc_st1.Select(x => x.TotalCamapigns).Sum());
+                    campaigns1.campaignsLast7days = (int)(dc_st1.Select(x => x.CampaignsLast7days).Sum());
+                    campaigns1.campaignsMonth = (int)(dc_st1.Select(x => x.CampaignsMonth).Sum());
+                }
             }
-
+            return Json(campaigns1, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GETDashBoardSummary_RecentCampaignsCount(int cid)
         {
 
-            List<recentCampaigns> objr = new List<recentCampaigns>();
-
-            try
+            List<recentCampaigns_stat> objr = new List<recentCampaigns_stat>();
+            List<stat_counts> dc_st1 = new List<stat_counts>();
+            stat_counts dc_st = new stat_counts();
+            string role = Helper.CurrentUserRole;
+            if (role.ToLower() == "admin")
             {
-                if (Session["id"] != null)
-                {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
-                    {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
+                // dc_st = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).SingleOrDefault();
+                objr = (from r in dc.stat_counts
+                        .AsEnumerable()
+                        orderby r.CreatedDate descending
+                        select new recentCampaigns_stat()
                         {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                            id = r.PK_Stat,
+                            rid = r.FK_Rid.ToString(),
+                            visits = (int)r.TotalVisits,
+                            users = (int)r.TotalUsers,
+                            status = true,
+                            //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                            createdOn = r.CreatedDate.Value.ToString("yyyy-MM-ddThh:mm:ss")
+                            //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
 
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
-                    }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+                        }).Take(10).ToList();
 
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
-                                               .ObjectContext
-                                               .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
-        
-                                           objr = (from r in recentCampaigns
-                                                  select new recentCampaigns()
-                                                  {
-                                                      id = r.id,
-                                                      rid = r.rid,
-                                                      visits = r.visits,
-                                                      users = r.users,
-                                                      status = r.status,
-                                                      //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
-                                                      createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
-                                                      endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
-
-                                                  }).ToList();
-                }
-
-                return Json(objr, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
+                objr = (from r in dc.stat_counts
+                        where r.FK_ClientID == cid
+                        orderby r.CreatedDate descending
+                        select new recentCampaigns_stat()
+                        {
+                            id = r.PK_Stat,
+                            rid = r.FK_Rid.ToString(),
+                            visits = (int)r.TotalVisits,
+                            users = (int)r.TotalUsers,
+                            status = true,
+                            //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                            createdOn = r.CreatedDate.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                            //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
 
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                        }).Take(10).ToList();
             }
 
+            return Json(objr, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult GETDashBoardSummary_ActivityCount_Today(int cid)
+        public JsonResult GETDashBoardSummary_ActivityCount_Today(int cid, string rid)
         {
-
             today today1 = new today();
-            try
+            List<stat_counts> dc_st1 = new List<stat_counts>();
+            stat_counts dc_st = new stat_counts();
+            string role = Helper.CurrentUserRole;
+            if (rid == null)
             {
-                if (Session["id"] != null)
+                if (role.ToLower() == "admin")
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
+                    dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                    if (dc_st != null)
                     {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
+                        today1.urlTotal = (int)(dc_st.UrlTotal_Today);
+                        today1.urlPercent = (double)(dc_st.UrlPercent_Today);
+                        today1.visitsTotal = (int)(dc_st.VisitsToday);
+                        today1.visitsPercent = (double)(dc_st.VisitsPercent_Today);
+                        today1.revisitsTotal = (int)(dc_st.RevisitsTotal_Today);
+                        today1.revisitsPercent = (double)(dc_st.RevisitsPercent_Today);
+                        today1.noVisitsTotal = (int)(dc_st.NoVisitsTotal_Today);
+                        today1.noVisitsPercent = (double)(dc_st.NoVisitsPercent_Today);
                     }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    today1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
                 }
-
-                return Json(today1, JsonRequestBehavior.AllowGet);
+                else
+                {
+                    dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                    if (dc_st1 != null)
+                    {
+                        today1.urlTotal = (int)(dc_st1.Select(x => x.UrlTotal_Today).Sum());
+                        today1.urlPercent = (double)(dc_st1.Select(x => x.UrlPercent_Today).Sum());
+                        today1.visitsTotal = (int)(dc_st1.Select(x => x.VisitsToday).Sum());
+                        today1.visitsPercent = (double)(dc_st1.Select(x => x.VisitsPercent_Today).Sum());
+                        today1.revisitsTotal = (int)(dc_st1.Select(x => x.RevisitsTotal_Today).Sum());
+                        today1.revisitsPercent = (double)(dc_st1.Select(x => x.RevisitsPercent_Today).Sum());
+                        today1.noVisitsTotal = (int)(dc_st1.Select(x => x.NoVisitsTotal_Today).Sum());
+                        today1.noVisitsPercent = (double)(dc_st1.Select(x => x.NoVisitsPercent_Today).Sum());
+                    }
+                    }
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                int rid1 = Convert.ToInt32(rid);
+                rid1 = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(x => x.PK_Rid).SingleOrDefault();
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == rid1).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
+                {
+                    today1.urlTotal = (int)(dc_st.UrlTotal_Today);
+                    today1.urlPercent = (double)(dc_st.UrlPercent_Today);
+                    today1.visitsTotal = (int)(dc_st.VisitsToday);
+                    today1.visitsPercent = (double)(dc_st.VisitsPercent_Today);
+                    today1.revisitsTotal = (int)(dc_st.RevisitsTotal_Today);
+                    today1.revisitsPercent = (double)(dc_st.RevisitsPercent_Today);
+                    today1.noVisitsTotal = (int)(dc_st.NoVisitsTotal_Today);
+                    today1.noVisitsPercent = (double)(dc_st.NoVisitsPercent_Today);
+                }
             }
-
+            return Json(today1, JsonRequestBehavior.AllowGet);
         }
-
-
         public JsonResult GETDashBoardSummary_ActivityCount_Week(int cid)
         {
-
             last7days last7days1 = new last7days();
-            try
+            List<stat_counts> dc_st1 = new List<stat_counts>();
+            stat_counts dc_st = new stat_counts();
+            string role = Helper.CurrentUserRole;
+            if (role.ToLower() == "admin")
             {
-                if (Session["id"] != null)
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
-                    {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
-                    }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    last7days1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
+                    last7days1.urlTotal = (int)(dc_st.UrlTotal_Week);
+                    last7days1.urlPercent = (double)(dc_st.UrlPercent_Week);
+                    last7days1.visitsTotal = (int)(dc_st.VisitsTotal_Week);
+                    last7days1.visitsPercent = (double)(dc_st.VisitsPercent_Week);
+                    last7days1.revisitsTotal = (int)(dc_st.RevisitsTotal_Week);
+                    last7days1.revisitsPercent = (double)(dc_st.RevisitsPercent_Week);
+                    last7days1.noVisitsTotal = (int)(dc_st.NoVisitsTotal_Week);
+                    last7days1.noVisitsPercent = (double)(dc_st.NoVisitsPercent_Week);
                 }
-
-                return Json(last7days1, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                if (dc_st1 != null)
+                {
+                    last7days1.urlTotal = (int)(dc_st1.Select(x => x.UrlTotal_Week).Sum());
+                    last7days1.urlPercent = (double)(dc_st1.Select(x => x.UrlPercent_Week).Sum());
+                    last7days1.visitsTotal = (int)(dc_st1.Select(x => x.VisitsTotal_Week).Sum());
+                    last7days1.visitsPercent = (double)(dc_st1.Select(x => x.VisitsPercent_Week).Sum());
+                    last7days1.revisitsTotal = (int)(dc_st1.Select(x => x.RevisitsTotal_Week).Sum());
+                    last7days1.revisitsPercent = (double)(dc_st1.Select(x => x.RevisitsPercent_Week).Sum());
+                    last7days1.noVisitsTotal = (int)(dc_st1.Select(x => x.NoVisitsTotal_Week).Sum());
+                    last7days1.noVisitsPercent = (double)(dc_st1.Select(x => x.NoVisitsPercent_Week).Sum());
+                }
             }
 
+            return Json(last7days1, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GETDashBoardSummary_ActivityCount_Month(int cid)
         {
 
             month month1 = new month();
-            try
+            List<stat_counts> dc_st1 = new List<stat_counts>();
+            stat_counts dc_st = new stat_counts();
+            string role = Helper.CurrentUserRole;
+            if (role.ToLower() == "admin")
             {
-                if (Session["id"] != null)
+                dc_st = dc.stat_counts.Where(x => x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                if (dc_st != null)
                 {
-
-                    string role = Helper.CurrentUserRole;
-                    MySqlDataReader myReader;
-                    if (role.ToLower() != "admin")
-                    {
-                        client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
-                        if (obj_client != null)
-                        {
-                            string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                            // create and open a connection object
-                            lSQLConn = new MySqlConnection(connStr);
-                            lSQLConn.Open();
-                            lSQLCmd.CommandType = CommandType.StoredProcedure;
-                            lSQLCmd.CommandTimeout = 600;
-                            lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
-                            lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
-                            lSQLCmd.Connection = lSQLConn;
-                            //myReader = lSQLCmd.ExecuteReader();
-                        }
-                    }
-                    else
-                    {
-                        string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-
-                        // create and open a connection object
-                        lSQLConn = new MySqlConnection(connStr);
-                        lSQLConn.Open();
-                        lSQLCmd.CommandType = CommandType.StoredProcedure;
-                        lSQLCmd.CommandTimeout = 600;
-                        lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
-                        lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
-                        lSQLCmd.Connection = lSQLConn;
-                    }
-                    myReader = lSQLCmd.ExecuteReader();
-
-                    month1 = ((IObjectContextAdapter)dc)
-                         .ObjectContext
-                         .Translate<month>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
-
-
+                    month1.urlTotal = (int)(dc_st.UrlTotal_Month);
+                    month1.urlPercent = (double)(dc_st.UrlTotalPercent_Month);
+                    month1.visitsTotal = (int)(dc_st.VisitsTotal_Month);
+                    month1.visitsPercent = (double)(dc_st.VisitsPercent_Month);
+                    month1.revisitsTotal = (int)(dc_st.RevisitsTotal_Month);
+                    month1.revisitsPercent = (double)(dc_st.RevisitsPercent_Month);
+                    month1.noVisitsTotal = (int)(dc_st.NoVisitsTotal_Month);
+                    month1.noVisitsPercent = (double)(dc_st.NoVisitsPercent_Month);
                 }
-
-                return Json(month1, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
-                Error obj_err = new Error();
-                Errormessage errmesobj = new Errormessage();
-                errmesobj.message = "Exception Occured";
-                obj_err.error = errmesobj;
-
-                return Json(obj_err, JsonRequestBehavior.AllowGet);
+                dc_st1 = dc.stat_counts.Where(x => x.FK_ClientID == cid).Select(y => y).ToList();
+                if (dc_st1 != null)
+                {
+                    month1.urlTotal = (int)(dc_st1.Select(x => x.UrlTotal_Month).Sum());
+                    month1.urlPercent = (double)(dc_st1.Select(x => x.UrlTotalPercent_Month).Sum());
+                    month1.visitsTotal = (int)(dc_st1.Select(x => x.VisitsTotal_Month).Sum());
+                    month1.visitsPercent = (double)(dc_st1.Select(x => x.VisitsPercent_Month).Sum());
+                    month1.revisitsTotal = (int)(dc_st1.Select(x => x.RevisitsTotal_Month).Sum());
+                    month1.revisitsPercent = (double)(dc_st1.Select(x => x.RevisitsPercent_Month).Sum());
+                    month1.noVisitsTotal = (int)(dc_st1.Select(x => x.NoVisitsTotal_Month).Sum());
+                    month1.noVisitsPercent = (double)(dc_st1.Select(x => x.NoVisitsPercent_Month).Sum());
+                }
             }
+
+            return Json(month1, JsonRequestBehavior.AllowGet);
 
         }
+
+     //   public JsonResult GETDashBoardSummary_TotalUrls(int cid)
+     //   {
+
+     //      totalUrls totalUrls1 = new totalUrls();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_UrlsCount";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //                totalUrls1 = ((IObjectContextAdapter)dc)
+     //                     .ObjectContext
+     //                     .Translate<totalUrls>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+                   
+     //           }
+
+     //           return Json(totalUrls1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //}
+
+     //   public JsonResult GETDashBoardSummary_UsersCount(int cid)
+     //   {
+
+     //       users users1 = new users();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_UsersCount";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               users1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<users>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(users1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+     //   public JsonResult GETDashBoardSummary_VisitsCount(int cid)
+     //   {
+
+     //       visits visits1 = new visits();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_VisitsCount";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               visits1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<visits>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(visits1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+     //   public JsonResult GETDashBoardSummary_CampaignsCount(int cid)
+     //   {
+
+     //       campaigns campaigns1 = new campaigns();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_CampaignsCount";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               campaigns1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<campaigns>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(campaigns1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+     //   public JsonResult GETDashBoardSummary_RecentCampaignsCount(int cid)
+     //   {
+
+     //       List<recentCampaigns> objr = new List<recentCampaigns>();
+
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_RecentCampaignsCount";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               List<recentCampaigns1> recentCampaigns = ((IObjectContextAdapter)dc)
+     //                                          .ObjectContext
+     //                                          .Translate<recentCampaigns1>(myReader, "shorturldatas", MergeOption.AppendOnly).ToList();
+        
+     //                                      objr = (from r in recentCampaigns
+     //                                             select new recentCampaigns()
+     //                                             {
+     //                                                 id = r.id,
+     //                                                 rid = r.rid,
+     //                                                 visits = r.visits,
+     //                                                 users = r.users,
+     //                                                 status = r.status,
+     //                                                 //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+     //                                                 createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+     //                                                 endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+     //                                             }).ToList();
+     //           }
+
+     //           return Json(objr, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+     //   public JsonResult GETDashBoardSummary_ActivityCount_Today(int cid)
+     //   {
+
+     //       today today1 = new today();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_Today";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               today1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<today>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(today1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+
+     //   public JsonResult GETDashBoardSummary_ActivityCount_Week(int cid)
+     //   {
+
+     //       last7days last7days1 = new last7days();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_week";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               last7days1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<last7days>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(last7days1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
+
+     //   public JsonResult GETDashBoardSummary_ActivityCount_Month(int cid)
+     //   {
+
+     //       month month1 = new month();
+     //       try
+     //       {
+     //           if (Session["id"] != null)
+     //           {
+
+     //               string role = Helper.CurrentUserRole;
+     //               MySqlDataReader myReader;
+     //               if (role.ToLower() != "admin")
+     //               {
+     //                   client obj_client = dc.clients.Where(x => x.PK_ClientID == cid).Select(y => y).SingleOrDefault();
+     //                   if (obj_client != null)
+     //                   {
+     //                       string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                       // create and open a connection object
+     //                       lSQLConn = new MySqlConnection(connStr);
+     //                       lSQLConn.Open();
+     //                       lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                       lSQLCmd.CommandTimeout = 600;
+     //                       lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
+     //                       lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", cid));
+     //                       lSQLCmd.Connection = lSQLConn;
+     //                       //myReader = lSQLCmd.ExecuteReader();
+     //                   }
+     //               }
+     //               else
+     //               {
+     //                   string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
+
+     //                   // create and open a connection object
+     //                   lSQLConn = new MySqlConnection(connStr);
+     //                   lSQLConn.Open();
+     //                   lSQLCmd.CommandType = CommandType.StoredProcedure;
+     //                   lSQLCmd.CommandTimeout = 600;
+     //                   lSQLCmd.CommandText = "spGetDashBoardSummary_ActivityCount_month";
+     //                   lSQLCmd.Parameters.Add(new MySqlParameter("@FkclientId", "0"));
+     //                   lSQLCmd.Connection = lSQLConn;
+     //               }
+     //               myReader = lSQLCmd.ExecuteReader();
+
+     //               month1 = ((IObjectContextAdapter)dc)
+     //                    .ObjectContext
+     //                    .Translate<month>(myReader, "shorturldatas", MergeOption.AppendOnly).SingleOrDefault();
+
+
+     //           }
+
+     //           return Json(month1, JsonRequestBehavior.AllowGet);
+     //       }
+     //       catch (Exception ex)
+     //       {
+     //           ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+     //           Error obj_err = new Error();
+     //           Errormessage errmesobj = new Errormessage();
+     //           errmesobj.message = "Exception Occured";
+     //           obj_err.error = errmesobj;
+
+     //           return Json(obj_err, JsonRequestBehavior.AllowGet);
+     //       }
+
+     //   }
      //  start GetSummary1
         public JsonResult GETSummary1(int cid, string rid)
         {
@@ -1546,6 +1917,298 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
             }
         }
      // end GetSummary1
+
+      //  //  start GetSummary_stats_count
+      //  //[OutputCache(Duration = 60, VaryByParam = "cid")]  
+      //public bool statsdata(int cid)
+      //  {
+      //      stat_counts st_data = new stat_counts();
+      //      if (System.Runtime.Caching.MemoryCache.Default["summarydata"] == null)
+      //      {
+      //          st_data = dc.stat_counts.Where(x => x.FK_ClientID == cid).SingleOrDefault();
+      //          var sum_data = System.Runtime.Caching.MemoryCache.Default["summarydata"];
+      //          System.Runtime.Caching.MemoryCache.Default["summarydata"] = st_data;
+      //      }
+      //    else
+      //      {
+      //          st_data =(stat_counts) System.Runtime.Caching.MemoryCache.Default["summarydata"];
+
+      //      }
+      //    //return st_data;
+      //  }
+        //public JsonResult GetSummary_stats_count(int cid, string rid)
+        public JsonResult GetSummary(int cid, string rid)    
+    {
+
+            DashBoardStats obj = new DashBoardStats();
+            
+
+            try
+            {
+                if (Session["id"] != null)
+                {
+                    if (Session["id"] != null && rid == null)
+                    {
+                        List<stat_counts> st_obj_res = new List<stat_counts>();
+
+                        string role = Helper.CurrentUserRole;
+                        if (role == "admin")
+                        {
+                            //st_obj_res = dc.stat_counts.ToList(); 
+                            obj = getcampaigndata(0);
+                        }
+                        else
+                        {
+                            st_obj_res = dc.stat_counts.Where(x => x.FK_ClientID == cid).ToList();
+
+                            totalUrls_stat totalUrls = new totalUrls_stat();
+                            totalUrls.count = st_obj_res.Select(x => x.TotalUsers).Sum();
+                            users_stat users = new users_stat();
+                            users.total = st_obj_res.Select(x => x.TotalUsers).Sum();
+                            users.uniqueUsers = st_obj_res.Select(x => x.UniqueUsers).Sum();
+                            users.uniqueUsersToday = st_obj_res.Select(x => x.UniqueUsersToday).Sum();
+                            users.usersToday = st_obj_res.Select(x => x.UsersToday).Sum();
+                            users.uniqueUsersYesterday = st_obj_res.Select(x => x.UniqueUsersYesterday).Sum();
+                            users.usersYesterday = st_obj_res.Select(x => x.UsersYesterday).Sum();
+                            users.uniqueUsersLast7days = st_obj_res.Select(x => x.UniqueUsersLast7days).Sum();
+                            users.usersLast7days = st_obj_res.Select(x => x.UsersLast7days).Sum();
+                            visits_stat visits = new visits_stat();
+                            visits.total = st_obj_res.Select(x => x.TotalVisits).Sum();
+                            visits.uniqueVisits = st_obj_res.Select(x => x.UniqueVisits).Sum();
+                            visits.uniqueVisitsToday = st_obj_res.Select(x => x.UniqueVisitsToday).Sum();
+                            visits.visitsToday = st_obj_res.Select(x => x.VisitsToday).Sum();
+                            visits.uniqueVisitsYesterday = st_obj_res.Select(x => x.UniqueVisitsYesterday).Sum();
+                            visits.visitsYesterday = st_obj_res.Select(x => x.VisitsYesterday).Sum();
+                            //visits.uniqueVisitsLast7days =(st_obj_res.FK_Rid!=0)?st_obj_res.UniqueVisitsLast7day:(uniqueVisitsToday.Sum(x => x.uniqueVisitsToday)+st_obj_res.UniqueVisitsYesterday+st_obj_res.UniqueVisitsLast7day);
+                            //visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYedewes  fcristerday + st_obj_res.VisitsLast7days);
+                            visits.uniqueVisitsLast7days = st_obj_res.Select(x => x.UniqueVisitsLast7day).Sum();
+                            visits.visitsLast7days = st_obj_res.Select(x => x.VisitsLast7days).Sum();
+                            campaigns_stat campaigns = new campaigns_stat();
+                            campaigns.total = st_obj_res.Select(x => x.TotalCamapigns).Sum();
+                            campaigns.campaignsLast7days = st_obj_res.Select(x => x.CampaignsLast7days).Sum();
+                            campaigns.campaignsMonth = st_obj_res.Select(x => x.CampaignsMonth).Sum();
+
+                            today_stat today = new today_stat();
+                            today.urlTotal = st_obj_res.Select(x => x.UrlTotal_Today).Sum();
+                            today.urlPercent = st_obj_res.Select(x => x.UrlPercent_Today).Sum();
+                            today.visitsTotal = st_obj_res.Select(x => x.VisitsToday).Sum();
+                            today.visitsPercent = st_obj_res.Select(x => x.VisitsPercent_Today).Sum();
+                            today.revisitsTotal = st_obj_res.Select(x => x.RevisitsTotal_Today).Sum();
+                            today.revisitsPercent = st_obj_res.Select(x => x.RevisitsPercent_Today).Sum();
+                            today.noVisitsTotal = st_obj_res.Select(x => x.NoVisitsTotal_Today).Sum();
+                            today.noVisitsPercent = st_obj_res.Select(x => x.NoVisitsPercent_Today).Sum();
+                            last7days_stat last7days = new last7days_stat();
+                            last7days.urlTotal = st_obj_res.Select(x => x.UrlTotal_Week).Sum();
+                            last7days.urlPercent = st_obj_res.Select(x => x.UrlPercent_Week).Sum();
+                            last7days.visitsTotal = st_obj_res.Select(x => x.VisitsTotal_Week).Sum();
+                            last7days.visitsPercent = st_obj_res.Select(x => x.VisitsPercent_Week).Sum();
+                            last7days.revisitsTotal = st_obj_res.Select(x => x.RevisitsTotal_Week).Sum();
+                            last7days.revisitsPercent = st_obj_res.Select(x => x.RevisitsPercent_Week).Sum();
+                            last7days.noVisitsTotal = st_obj_res.Select(x => x.NoVisitsTotal_Week).Sum();
+                            last7days.noVisitsPercent = st_obj_res.Select(x => x.NoVisitsPercent_Week).Sum();
+                            month_stat month = new month_stat();
+                            month.urlTotal = st_obj_res.Select(x => x.UrlTotal_Month).Sum();
+                            month.urlPercent = st_obj_res.Select(x => x.UrlTotalPercent_Month).Sum();
+                            month.visitsTotal = st_obj_res.Select(x => x.VisitsTotal_Month).Sum();
+                            month.visitsPercent = st_obj_res.Select(x => x.VisitsPercent_Month).Sum();
+                            month.revisitsTotal = st_obj_res.Select(x => x.RevisitsTotal_Month).Sum();
+                            month.revisitsPercent = st_obj_res.Select(x => x.RevisitsPercent_Month).Sum();
+                            month.noVisitsTotal = st_obj_res.Select(x => x.NoVisitsTotal_Month).Sum();
+                            month.noVisitsPercent = st_obj_res.Select(x => x.NoVisitsPercent_Month).Sum();
+
+
+                            List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
+                                                                 where r.FK_Rid!=0
+                                                               orderby r.CreatedDate descending
+                                                               select new recentCampaigns1_stat()
+                                                               {
+                                                                   id = r.PK_Stat,
+                                                                   rid = r.FK_Rid.ToString(),
+                                                                   visits = (int)r.TotalVisits,
+                                                                   users = (int)r.TotalUsers,
+                                                                   status = true,
+                                                                   //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                                   crd = r.CreatedDate,
+                                                                   //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+                                                               }).Take(10).ToList();
+                            List<recentCampaigns_stat> objr = (from r in objr1
+                                                               orderby r.crd descending
+                                                               select new recentCampaigns_stat()
+                                                               {
+                                                                   id = r.id,
+                                                                   rid = r.rid.ToString(),
+                                                                   visits = (int)r.visits,
+                                                                   users = (int)r.users,
+                                                                   status = true,
+                                                                   //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                                   createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                                                                   //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+                                                               }).Take(10).ToList();
+
+
+                            activities_stat obj_act = new activities_stat();
+                            obj_act.today = today;
+                            obj_act.last7days = last7days;
+                            obj_act.month = month;
+
+                            obj.totalUrls = totalUrls;
+                            obj.users = users;
+                            obj.visits = visits;
+                            obj.campaigns = campaigns;
+                            obj.recentCampaigns = objr;
+                            obj.activities = obj_act;
+
+                        }
+
+                    }
+
+                    else if (Session["id"] != null && rid != null)
+                    {
+                        stat_counts st_obj_res = new stat_counts();
+                        int fk_rid = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(y => y.PK_Rid).SingleOrDefault();
+                        //string role = Helper.CurrentUserRole;
+                        //int? rid1 =Convert.ToInt32(rid);
+
+                        obj = getcampaigndata(fk_rid);
+                        
+                        
+                    }
+
+                    return Json(obj, JsonRequestBehavior.AllowGet);    
+                 }
+                else
+                {
+                    Error obj_err = new Error();
+                    Errormessage errmesobj = new Errormessage();
+                    errmesobj.message = "Session Expired.";
+                    obj_err.error = errmesobj;
+                    return Json(obj_err, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                Error obj_err = new Error();
+                Errormessage errmesobj = new Errormessage();
+                errmesobj.message = "Exception Occured";
+                obj_err.error = errmesobj;
+
+                return Json(obj_err, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public DashBoardStats getcampaigndata(int? rid)
+        {
+            DashBoardStats obj = new DashBoardStats();
+           stat_counts st_obj_res = dc.stat_counts.Where(x => x.FK_Rid == rid).SingleOrDefault();
+
+            totalUrls_stat totalUrls = new totalUrls_stat();
+            totalUrls.count = st_obj_res.TotalUsers;
+            users_stat users = new users_stat();
+            users.total = st_obj_res.TotalUsers;
+            users.uniqueUsers = st_obj_res.UniqueUsers;
+            users.uniqueUsersToday = st_obj_res.UniqueUsersToday;
+            users.usersToday = st_obj_res.UsersToday;
+            users.uniqueUsersYesterday = st_obj_res.UniqueUsersYesterday;
+            users.usersYesterday = st_obj_res.UsersYesterday;
+            users.uniqueUsersLast7days = st_obj_res.UniqueUsersLast7days;
+            users.usersLast7days = st_obj_res.UsersLast7days;
+            visits_stat visits = new visits_stat();
+            visits.total = st_obj_res.TotalVisits;
+            visits.uniqueVisits = st_obj_res.UniqueVisits;
+            visits.uniqueVisitsToday = st_obj_res.UniqueVisitsToday;
+            visits.visitsToday = st_obj_res.VisitsToday;
+            visits.uniqueVisitsYesterday = st_obj_res.UniqueVisitsYesterday;
+            visits.visitsYesterday = st_obj_res.VisitsYesterday;
+            //visits.uniqueVisitsLast7days =(st_obj_res.FK_Rid!=0)?st_obj_res.UniqueVisitsLast7day:(uniqueVisitsToday.Sum(x => x.uniqueVisitsToday)+st_obj_res.UniqueVisitsYesterday+st_obj_res.UniqueVisitsLast7day);
+            //visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYesterday + st_obj_res.VisitsLast7days);
+            visits.uniqueVisitsLast7days = st_obj_res.UniqueVisitsLast7day;
+            visits.visitsLast7days = st_obj_res.VisitsLast7days;
+            campaigns_stat campaigns = new campaigns_stat();
+            campaigns.total = st_obj_res.TotalCamapigns;
+            campaigns.campaignsLast7days = st_obj_res.CampaignsLast7days;
+            campaigns.campaignsMonth = st_obj_res.CampaignsMonth;
+
+            today_stat today = new today_stat();
+            today.urlTotal = st_obj_res.UrlTotal_Today;
+            today.urlPercent = st_obj_res.UrlPercent_Today;
+            today.visitsTotal = st_obj_res.VisitsToday;
+            today.visitsPercent = st_obj_res.VisitsPercent_Today;
+            today.revisitsTotal = st_obj_res.RevisitsTotal_Today;
+            today.revisitsPercent = st_obj_res.RevisitsPercent_Today;
+            today.noVisitsTotal = st_obj_res.NoVisitsTotal_Today;
+            today.noVisitsPercent = st_obj_res.NoVisitsPercent_Today;
+            last7days_stat last7days = new last7days_stat();
+            last7days.urlTotal = st_obj_res.UrlTotal_Week;
+            last7days.urlPercent = st_obj_res.UrlPercent_Week;
+            last7days.visitsTotal = st_obj_res.VisitsTotal_Week;
+            last7days.visitsPercent = st_obj_res.VisitsPercent_Week;
+            last7days.revisitsTotal = st_obj_res.RevisitsTotal_Week;
+            last7days.revisitsPercent = st_obj_res.RevisitsPercent_Week;
+            last7days.noVisitsTotal = st_obj_res.NoVisitsTotal_Week;
+            last7days.noVisitsPercent = st_obj_res.NoVisitsPercent_Week;
+            month_stat month = new month_stat();
+            month.urlTotal = st_obj_res.UrlTotal_Month;
+            month.urlPercent = st_obj_res.UrlTotalPercent_Month;
+            month.visitsTotal = st_obj_res.VisitsTotal_Month;
+            month.visitsPercent = st_obj_res.VisitsPercent_Month;
+            month.revisitsTotal = st_obj_res.RevisitsTotal_Month;
+            month.revisitsPercent = st_obj_res.RevisitsPercent_Month;
+            month.noVisitsTotal = st_obj_res.NoVisitsTotal_Month;
+            month.noVisitsPercent = st_obj_res.NoVisitsPercent_Month;
+
+
+            List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
+                                                 where r.FK_Rid !=0
+                                                 orderby r.CreatedDate descending
+                                                 select new recentCampaigns1_stat()
+                                                 {
+                                                     id = r.PK_Stat,
+                                                     rid = r.FK_Rid.ToString(),
+                                                     visits = (int)r.TotalVisits,
+                                                     users = (int)r.TotalUsers,
+                                                     status = true,
+                                                     //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                     crd = r.CreatedDate,
+                                                     //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+                                                 }).Take(10).ToList();
+            List<recentCampaigns_stat> objr = (from r in objr1
+                                               orderby r.crd descending
+                                               select new recentCampaigns_stat()
+                                               {
+                                                   id = r.id,
+                                                   rid = r.rid.ToString(),
+                                                   visits = (int)r.visits,
+                                                   users = (int)r.users,
+                                                   status = true,
+                                                   //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                   createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                                                   //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
+
+                                               }).Take(10).ToList();
+
+
+
+            activities_stat obj_act = new activities_stat();
+            obj_act.today = today;
+            obj_act.last7days = last7days;
+            obj_act.month = month;
+
+            obj.totalUrls = totalUrls;
+            obj.users = users;
+            obj.visits = visits;
+            obj.campaigns = campaigns;
+            obj.recentCampaigns = objr;
+            obj.activities = obj_act;
+
+            return obj;
+        }
+        // end GetSummary_stats_count
+
 
     }
 }

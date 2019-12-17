@@ -46,6 +46,9 @@ namespace Analytics
         public virtual DbSet<hitnotify> hitnotifies { get; set; }
         public virtual DbSet<shorturldata> shorturldatas { get; set; }
         public virtual DbSet<messagelink> messagelinks { get; set; }
+        public virtual DbSet<activity_counts> activity_counts { get; set; }
+        public virtual DbSet<stats_counts_today> stats_counts_today { get; set; }
+        public virtual DbSet<shorturlclickreference> shorturlclickreferences { get; set; }
         public virtual DbSet<stat_counts> stat_counts { get; set; }
     
         public virtual int InsertRIDData(string campaignName, string referencenumber, string pwd, Nullable<int> clientid)
@@ -204,6 +207,69 @@ namespace Analytics
                 new ObjectParameter("FkClientId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetDashBoardStats", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_ActivityCount_month_Result> spGetDashBoardSummary_ActivityCount_month(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_ActivityCount_month_Result>("spGetDashBoardSummary_ActivityCount_month", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_ActivityCount_Today_Result> spGetDashBoardSummary_ActivityCount_Today(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_ActivityCount_Today_Result>("spGetDashBoardSummary_ActivityCount_Today", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_ActivityCount_week_Result> spGetDashBoardSummary_ActivityCount_week(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_ActivityCount_week_Result>("spGetDashBoardSummary_ActivityCount_week", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_CampaignsCount_Result> spGetDashBoardSummary_CampaignsCount(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_CampaignsCount_Result>("spGetDashBoardSummary_CampaignsCount", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_RecentCampaignsCount_Result> spGetDashBoardSummary_RecentCampaignsCount(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_RecentCampaignsCount_Result>("spGetDashBoardSummary_RecentCampaignsCount", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_UsersCount_Result> spGetDashBoardSummary_UsersCount(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_UsersCount_Result>("spGetDashBoardSummary_UsersCount", fkClientIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDashBoardSummary_VisitsCount_Result> spGetDashBoardSummary_VisitsCount(Nullable<int> fkClientId)
+        {
+            var fkClientIdParameter = fkClientId.HasValue ?
+                new ObjectParameter("FkClientId", fkClientId) :
+                new ObjectParameter("FkClientId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDashBoardSummary_VisitsCount_Result>("spGetDashBoardSummary_VisitsCount", fkClientIdParameter);
         }
     }
 }
