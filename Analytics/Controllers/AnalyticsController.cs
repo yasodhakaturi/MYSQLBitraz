@@ -1955,7 +1955,7 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                         if (role == "admin")
                         {
                             //st_obj_res = dc.stat_counts.ToList(); 
-                            obj = getcampaigndata(0);
+                            obj = getcampaigndata(0,Helper.CurrentUserId);
                         }
                         else
                         {
@@ -2067,11 +2067,11 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                     else if (Session["id"] != null && rid != null)
                     {
                         stat_counts st_obj_res = new stat_counts();
-                        int fk_rid = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(y => y.PK_Rid).SingleOrDefault();
+                        riddata rid_obj = dc.riddatas.Where(x => x.ReferenceNumber == rid).Select(y => y).SingleOrDefault();
                         //string role = Helper.CurrentUserRole;
                         //int? rid1 =Convert.ToInt32(rid);
 
-                        obj = getcampaigndata(fk_rid);
+                        obj = getcampaigndata(rid_obj.PK_Rid, rid_obj.FK_ClientId);
                         
                         
                     }
@@ -2100,10 +2100,10 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
         }
 
 
-        public DashBoardStats getcampaigndata(int? rid)
+        public DashBoardStats getcampaigndata(int? rid,int clientid)
         {
             DashBoardStats obj = new DashBoardStats();
-           stat_counts st_obj_res = dc.stat_counts.Where(x => x.FK_Rid == rid).SingleOrDefault();
+           stat_counts st_obj_res = dc.stat_counts.Where(x => x.FK_Rid == rid && x.FK_ClientID==clientid).SingleOrDefault();
 
             totalUrls_stat totalUrls = new totalUrls_stat();
             totalUrls.count = st_obj_res.TotalUsers;

@@ -1816,7 +1816,7 @@ namespace Analytics.Controllers
                     objnew.UrlPercent_Today = 0;
                     objnew.VisitsTotal_Today = objnew.VisitsToday;
                     objnew.VisitsPercent_Today = 0;
-                    objnew.RevisitsTotal_Today = objnew.TotalVisits - objnew.UniqueVisits;
+                    objnew.RevisitsTotal_Today = objnew.VisitsToday - objnew.UniqueVisitsToday;
                     objnew.RevisitsPercent_Today = 0;
                     objnew.NoVisitsTotal_Today = objnew.UsersToday - objnew.UniqueVisitsToday;
                     objnew.NoVisitsPercent_Today = 0;
