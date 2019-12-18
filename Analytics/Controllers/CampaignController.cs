@@ -1172,48 +1172,38 @@ namespace Analytics.Controllers
                         else
                             Add_Campaign_Record_uploaddta(objuid.FK_RID, clientid);
                         //for admin case
-                        stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == clientid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
-                        if (objadmin != null)
+                        List<int> adminids = dc.clients.Where(x => x.Role == "admin").Select(x => x.PK_ClientID).ToList();
+                        foreach (int adminid in adminids)
                         {
-                            objadmin.TotalUsers = objadmin.TotalUsers + 1;
-                            objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsers).Sum();
-                            objadmin.UsersToday = objadmin.UsersToday + 1;
-                            objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsersToday).Sum();
-                            //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
-                            //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
-                            //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
-                            //                     + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
-                            objadmin.UrlTotal_Today = objadmin.UsersToday;
-                            objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
-                            //objadmin.NoVisitsTotal_Today =(objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
-                            if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
-                                objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
-                            else if (objadmin.UniqueVisitsToday == 0)
-                                objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
+                            stat_counts  objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
+                            if (objadmin != null)
+                            {
+                                objadmin.TotalUsers = objadmin.TotalUsers + 1;
+                                objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UniqueUsers).Sum();
+                                objadmin.UsersToday = objadmin.UsersToday + 1;
+                                objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UniqueUsersToday).Sum();
+                                //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
+                                //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
+                                //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
+                                //                     + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
+                                objadmin.UrlTotal_Today = objadmin.UsersToday;
+                                objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
+                                //objadmin.NoVisitsTotal_Today =(objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
+                                if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
+                                else if (objadmin.UniqueVisitsToday == 0)
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
+                                else
+                                    objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
+                                //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
+                                //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
+                                dc.SaveChanges();
+                            }
                             else
-                                objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
-                            //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
-                            //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
-                            dc.SaveChanges();
+                                Add_Campaign_Record_uploaddta(0, adminid);
+
                         }
-                        else
-                        {
-                            //stat_counts objad = new stat_counts();
-                            //objad.TotalUsers = 1;
-                            //objad.UsersToday = 1;
-                            //objad.UniqueUsers = 1;
-                            //objad.UrlTotal_Today = 1;
-                            //objad.UrlPercent_Today = 0;
-                            //objad.DaysCount_Month = 0;
-                            //objad.DaysCount_Week = 0;
-                            //objad.FK_Rid = 0;
-                            //objad.FK_ClientID = clientid;
-                            //dc.stat_counts.Add(objad);
-                            //dc.SaveChanges();
-                            string role = dc.clients.Where(x => x.PK_ClientID == Helper.CurrentUserId).Select(y => y.Role).SingleOrDefault();
-                            if(role.ToLower() == "admin")
-                            Add_Campaign_Record_uploaddta(0, clientid);
-                        }
+                        
                         //stat_counts  --start
                         obje.MobileNumber = mobilenumber;
                         //obje.ShortenUrl = "https://g0.pe/" + Hashid;
@@ -1335,51 +1325,43 @@ namespace Analytics.Controllers
                     //    clientid = objrid.FK_ClientId; 
                     //else
                     //    clientid = dc.clients.Where(x => x.Role == "admin").Select(y => y.PK_ClientID).SingleOrDefault();
-                    stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == clientid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
-                    if (objadmin != null)
+                    //stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == clientid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                    //if (objadmin != null)
+                    List<int> adminids = dc.clients.Where(x => x.Role == "admin").Select(x => x.PK_ClientID).ToList();
+                    foreach (int adminid in adminids)
                     {
-                        objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
-                        objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsers).Sum();
-                        objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
-                        objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsersToday).Sum();
-                        //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
-                        //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
-                        //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
-                        //                      + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
+                        stat_counts objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
+                        if (objadmin != null)
+                        {
+                            objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                            objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
+                            objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                            objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
+                            //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
+                            //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
+                            //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
+                            //                      + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
 
-                        objadmin.UrlTotal_Today = objadmin.UsersToday;
-                        objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
-                        //objadmin.NoVisitsTotal_Today = (objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? (objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
-                        if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
-                            objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
-                        else if (objadmin.UniqueVisitsToday == 0)
-                            objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
+                            objadmin.UrlTotal_Today = objadmin.UsersToday;
+                            objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
+                            //objadmin.NoVisitsTotal_Today = (objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? (objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
+                            if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
+                                objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
+                            else if (objadmin.UniqueVisitsToday == 0)
+                                objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
+                            else
+                                objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
+                            //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
+                            //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
+                            dc.SaveChanges();
+                        }
                         else
-                            objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
-                        //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
-                        //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
-                        dc.SaveChanges();
-                    }
-                    else
-                    {
-                        //stat_counts objad = new stat_counts();
-                        //objad.TotalUsers = objb.BatchCount;
-                        //objad.UsersToday = objb.BatchCount;
-                        //objad.UniqueUsers = uniqueusers;
-                        //objad.UniqueUsersToday = uniqueusers_today;
-                        //objad.UsersLast7days = objb.BatchCount;
-                        //objad.UniqueUsersLast7days = uniqueusers_today;
-                        //objad.UrlTotal_Today = objb.BatchCount;
-                        //objad.UrlPercent_Today = 0;
-                        //objad.UrlTotal_Week = 0;
-                        //objad.UrlTotal_Month = 0;
-                        //objad.FK_Rid = 0;
-                        //objad.FK_ClientID = clientid;
-                        //dc.stat_counts.Add(objad);
-                        //dc.SaveChanges();
-                        string role = dc.clients.Where(x => x.PK_ClientID == Helper.CurrentUserId).Select(y => y.Role).SingleOrDefault();
-                        if (role.ToLower() == "admin")
-                        Add_Campaign_Record_uploaddta(0, clientid);
+                        {
+                            
+                            //string role = dc.clients.Where(x => x.PK_ClientID == Helper.CurrentUserId).Select(y => y.Role).SingleOrDefault();
+                            //if (role.ToLower() == "admin")
+                                Add_Campaign_Record_uploaddta(0, adminid);
+                        }
                     }
                     //stat_counts  --start
                 }
@@ -1513,55 +1495,43 @@ namespace Analytics.Controllers
                                 }
                                 //for admin case
 
-                                stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == clientid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
-                                if (objadmin != null)
-                                {
-                                    objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
-                                    objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
-                                    objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsers).Sum();
-                                    objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == clientid).Select(y => y.UniqueUsersToday).Sum();
-                                    //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
-                                    //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
-                                    //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
-                                    //                      + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
+                        List<int> adminids = dc.clients.Where(x => x.Role == "admin").Select(x => x.PK_ClientID).ToList();
+                        foreach (int adminid in adminids)
+                        {
+                            stat_counts objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
+                            if (objadmin != null)
+                            {
 
-                                    objadmin.UrlTotal_Today = objadmin.UsersToday;
-                                    objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
-                                    //objadmin.NoVisitsTotal_Today =(objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
-                                    if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
-                                        objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
-                                    else if (objadmin.UniqueVisitsToday == 0)
-                                        objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
-                                    else
-                                        objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
+                                objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                                objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                                objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
+                                objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
+                                //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
+                                //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
+                                //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
+                                //                      + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
 
-                                    //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
-                                    //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
-
-                                    dc.SaveChanges();
-                                }
+                                objadmin.UrlTotal_Today = objadmin.UsersToday;
+                                objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
+                                //objadmin.NoVisitsTotal_Today =(objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
+                                if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
+                                else if (objadmin.UniqueVisitsToday == 0)
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
                                 else
-                                {
-                                    //stat_counts objad = new stat_counts();
-                                    //objad.TotalUsers = objb.BatchCount;
-                                    //objad.UsersToday = objb.BatchCount;
-                                    //objad.UniqueUsers = uniqueusers;
-                                    //objad.UniqueUsersToday = uniqueusers_today;
-                                    //objad.UsersLast7days = objb.BatchCount;
-                                    //objad.UniqueUsersLast7days = uniqueusers_today;
-                                    //objad.UrlTotal_Today = objad.TotalUsers;
-                                    //objad.UrlPercent_Today = 0;
-                                    //objad.UrlTotal_Week = objad.UsersLast7days;
-                                    //objad.UrlTotal_Month = objad.UsersLast7days;
+                                    objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
 
-                                    //objad.FK_Rid = 0;
-                                    //objad.FK_ClientID = clientid;
-                                    //dc.stat_counts.Add(objad);
-                                    //dc.SaveChanges();
-                                    string role = dc.clients.Where(x => x.PK_ClientID == Helper.CurrentUserId).Select(y => y.Role).SingleOrDefault();
-                                    if (role.ToLower() == "admin")
-                                    Add_Campaign_Record_uploaddta(0, clientid);
-                                }
+                                //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
+                                //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
+
+                                dc.SaveChanges();
+                            }
+                            else
+                            {
+                                
+                                Add_Campaign_Record_uploaddta(0, adminid);
+                            }
+                        }
                                //TotalUsers Stats --end
                             }
                             else if (result == "File already uploaded.")

@@ -54,6 +54,7 @@
     <NavigationProperty Name="riddatas" Relationship="Self.FK_RIDDATA_Client" FromRole="client" ToRole="riddata" />
     <NavigationProperty Name="uiddatas" Relationship="Self.FK_UIDDATA_Client" FromRole="client" ToRole="uiddata" />
     <NavigationProperty Name="shorturldatas" Relationship="shortenurlModel.FK_SHORTURLDATA_Client" FromRole="client" ToRole="shorturldata" />
+    <NavigationProperty Name="stats_counts_today" Relationship="shortenurlModel.clientid" FromRole="client" ToRole="stats_counts_today" />
   </EntityType>
   <EntityType Name="cookietable">
     <Key>
@@ -149,6 +150,7 @@
     <NavigationProperty Name="client" Relationship="Self.FK_RIDDATA_Client" FromRole="riddata" ToRole="client" />
     <NavigationProperty Name="uiddatas" Relationship="Self.FK_UIDDATA_RIDDATA" FromRole="riddata" ToRole="uiddata" />
     <NavigationProperty Name="shorturldatas" Relationship="shortenurlModel.FK_SHORTURLDATA_RIDDATA" FromRole="riddata" ToRole="shorturldata" />
+    <NavigationProperty Name="stats_counts_today" Relationship="shortenurlModel.fkrid" FromRole="riddata" ToRole="stats_counts_today" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
@@ -338,6 +340,38 @@
     <FunctionImport Name="spGetDashBoardStats">
       <Parameter Name="FkClientId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="activity_counts" EntityType="shortenurlModel.activity_counts" />
+    <EntitySet Name="stats_counts_today" EntityType="shortenurlModel.stats_counts_today" />
+    <AssociationSet Name="clientid" Association="shortenurlModel.clientid">
+      <End Role="client" EntitySet="clients" />
+      <End Role="stats_counts_today" EntitySet="stats_counts_today" />
+    </AssociationSet>
+    <AssociationSet Name="fkrid" Association="shortenurlModel.fkrid">
+      <End Role="riddata" EntitySet="riddatas" />
+      <End Role="stats_counts_today" EntitySet="stats_counts_today" />
+    </AssociationSet>
+    <FunctionImport Name="spGetDashBoardSummary_ActivityCount_month" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_ActivityCount_month_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_ActivityCount_Today" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_ActivityCount_Today_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_ActivityCount_week" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_ActivityCount_week_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_CampaignsCount" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_CampaignsCount_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_RecentCampaignsCount" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_RecentCampaignsCount_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_UsersCount" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_UsersCount_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetDashBoardSummary_VisitsCount" ReturnType="Collection(shortenurlModel.spGetDashBoardSummary_VisitsCount_Result)">
+      <Parameter Name="FkClientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="shorturlclickreferences" EntityType="shortenurlModel.shorturlclickreference" />
     <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
   </EntityContainer>
   <EntityType Name="campaignhookurl">
@@ -474,6 +508,95 @@
     <Property Name="LinkTag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="CreatedDate" Type="DateTime" />
   </EntityType>
+  <EntityType Name="activity_counts">
+    <Key>
+      <PropertyRef Name="PK_Activity" />
+    </Key>
+    <Property Name="PK_Activity" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UrlTotal_Today" Type="Int32" />
+    <Property Name="UrlPercent_Today" Type="Int32" />
+    <Property Name="VisitsTotal_Today" Type="Int32" />
+    <Property Name="VisitsPercent_Today" Type="Int32" />
+    <Property Name="RevisitsTotal_Today" Type="Int32" />
+    <Property Name="RevisitsPercent_Today" Type="Int32" />
+    <Property Name="NoVisitsTotal_Today" Type="Int32" />
+    <Property Name="NoVisitsPercent_Today" Type="Int32" />
+    <Property Name="UrlTotal_Week" Type="Int32" />
+    <Property Name="UrlPercent_Week" Type="Int32" />
+    <Property Name="VisitsTotal_Week" Type="Int32" />
+    <Property Name="VisitsPercent_Week" Type="Int32" />
+    <Property Name="RevisitsTotal_Week" Type="Int32" />
+    <Property Name="RevisitsPercent_Week" Type="Int32" />
+    <Property Name="NoVisitsTotal_Week" Type="Int32" />
+    <Property Name="NoVisitsPercent_Week" Type="Int32" />
+    <Property Name="UrlTotal_Month" Type="Int32" />
+    <Property Name="UrlPercent_Month" Type="Int32" />
+    <Property Name="VisitsTotal_Month" Type="Int32" />
+    <Property Name="VisitsPercent_Month" Type="Int32" />
+    <Property Name="RevisitsTotal_Month" Type="Int32" />
+    <Property Name="RevisitsPercent_Month" Type="Int32" />
+    <Property Name="NoVisitsTotal_Month" Type="Int32" />
+    <Property Name="NoVisitsPercent_Month" Type="Int32" />
+    <Property Name="DaysCount" Type="Int32" />
+    <Property Name="FK_Rid" Type="Int32" />
+    <Property Name="FK_ClientId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="stats_counts_today">
+    <Key>
+      <PropertyRef Name="PKStatsToday_Count" />
+    </Key>
+    <Property Name="PKStatsToday_Count" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Users_Today" Type="Int32" />
+    <Property Name="Visits_Today" Type="Int32" />
+    <Property Name="Revisitsl_Today" Type="Int32" />
+    <Property Name="NoVisits_Today" Type="Int32" />
+    <Property Name="UniqueUsers_Today" Type="Int32" />
+    <Property Name="UniqueVisits_Today" Type="Int32" />
+    <Property Name="FK_RID" Type="Int32" />
+    <Property Name="FK_ClientID" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" />
+    <NavigationProperty Name="client" Relationship="shortenurlModel.clientid" FromRole="stats_counts_today" ToRole="client" />
+    <NavigationProperty Name="riddata" Relationship="shortenurlModel.fkrid" FromRole="stats_counts_today" ToRole="riddata" />
+  </EntityType>
+  <Association Name="clientid">
+    <End Type="shortenurlModel.client" Role="client" Multiplicity="0..1" />
+    <End Type="shortenurlModel.stats_counts_today" Role="stats_counts_today" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client">
+        <PropertyRef Name="PK_ClientID" />
+      </Principal>
+      <Dependent Role="stats_counts_today">
+        <PropertyRef Name="FK_ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkrid">
+    <End Type="shortenurlModel.riddata" Role="riddata" Multiplicity="0..1" />
+    <End Type="shortenurlModel.stats_counts_today" Role="stats_counts_today" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="riddata">
+        <PropertyRef Name="PK_Rid" />
+      </Principal>
+      <Dependent Role="stats_counts_today">
+        <PropertyRef Name="FK_RID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="spGetDashBoardSummary_ActivityCount_month_Result" />
+  <ComplexType Name="spGetDashBoardSummary_ActivityCount_Today_Result" />
+  <ComplexType Name="spGetDashBoardSummary_ActivityCount_week_Result" />
+  <ComplexType Name="spGetDashBoardSummary_CampaignsCount_Result" />
+  <ComplexType Name="spGetDashBoardSummary_RecentCampaignsCount_Result" />
+  <ComplexType Name="spGetDashBoardSummary_UsersCount_Result" />
+  <ComplexType Name="spGetDashBoardSummary_VisitsCount_Result" />
+  <EntityType Name="shorturlclickreference">
+    <Key>
+      <PropertyRef Name="PK_ClickID" />
+    </Key>
+    <Property Name="PK_ClickID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ref_ShorturlClickID" Type="Int32" />
+    <Property Name="Ref_UsersID" Type="Int32" />
+  </EntityType>
   <EntityType Name="stat_counts">
     <Key>
       <PropertyRef Name="PK_Stat" />
@@ -527,5 +650,7 @@
     <Property Name="FK_ClientID" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" />
     <Property Name="UniqueVisits" Type="Int32" />
+    <Property Name="RevisitsTotal_Yesterday" Type="Int32" />
+    <Property Name="NoVisitsTotal_Yesterday" Type="Int32" />
   </EntityType>
 </Schema>

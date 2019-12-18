@@ -290,9 +290,105 @@
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="spGetCampaignStats" FunctionName="shortenurlModel.Store.spGetCampaignStats" />
     <FunctionImportMapping FunctionImportName="spGetDashBoardStats" FunctionName="shortenurlModel.Store.spGetDashBoardStats" />
+    <EntitySetMapping Name="activity_counts">
+      <EntityTypeMapping TypeName="shortenurlModel.activity_counts">
+        <MappingFragment StoreEntitySet="activity_counts">
+          <ScalarProperty Name="FK_ClientId" ColumnName="FK_ClientId" />
+          <ScalarProperty Name="FK_Rid" ColumnName="FK_Rid" />
+          <ScalarProperty Name="DaysCount" ColumnName="DaysCount" />
+          <ScalarProperty Name="NoVisitsPercent_Month" ColumnName="NoVisitsPercent_Month" />
+          <ScalarProperty Name="NoVisitsTotal_Month" ColumnName="NoVisitsTotal_Month" />
+          <ScalarProperty Name="RevisitsPercent_Month" ColumnName="RevisitsPercent_Month" />
+          <ScalarProperty Name="RevisitsTotal_Month" ColumnName="RevisitsTotal_Month" />
+          <ScalarProperty Name="VisitsPercent_Month" ColumnName="VisitsPercent_Month" />
+          <ScalarProperty Name="VisitsTotal_Month" ColumnName="VisitsTotal_Month" />
+          <ScalarProperty Name="UrlPercent_Month" ColumnName="UrlPercent_Month" />
+          <ScalarProperty Name="UrlTotal_Month" ColumnName="UrlTotal_Month" />
+          <ScalarProperty Name="NoVisitsPercent_Week" ColumnName="NoVisitsPercent_Week" />
+          <ScalarProperty Name="NoVisitsTotal_Week" ColumnName="NoVisitsTotal_Week" />
+          <ScalarProperty Name="RevisitsPercent_Week" ColumnName="RevisitsPercent_Week" />
+          <ScalarProperty Name="RevisitsTotal_Week" ColumnName="RevisitsTotal_Week" />
+          <ScalarProperty Name="VisitsPercent_Week" ColumnName="VisitsPercent_Week" />
+          <ScalarProperty Name="VisitsTotal_Week" ColumnName="VisitsTotal_Week" />
+          <ScalarProperty Name="UrlPercent_Week" ColumnName="UrlPercent_Week" />
+          <ScalarProperty Name="UrlTotal_Week" ColumnName="UrlTotal_Week" />
+          <ScalarProperty Name="NoVisitsPercent_Today" ColumnName="NoVisitsPercent_Today" />
+          <ScalarProperty Name="NoVisitsTotal_Today" ColumnName="NoVisitsTotal_Today" />
+          <ScalarProperty Name="RevisitsPercent_Today" ColumnName="RevisitsPercent_Today" />
+          <ScalarProperty Name="RevisitsTotal_Today" ColumnName="RevisitsTotal_Today" />
+          <ScalarProperty Name="VisitsPercent_Today" ColumnName="VisitsPercent_Today" />
+          <ScalarProperty Name="VisitsTotal_Today" ColumnName="VisitsTotal_Today" />
+          <ScalarProperty Name="UrlPercent_Today" ColumnName="UrlPercent_Today" />
+          <ScalarProperty Name="UrlTotal_Today" ColumnName="UrlTotal_Today" />
+          <ScalarProperty Name="PK_Activity" ColumnName="PK_Activity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="stats_counts_today">
+      <EntityTypeMapping TypeName="shortenurlModel.stats_counts_today">
+        <MappingFragment StoreEntitySet="stats_counts_today">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+          <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
+          <ScalarProperty Name="UniqueVisits_Today" ColumnName="UniqueVisits_Today" />
+          <ScalarProperty Name="UniqueUsers_Today" ColumnName="UniqueUsers_Today" />
+          <ScalarProperty Name="NoVisits_Today" ColumnName="NoVisits_Today" />
+          <ScalarProperty Name="Revisitsl_Today" ColumnName="Revisitsl_Today" />
+          <ScalarProperty Name="Visits_Today" ColumnName="Visits_Today" />
+          <ScalarProperty Name="Users_Today" ColumnName="Users_Today" />
+          <ScalarProperty Name="PKStatsToday_Count" ColumnName="PKStatsToday_Count" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_ActivityCount_month" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_ActivityCount_month">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_ActivityCount_month_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_ActivityCount_Today" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_ActivityCount_Today">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_ActivityCount_Today_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_ActivityCount_week" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_ActivityCount_week">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_ActivityCount_week_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_CampaignsCount" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_CampaignsCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_CampaignsCount_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_RecentCampaignsCount" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_RecentCampaignsCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_RecentCampaignsCount_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_UsersCount" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_UsersCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_UsersCount_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetDashBoardSummary_VisitsCount" FunctionName="shortenurlModel.Store.spGetDashBoardSummary_VisitsCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="shortenurlModel.spGetDashBoardSummary_VisitsCount_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="shorturlclickreferences">
+      <EntityTypeMapping TypeName="shortenurlModel.shorturlclickreference">
+        <MappingFragment StoreEntitySet="shorturlclickreference">
+          <ScalarProperty Name="Ref_UsersID" ColumnName="Ref_UsersID" />
+          <ScalarProperty Name="Ref_ShorturlClickID" ColumnName="Ref_ShorturlClickID" />
+          <ScalarProperty Name="PK_ClickID" ColumnName="PK_ClickID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="stat_counts">
       <EntityTypeMapping TypeName="shortenurlModel.stat_counts">
         <MappingFragment StoreEntitySet="stat_counts">
+          <ScalarProperty Name="NoVisitsTotal_Yesterday" ColumnName="NoVisitsTotal_Yesterday" />
+          <ScalarProperty Name="RevisitsTotal_Yesterday" ColumnName="RevisitsTotal_Yesterday" />
           <ScalarProperty Name="UniqueVisits" ColumnName="UniqueVisits" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
