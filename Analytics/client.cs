@@ -18,9 +18,9 @@ namespace Analytics
         public client()
         {
             this.riddatas = new HashSet<riddata>();
-            this.uiddatas = new HashSet<uiddata>();
             this.shorturldatas = new HashSet<shorturldata>();
             this.stats_counts_today = new HashSet<stats_counts_today>();
+            this.uiddatas = new HashSet<uiddata>();
         }
     
         public int PK_ClientID { get; set; }
@@ -38,10 +38,10 @@ namespace Analytics
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<riddata> riddatas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<uiddata> uiddatas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<shorturldata> shorturldatas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<stats_counts_today> stats_counts_today { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<uiddata> uiddatas { get; set; }
     }
 }

@@ -24,14 +24,15 @@ namespace Analytics
         public Nullable<int> FK_RID { get; set; }
         public Nullable<int> FK_ClientID { get; set; }
         public string ReferenceNumber { get; set; }
+        public string LongurlorMessage { get; set; }
         public string MobileNumber { get; set; }
+        public string Type { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public string UniqueNumber { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> FK_Batchid { get; set; }
-        public string LongurlorMessage { get; set; }
-        public string Type { get; set; }
+        public string ExistingUrlBatchIds { get; set; }
     
         public virtual client client { get; set; }
         public virtual riddata riddata { get; set; }

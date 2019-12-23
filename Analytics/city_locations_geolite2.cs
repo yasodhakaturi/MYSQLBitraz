@@ -15,7 +15,7 @@ namespace Analytics
     public partial class city_locations_geolite2
     {
         public int PK_City_Location_ID { get; set; }
-        public string geoname_id { get; set; }
+        public Nullable<int> geoname_id { get; set; }
         public string locale_code { get; set; }
         public string continent_code { get; set; }
         public string continent_name { get; set; }

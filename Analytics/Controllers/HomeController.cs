@@ -29,7 +29,7 @@ namespace Analytics.Controllers
             UserViewModel obj = new UserViewModel();
             string url = Request.Url.ToString();
             obj = new OperationsBO().GetViewConfigDetails(url);
-            
+            //updatedata(49);
             //MSYNC();
             //try
             //{
@@ -518,5 +518,26 @@ namespace Analytics.Controllers
         //end tempfunc
 
         
+        public void updatedata(int batchid)
+        {
+            try
+            {
+                //List<string> Existing_MobileNumbers = objc;
+                batchuploaddata btobj = dc.batchuploaddatas.Where(x => x.PK_Batchid == batchid).Select(y => y).SingleOrDefault();
+                //string mobilenumbersstr = String.Join(",", btobj.CreatedBy);
+                List<string> Existing_MobileNumbers = btobj.CreatedBy.Split(',').ToList();
+                (from u in dc.uiddatas
+                 where Existing_MobileNumbers.Any(x => x.Contains(u.MobileNumber)) && u.FK_RID == btobj.FK_RID
+                 select u).ToList().ForEach(x => x.ExistingUrlBatchIds = (x.ExistingUrlBatchIds != null) ? (x.ExistingUrlBatchIds + ',' + '-' + batchid.ToString() + ',') : (batchid.ToString() + ','));
+                dc.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                
+                ErrorLogs.LogErrorData("error in urls updatation"+ ex.StackTrace, ex.Message);
+            
+            }
+        }
+
     }
 }

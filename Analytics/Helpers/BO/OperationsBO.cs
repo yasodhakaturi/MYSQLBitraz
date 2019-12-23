@@ -643,9 +643,18 @@ namespace Analytics.Helpers.BO
                         && u.Type == type
                         select u.MobileNumber).ToList();
                 objc = MobileNumbers.Intersect(objc).ToList();
+                
                 if (objc.Count > 0)
                 {
+                    List<string> Existing_MobileNumbers = objc;
+                    //string mobilenumbersstr = String.Join(",", Existing_MobileNumbers);
+                   (from u in dc.uiddatas
+                    where Existing_MobileNumbers.Any(x=>x.Contains(u.MobileNumber)) && u.FK_RID == objrid.PK_Rid
+                    select u).ToList().ForEach(x => x.ExistingUrlBatchIds = (x.ExistingUrlBatchIds != null) ? (x.ExistingUrlBatchIds +'-' + batchid.ToString() + ',') : (batchid.ToString()+','));
+                   dc.SaveChanges();
+                    
                     MobileNumbers = MobileNumbers.Except(objc).ToList();
+                   
                 }
                 if (MobileNumbers.Count() > 0)
                 {
@@ -703,7 +712,7 @@ namespace Analytics.Helpers.BO
                         
                        // StreamWriter swExtLogFile = new StreamWriter("~/UploadFiles/tmp_mysqluploader.txt", true);
                         string connStr = ConfigurationManager.ConnectionStrings["shortenURLConnectionString"].ConnectionString;
-                        
+                        string batchid1 = batchid.ToString()+',';
                         StreamWriter swExtLogFile = new StreamWriter(path_tmp);
                         //int uid_ID1 = GetNEXTAutoIncrementedID();
                         //swExtLogFile.Write(Environment.NewLine);
@@ -719,12 +728,14 @@ namespace Analytics.Helpers.BO
                         MyStringBuilder.Append("CreatedDate<?>");
                         MyStringBuilder.Append("UniqueNumber<?>");
                         MyStringBuilder.Append("CreatedBy<?>");
-                        MyStringBuilder.Append("FK_Batchid");
+                        MyStringBuilder.Append("FK_Batchid<?>");
+                        MyStringBuilder.Append("ExistingUrlBatchIds");
                         MyStringBuilder.Append(Environment.NewLine);
                         //for (int i2 = 0; i2 < MobileNumbers.Count; i2++)
                         //{
                             for (int j2 = 0; j2 < MobileNumbers.Count; j2++)
-                            {
+                        //for (int j2 = 0; j2 < Total_MobileNumbers.Count; j2++)
+                                {
                                 MyStringBuilder.Append(uid_ID + "<?>");//pk_uid
                                 MyStringBuilder.Append(objrid.PK_Rid.ToString() + "<?>");//fk_rid
                                 MyStringBuilder.Append(objrid.FK_ClientId.ToString() + "<?>");//fk_clientid
@@ -736,7 +747,8 @@ namespace Analytics.Helpers.BO
                                 MyStringBuilder.Append(Helper.GetUTCTime().ToString() + "<?>");//createddate
                                 MyStringBuilder.Append(objh[j2].ToString() + "<?>");//uniquenumber
                                 MyStringBuilder.Append(Helper.CurrentUserId.ToString() + "<?>");//createdby
-                                MyStringBuilder.Append(Convert.ToString(batchid));//batchid
+                                MyStringBuilder.Append(Convert.ToString(batchid) + "<?>");//batchid
+                                MyStringBuilder.Append(Convert.ToString(batchid1));//ExistingUrlBatchIds
                             //}
                             swExtLogFile.WriteLine(MyStringBuilder);
                             uid_ID = uid_ID + 1;
@@ -781,6 +793,7 @@ namespace Analytics.Helpers.BO
                         bl.Columns.Add("UniqueNumber");
                         bl.Columns.Add("CreatedBy");
                         bl.Columns.Add("FK_Batchid");
+                        bl.Columns.Add("ExistingUrlBatchIds");
                         var inserted = bl.Load();
                         if (type.ToLower() == "message")
                         {
@@ -794,8 +807,8 @@ namespace Analytics.Helpers.BO
                 }
                 else
                 {
-                    return "File already uploaded.";
-
+                    //return "File already uploaded.";
+                    return "Successfully Uploaded.";
                 }
                 return null;
             }

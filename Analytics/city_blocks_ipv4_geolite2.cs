@@ -18,9 +18,9 @@ namespace Analytics
         public string network { get; set; }
         public string Start_IPv4_address { get; set; }
         public string End_IPv4_address { get; set; }
-        public string Start_IP_num { get; set; }
-        public string End_IP_num { get; set; }
-        public string geoname_id { get; set; }
+        public Nullable<long> Start_IP_num { get; set; }
+        public Nullable<long> End_IP_num { get; set; }
+        public Nullable<int> geoname_id { get; set; }
         public string registered_country_geoname_id { get; set; }
         public string represented_country_geoname_id { get; set; }
         public string is_anonymous_proxy { get; set; }

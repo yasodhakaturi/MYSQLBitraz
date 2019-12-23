@@ -663,7 +663,7 @@ namespace Analytics.Controllers
         }
         public JsonResult GetBatchStatus(int BatchID)
         {
-            batchuploaddata objb = dc.batchuploaddatas.Where(x => x.PK_Batchid == BatchID).SingleOrDefault();
+            batchuploaddata objb = dc.batchuploaddatas.Where(x => x.PK_Batchid == BatchID ).SingleOrDefault();
             BatchStatus objs = new BatchStatus();
             if(objb!=null)
             {
@@ -689,11 +689,11 @@ namespace Analytics.Controllers
                     string role = Helper.CurrentUserRole;
                     if (role.ToLower() == "admin")
                     {
-                        objb = dc.batchuploaddatas.Where(x => x.ReferenceNumber == ReferenceNumber).ToList();
+                        objb = dc.batchuploaddatas.Where(x => x.ReferenceNumber == ReferenceNumber && x.Status == "Completed").ToList();
 
                     }
                     else
-                        objb = dc.batchuploaddatas.Where(x => x.FK_ClientID == currentuserid && x.ReferenceNumber == ReferenceNumber).ToList();
+                        objb = dc.batchuploaddatas.Where(x => x.FK_ClientID == currentuserid && x.ReferenceNumber == ReferenceNumber && x.Status == "Completed").ToList();
                     if (objb.Count != 0)
                     {
                         objbs = (from b in objb
@@ -789,23 +789,19 @@ namespace Analytics.Controllers
              batchuploaddata objb = dc.batchuploaddatas.Where(x => x.PK_Batchid == BatchID).SingleOrDefault();
             if (objb != null)
             {
+                string batchidstr = '-' + BatchID.ToString() + ',';
+                string batchidstr1 = BatchID.ToString() + ',';
                 string host = ConfigurationManager.AppSettings["ShortenurlHost"].ToString();
                 List<BatchDownload> objd = (from u in dc.uiddatas
-                                            where u.FK_Batchid == objb.PK_Batchid
+                                            where u.FK_Batchid == objb.PK_Batchid || u.ExistingUrlBatchIds.Contains(batchidstr) || u.ExistingUrlBatchIds.Contains(batchidstr1)
                                             select new BatchDownload()
                                             {
                                                 Mobilenumber = u.MobileNumber,
                                                 ShortUrl = host + u.UniqueNumber
                                                 //ShortUrl="https://g0.pe/" + u.UniqueNumber
                                             }).ToList();
-                //List<BatchDownload> objd = (from u in dc.uiddatas
-                //                            where u.FK_RID == objb.FK_RID
-                //                            select new BatchDownload()
-                //                            {
-                //                                Mobilenumber = u.MobileNumber,
-                //                                ShortUrl = host + u.UniqueNumber
-                //                                //ShortUrl="https://g0.pe/" + u.UniqueNumber
-                //                            }).ToList();
+                
+
                 //var grid = new System.Web.UI.WebControls.GridView();
                 string filename = objb.BatchName.Replace(" ", string.Empty);
                 //export data in excel format
@@ -1079,6 +1075,8 @@ namespace Analytics.Controllers
              
             try
             {
+                ErrorLogs.LogErrorData("starting point", DateTime.UtcNow.ToString());
+
                 exportDataModel obje = new exportDataModel();
                 DateTime todaysDate = DateTime.UtcNow.Date;
 
@@ -1098,7 +1096,7 @@ namespace Analytics.Controllers
                 //FillHashId(3000000, 4000000);
                 //FillHashId(4000000, 5000000);
                 //FillHashId(5000000, 6000000);
-                //FillHashId(6000000, 7000000);
+                //FillHashId(6000000, 7000000);/
                 //FillHashId(7000000, 8000000);
                 //FillHashId(8000000, 9000000);
                 //FillHashId(9000000, 10000000);
@@ -1132,7 +1130,11 @@ namespace Analytics.Controllers
                         objc.FK_Batchid=0;
                         dc.uiddatas.Add(objc);
                         dc.SaveChanges();
+                        ErrorLogs.LogErrorData("before starting query", DateTime.UtcNow.ToString());
+
                         uiddata objuid = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype).SingleOrDefault();
+                        ErrorLogs.LogErrorData("after query", DateTime.UtcNow.ToString());
+
                         //Hashid = Helper.GetHashID(objuid.PK_Uid);
                         Hashid = dc.hashidlists.Where(h => h.PK_Hash_ID == objuid.PK_Uid).Select(x => x.HashID).SingleOrDefault();
                         objbo.UpdateHashid(objuid.PK_Uid, Hashid);
@@ -1168,6 +1170,8 @@ namespace Analytics.Controllers
                             //objs.UrlTotal_Week = objs.UsersLast7days;
                             //objs.UrlTotal_Month = (objs.DaysCount_Month < daysinmonth) ? (objs.UrlTotal_Month + objs.UsersLast7days) : 0;
                             dc.SaveChanges();
+                            ErrorLogs.LogErrorData("after saving data", DateTime.UtcNow.ToString());
+
                         }
                         else
                             Add_Campaign_Record_uploaddta(objuid.FK_RID, clientid);
@@ -1198,6 +1202,8 @@ namespace Analytics.Controllers
                                 //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
                                 //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
                                 dc.SaveChanges();
+                                ErrorLogs.LogErrorData("after saving  admin data", DateTime.UtcNow.ToString());
+
                             }
                             else
                                 Add_Campaign_Record_uploaddta(0, adminid);
@@ -1211,6 +1217,7 @@ namespace Analytics.Controllers
                         obje.CreatedDate = objuid.CreatedDate;
                         obje.Status = "Successfully Uploaded.";
                         //return Json(obje, JsonRequestBehavior.AllowGet);
+                        ErrorLogs.LogErrorData("end point", DateTime.UtcNow.ToString());
 
                     }
                     else
@@ -1401,12 +1408,12 @@ namespace Analytics.Controllers
                                     SplitedData.Remove(SplitedData[0]);
 
                             }
-                            var mobilenumbersstr = String.Join(",", SplitedData);
+                            //var mobilenumbersstr = String.Join(",", SplitedData);
                             string batchname = objrid.CampaignName + "_" + DateTime.UtcNow;
 
                             batchuploaddata objb = new batchuploaddata();
                             objb.ReferenceNumber = ReferenceNumber;
-                            objb.MobileNumber = mobilenumbersstr;
+                            //objb.MobileNumber = mobilenumbersstr;
                             objb.Longurl = LongURLorMessage;
                             objb.FK_ClientID = objrid.FK_ClientId;
                             objb.FK_RID = objrid.PK_Rid;
@@ -1418,7 +1425,7 @@ namespace Analytics.Controllers
                             dc.batchuploaddatas.Add(objb);
                             dc.SaveChanges();
                             batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
-                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURLorMessage, objo.PK_Batchid, objrid, SplitedData, path_tmp,uploadtype);
+                            string result = objbo.BulkUploaduiddata(ReferenceNumber, LongURLorMessage, objo.PK_Batchid, objrid, SplitedData, path_tmp, uploadtype);
                             if (result == "Successfully Uploaded.")
                             {
                                 objo.Status = "Completed";

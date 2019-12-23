@@ -407,7 +407,7 @@ namespace Analytics.Controllers
                     
                     objg1 = (from s in dc.shorturldatas
                                                    join u in dc.uiddatas on s.FK_Uid equals u.PK_Uid
-                                                   where s.FK_RID == objr.PK_Rid && u.FK_RID==objr.PK_Rid 
+                                                   where s.FK_RID == objr.PK_Rid && u.FK_RID==objr.PK_Rid && s.CreatedDate!=null
                                                    select new GeoLocationsData1()
                                                    {
                                                       Latitude=s.Latitude,
@@ -2100,112 +2100,125 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
         }
 
 
-        public DashBoardStats getcampaigndata(int? rid,int clientid)
+        public DashBoardStats getcampaigndata(int? rid, int clientid)
         {
-            DashBoardStats obj = new DashBoardStats();
-           stat_counts st_obj_res = dc.stat_counts.Where(x => x.FK_Rid == rid && x.FK_ClientID==clientid).SingleOrDefault();
+            try
+            {
+                DashBoardStats obj = new DashBoardStats();
+                stat_counts st_obj_res = dc.stat_counts.Where(x => x.FK_Rid == rid && x.FK_ClientID == clientid).SingleOrDefault();
+                if (st_obj_res != null)
+                {
+                    totalUrls_stat totalUrls = new totalUrls_stat();
+                    totalUrls.count = st_obj_res.TotalUsers;
+                    users_stat users = new users_stat();
+                    users.total = st_obj_res.TotalUsers;
+                    users.uniqueUsers = st_obj_res.UniqueUsers;
+                    users.uniqueUsersToday = st_obj_res.UniqueUsersToday;
+                    users.usersToday = st_obj_res.UsersToday;
+                    users.uniqueUsersYesterday = st_obj_res.UniqueUsersYesterday;
+                    users.usersYesterday = st_obj_res.UsersYesterday;
+                    users.uniqueUsersLast7days = st_obj_res.UniqueUsersLast7days;
+                    users.usersLast7days = st_obj_res.UsersLast7days;
+                    visits_stat visits = new visits_stat();
+                    visits.total = st_obj_res.TotalVisits;
+                    visits.uniqueVisits = st_obj_res.UniqueVisits;
+                    visits.uniqueVisitsToday = st_obj_res.UniqueVisitsToday;
+                    visits.visitsToday = st_obj_res.VisitsToday;
+                    visits.uniqueVisitsYesterday = st_obj_res.UniqueVisitsYesterday;
+                    visits.visitsYesterday = st_obj_res.VisitsYesterday;
+                    //visits.uniqueVisitsLast7days =(st_obj_res.FK_Rid!=0)?st_obj_res.UniqueVisitsLast7day:(uniqueVisitsToday.Sum(x => x.uniqueVisitsToday)+st_obj_res.UniqueVisitsYesterday+st_obj_res.UniqueVisitsLast7day);
+                    //visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYesterday + st_obj_res.VisitsLast7days);
+                    visits.uniqueVisitsLast7days = st_obj_res.UniqueVisitsLast7day;
+                    visits.visitsLast7days = st_obj_res.VisitsLast7days;
+                    campaigns_stat campaigns = new campaigns_stat();
+                    campaigns.total = st_obj_res.TotalCamapigns;
+                    campaigns.campaignsLast7days = st_obj_res.CampaignsLast7days;
+                    campaigns.campaignsMonth = st_obj_res.CampaignsMonth;
 
-            totalUrls_stat totalUrls = new totalUrls_stat();
-            totalUrls.count = st_obj_res.TotalUsers;
-            users_stat users = new users_stat();
-            users.total = st_obj_res.TotalUsers;
-            users.uniqueUsers = st_obj_res.UniqueUsers;
-            users.uniqueUsersToday = st_obj_res.UniqueUsersToday;
-            users.usersToday = st_obj_res.UsersToday;
-            users.uniqueUsersYesterday = st_obj_res.UniqueUsersYesterday;
-            users.usersYesterday = st_obj_res.UsersYesterday;
-            users.uniqueUsersLast7days = st_obj_res.UniqueUsersLast7days;
-            users.usersLast7days = st_obj_res.UsersLast7days;
-            visits_stat visits = new visits_stat();
-            visits.total = st_obj_res.TotalVisits;
-            visits.uniqueVisits = st_obj_res.UniqueVisits;
-            visits.uniqueVisitsToday = st_obj_res.UniqueVisitsToday;
-            visits.visitsToday = st_obj_res.VisitsToday;
-            visits.uniqueVisitsYesterday = st_obj_res.UniqueVisitsYesterday;
-            visits.visitsYesterday = st_obj_res.VisitsYesterday;
-            //visits.uniqueVisitsLast7days =(st_obj_res.FK_Rid!=0)?st_obj_res.UniqueVisitsLast7day:(uniqueVisitsToday.Sum(x => x.uniqueVisitsToday)+st_obj_res.UniqueVisitsYesterday+st_obj_res.UniqueVisitsLast7day);
-            //visits.visitsLast7days = (st_obj_res.FK_Rid != 0) ? st_obj_res.VisitsLast7days : (st_obj_res.VisitsToday + st_obj_res.VisitsYesterday + st_obj_res.VisitsLast7days);
-            visits.uniqueVisitsLast7days = st_obj_res.UniqueVisitsLast7day;
-            visits.visitsLast7days = st_obj_res.VisitsLast7days;
-            campaigns_stat campaigns = new campaigns_stat();
-            campaigns.total = st_obj_res.TotalCamapigns;
-            campaigns.campaignsLast7days = st_obj_res.CampaignsLast7days;
-            campaigns.campaignsMonth = st_obj_res.CampaignsMonth;
-
-            today_stat today = new today_stat();
-            today.urlTotal = st_obj_res.UrlTotal_Today;
-            today.urlPercent = st_obj_res.UrlPercent_Today;
-            today.visitsTotal = st_obj_res.VisitsToday;
-            today.visitsPercent = st_obj_res.VisitsPercent_Today;
-            today.revisitsTotal = st_obj_res.RevisitsTotal_Today;
-            today.revisitsPercent = st_obj_res.RevisitsPercent_Today;
-            today.noVisitsTotal = st_obj_res.NoVisitsTotal_Today;
-            today.noVisitsPercent = st_obj_res.NoVisitsPercent_Today;
-            last7days_stat last7days = new last7days_stat();
-            last7days.urlTotal = st_obj_res.UrlTotal_Week;
-            last7days.urlPercent = st_obj_res.UrlPercent_Week;
-            last7days.visitsTotal = st_obj_res.VisitsTotal_Week;
-            last7days.visitsPercent = st_obj_res.VisitsPercent_Week;
-            last7days.revisitsTotal = st_obj_res.RevisitsTotal_Week;
-            last7days.revisitsPercent = st_obj_res.RevisitsPercent_Week;
-            last7days.noVisitsTotal = st_obj_res.NoVisitsTotal_Week;
-            last7days.noVisitsPercent = st_obj_res.NoVisitsPercent_Week;
-            month_stat month = new month_stat();
-            month.urlTotal = st_obj_res.UrlTotal_Month;
-            month.urlPercent = st_obj_res.UrlTotalPercent_Month;
-            month.visitsTotal = st_obj_res.VisitsTotal_Month;
-            month.visitsPercent = st_obj_res.VisitsPercent_Month;
-            month.revisitsTotal = st_obj_res.RevisitsTotal_Month;
-            month.revisitsPercent = st_obj_res.RevisitsPercent_Month;
-            month.noVisitsTotal = st_obj_res.NoVisitsTotal_Month;
-            month.noVisitsPercent = st_obj_res.NoVisitsPercent_Month;
-
-
-            List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
-                                                 where r.FK_Rid !=0
-                                                 orderby r.CreatedDate descending
-                                                 select new recentCampaigns1_stat()
-                                                 {
-                                                     id = r.PK_Stat,
-                                                     rid = r.FK_Rid.ToString(),
-                                                     visits = (int)r.TotalVisits,
-                                                     users = (int)r.TotalUsers,
-                                                     status = true,
-                                                     //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
-                                                     crd = r.CreatedDate,
-                                                     //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
-
-                                                 }).Take(10).ToList();
-            List<recentCampaigns_stat> objr = (from r in objr1
-                                               orderby r.crd descending
-                                               select new recentCampaigns_stat()
-                                               {
-                                                   id = r.id,
-                                                   rid = r.rid.ToString(),
-                                                   visits = (int)r.visits,
-                                                   users = (int)r.users,
-                                                   status = true,
-                                                   //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
-                                                   createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
-                                                   //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
-
-                                               }).Take(10).ToList();
+                    today_stat today = new today_stat();
+                    today.urlTotal = st_obj_res.UrlTotal_Today;
+                    today.urlPercent = st_obj_res.UrlPercent_Today;
+                    today.visitsTotal = st_obj_res.VisitsToday;
+                    today.visitsPercent = st_obj_res.VisitsPercent_Today;
+                    today.revisitsTotal = st_obj_res.RevisitsTotal_Today;
+                    today.revisitsPercent = st_obj_res.RevisitsPercent_Today;
+                    today.noVisitsTotal = st_obj_res.NoVisitsTotal_Today;
+                    today.noVisitsPercent = st_obj_res.NoVisitsPercent_Today;
+                    last7days_stat last7days = new last7days_stat();
+                    last7days.urlTotal = st_obj_res.UrlTotal_Week;
+                    last7days.urlPercent = st_obj_res.UrlPercent_Week;
+                    last7days.visitsTotal = st_obj_res.VisitsTotal_Week;
+                    last7days.visitsPercent = st_obj_res.VisitsPercent_Week;
+                    last7days.revisitsTotal = st_obj_res.RevisitsTotal_Week;
+                    last7days.revisitsPercent = st_obj_res.RevisitsPercent_Week;
+                    last7days.noVisitsTotal = st_obj_res.NoVisitsTotal_Week;
+                    last7days.noVisitsPercent = st_obj_res.NoVisitsPercent_Week;
+                    month_stat month = new month_stat();
+                    month.urlTotal = st_obj_res.UrlTotal_Month;
+                    month.urlPercent = st_obj_res.UrlTotalPercent_Month;
+                    month.visitsTotal = st_obj_res.VisitsTotal_Month;
+                    month.visitsPercent = st_obj_res.VisitsPercent_Month;
+                    month.revisitsTotal = st_obj_res.RevisitsTotal_Month;
+                    month.revisitsPercent = st_obj_res.RevisitsPercent_Month;
+                    month.noVisitsTotal = st_obj_res.NoVisitsTotal_Month;
+                    month.noVisitsPercent = st_obj_res.NoVisitsPercent_Month;
 
 
+                    List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
+                                                         where r.FK_Rid != 0
+                                                         orderby r.CreatedDate descending
+                                                         select new recentCampaigns1_stat()
+                                                         {
+                                                             id = r.PK_Stat,
+                                                             rid = r.FK_Rid.ToString(),
+                                                             visits = (int)r.TotalVisits,
+                                                             users = (int)r.TotalUsers,
+                                                             status = true,
+                                                             //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                             crd = r.CreatedDate,
+                                                             //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
 
-            activities_stat obj_act = new activities_stat();
-            obj_act.today = today;
-            obj_act.last7days = last7days;
-            obj_act.month = month;
+                                                         }).Take(10).ToList();
+                    List<recentCampaigns_stat> objr = (from r in objr1
+                                                       orderby r.crd descending
+                                                       select new recentCampaigns_stat()
+                                                       {
+                                                           id = r.id,
+                                                           rid = r.rid.ToString(),
+                                                           visits = (int)r.visits,
+                                                           users = (int)r.users,
+                                                           status = true,
+                                                           //crd = r.createdOn.Value.ToString("MM/dd/yyyyThh:mm:ss")
+                                                           createdOn = r.crd.Value.ToString("yyyy-MM-ddThh:mm:ss"),
+                                                           //endDate = (r.endd == null) ? null : (r.endd.Value.ToString("yyyy-MM-ddThh:mm:ss"))
 
-            obj.totalUrls = totalUrls;
-            obj.users = users;
-            obj.visits = visits;
-            obj.campaigns = campaigns;
-            obj.recentCampaigns = objr;
-            obj.activities = obj_act;
+                                                       }).Take(10).ToList();
 
-            return obj;
+
+
+                    activities_stat obj_act = new activities_stat();
+                    obj_act.today = today;
+                    obj_act.last7days = last7days;
+                    obj_act.month = month;
+
+                    obj.totalUrls = totalUrls;
+                    obj.users = users;
+                    obj.visits = visits;
+                    obj.campaigns = campaigns;
+                    obj.recentCampaigns = objr;
+                    obj.activities = obj_act;
+
+                    return obj;
+                }
+                else
+                    return null;
+            }
+
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                return null;
+            }
         }
         // end GetSummary_stats_count
 
