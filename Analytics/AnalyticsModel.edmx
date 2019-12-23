@@ -906,9 +906,9 @@
             <End Role="uiddata" EntitySet="uiddatas" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
           </AssociationSet>
-          <EntitySet Name="batchuploaddatas" EntityType="shortenurlModel.batchuploaddata" />
           <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="shortenurlModel.city_blocks_ipv4_geolite2" />
           <EntitySet Name="city_locations_geolite2" EntityType="shortenurlModel.city_locations_geolite2" />
+          <EntitySet Name="batchuploaddatas" EntityType="shortenurlModel.batchuploaddata" />
           </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
@@ -1234,22 +1234,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="batchuploaddata">
-          <Key>
-            <PropertyRef Name="PK_Batchid" />
-          </Key>
-          <Property Name="PK_Batchid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReferenceNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Longurl" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="BatchName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="BatchCount" Type="Int32" />
-          <Property Name="FK_RID" Type="Int32" />
-          <Property Name="FK_ClientID" Type="Int32" />
-          <Property Name="CreatedBy" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" />
-        </EntityType>
         <EntityType Name="city_blocks_ipv4_geolite2">
           <Key>
             <PropertyRef Name="PK_City_ID_IPV4" />
@@ -1288,6 +1272,22 @@
           <Property Name="city_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="metro_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="time_zone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="batchuploaddata">
+          <Key>
+            <PropertyRef Name="PK_Batchid" />
+          </Key>
+          <Property Name="PK_Batchid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReferenceNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Longurl" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="BatchName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCount" Type="Int32" />
+          <Property Name="FK_RID" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1678,23 +1678,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="batchuploaddatas">
-            <EntityTypeMapping TypeName="shortenurlModel.batchuploaddata">
-              <MappingFragment StoreEntitySet="batchuploaddata">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
-                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
-                <ScalarProperty Name="BatchCount" ColumnName="BatchCount" />
-                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="Longurl" ColumnName="Longurl" />
-                <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
-                <ScalarProperty Name="PK_Batchid" ColumnName="PK_Batchid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="city_blocks_ipv4_geolite2">
             <EntityTypeMapping TypeName="shortenurlModel.city_blocks_ipv4_geolite2">
               <MappingFragment StoreEntitySet="city_blocks_ipv4_geolite2">
@@ -1733,6 +1716,23 @@
                 <ScalarProperty Name="locale_code" ColumnName="locale_code" />
                 <ScalarProperty Name="geoname_id" ColumnName="geoname_id" />
                 <ScalarProperty Name="PK_City_Location_ID" ColumnName="PK_City_Location_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="batchuploaddatas">
+            <EntityTypeMapping TypeName="shortenurlModel.batchuploaddata">
+              <MappingFragment StoreEntitySet="batchuploaddata">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
+                <ScalarProperty Name="BatchCount" ColumnName="BatchCount" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Longurl" ColumnName="Longurl" />
+                <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
+                <ScalarProperty Name="PK_Batchid" ColumnName="PK_Batchid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
