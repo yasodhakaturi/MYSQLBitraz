@@ -13,7 +13,10 @@ angular.module("app.dashboard")
 
       $ctrl.show = (state) => {
         $ctrl.state = state;
-        $ctrl.onTypeChange(state);
+        if($ctrl.onTypeChange){
+          $ctrl.onTypeChange(state);
+        }
+
       };
 
       $ctrl.$onInit =  ()=>{

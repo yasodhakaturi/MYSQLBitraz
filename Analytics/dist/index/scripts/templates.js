@@ -26,25 +26,25 @@ angular.module("views/common/dashboard/activities_tmpl.html", []).run(["$templat
     "      <div class=\"panel-title\">Last Activity</div>\n" +
     "      <div class=\"list-item-container\" style=\"width: 100%\">\n" +
     "        <div class=\"list-item\">\n" +
-    "          <h3 class=\"no-margins font-extra-bold text-success\" ng-bind=\"$ctrl.data.urlTotal || 0 | number\"></h3>\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-success\" ng-bind=\"$ctrl.data[$ctrl.state].urlTotal || 0 | number\"></h3>\n" +
     "          <small>Total Urls Generated</small>\n" +
-    "          <div class=\"pull-right font-bold\">{{$ctrl.data.urlPercent || 0 | number}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data[$ctrl.state].urlPercent || 0 | number}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
     "        </div>\n" +
     "        <div class=\"list-item\">\n" +
-    "          <h3 class=\"no-margins font-extra-bold text-color3\" ng-bind=\"$ctrl.data.visitsTotal || 0 | number\"></h3>\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-color3\" ng-bind=\"$ctrl.data[$ctrl.state].visitsTotal || 0 | number\"></h3>\n" +
     "          <small>visited</small>\n" +
-    "          <div class=\"pull-right font-bold\">{{$ctrl.data.visitsPercent || 0 | number}}% <i class=\"fa fa-level-down text-color3\"></i></div>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data[$ctrl.state].visitsPercent || 0 | number}}% <i class=\"fa fa-level-down text-color3\"></i></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"list-item\">\n" +
-    "          <h3 class=\"no-margins font-extra-bold text-info\" ng-bind=\"$ctrl.data.revisitsTotal || 0 | number\"></h3>\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-info\" ng-bind=\"$ctrl.data[$ctrl.state].revisitsTotal || 0 | number\"></h3>\n" +
     "          <small>Revisited</small>\n" +
-    "          <div class=\"pull-right font-bold\">{{$ctrl.data.revisitsPercent || 0}}% <i class=\"fa fa-bolt text-color3\"></i></div>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data[$ctrl.state].revisitsPercent || 0}}% <i class=\"fa fa-bolt text-color3\"></i></div>\n" +
     "        </div>\n" +
     "        <div class=\"list-item\" ng-if=\"$ctrl.header\">\n" +
-    "          <h3 class=\"no-margins font-extra-bold text-warning\" ng-bind=\"$ctrl.data.noVisitsTotal || 0 | number\"></h3>\n" +
+    "          <h3 class=\"no-margins font-extra-bold text-warning\" ng-bind=\"$ctrl.data[$ctrl.state].noVisitsTotal || 0 | number\"></h3>\n" +
     "          <small>Never Visited</small>\n" +
-    "          <div class=\"pull-right font-bold\">{{$ctrl.data.noVisitsPercent || 0}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
+    "          <div class=\"pull-right font-bold\">{{$ctrl.data[$ctrl.state].noVisitsPercent || 0}}% <i class=\"fa fa-level-up text-success\"></i></div>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +

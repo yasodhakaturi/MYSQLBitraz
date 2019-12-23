@@ -96,6 +96,7 @@ angular.module("app")
             type: 'datetime'
           },
           yAxis: {
+            min:0,
             title: {
               text: 'Counts'
             }
