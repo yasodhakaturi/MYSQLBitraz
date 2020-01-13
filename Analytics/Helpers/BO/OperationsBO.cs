@@ -583,7 +583,12 @@ namespace Analytics.Helpers.BO
            AddComma_Export(export.ShortURL, stringBuilder);
            AddComma_Export(export.LongUrl, stringBuilder);
            //AddComma_Export(export.GoogleMapUrl, stringBuilder);
-           stringBuilder.Append(""+export.GoogleMapUrl+"");
+           if (export.GoogleMapUrl.Contains(","))
+           {
+               export.GoogleMapUrl = String.Format("\"{0}\"", export.GoogleMapUrl);
+           }
+           //stringBuilder.Append(""+export.GoogleMapUrl.ToString()+"");
+           stringBuilder.Append(export.GoogleMapUrl.ToString());
            stringBuilder.Append(",");
            AddComma_Export(export.IPAddress, stringBuilder);
            AddComma_Export(export.Browser, stringBuilder);
@@ -627,6 +632,8 @@ namespace Analytics.Helpers.BO
         {
             try
             {
+                //ErrorLogs.LogErrorData(" startin point" + MobileNumbers.Count().ToString(), batchid.ToString());
+
                 List<string> objc;
                 //objc = (from u in dc.uiddatas
                 //                    where u.ReferenceNumber == ReferenceNumber
@@ -643,19 +650,31 @@ namespace Analytics.Helpers.BO
                         && u.Type == type
                         select u.MobileNumber).ToList();
                 objc = MobileNumbers.Intersect(objc).ToList();
-                
+                //ErrorLogs.LogErrorData(" after query ,mobilenumbers count = " + MobileNumbers.Count().ToString(), objc.Count.ToString());
+
                 if (objc.Count > 0)
                 {
                     List<string> Existing_MobileNumbers = objc;
-                    //string mobilenumbersstr = String.Join(",", Existing_MobileNumbers);
-                   (from u in dc.uiddatas
-                    where Existing_MobileNumbers.Any(x=>x.Contains(u.MobileNumber)) && u.FK_RID == objrid.PK_Rid
-                    select u).ToList().ForEach(x => x.ExistingUrlBatchIds = (x.ExistingUrlBatchIds != null) ? (x.ExistingUrlBatchIds +'-' + batchid.ToString() + ',') : (batchid.ToString()+','));
-                   dc.SaveChanges();
-                    
+                    string mobilenumbersstr = String.Join(",", Existing_MobileNumbers);
+                    using (shortenurlEntities dc1 = new shortenurlEntities())
+                    {
+                        dc1.Database.CommandTimeout = 2 * 60;
+                        string batchidstr = '-' + batchid.ToString() + ',';
+
+                        (from u in dc1.uiddatas
+                         where Existing_MobileNumbers.Contains(u.MobileNumber) && u.FK_RID == objrid.PK_Rid
+                         select u).ToList().ForEach(x => x.ExistingUrlBatchIds = (x.ExistingUrlBatchIds + batchidstr));
+                        dc1.SaveChanges();
+                       
+
+                        }
+
+                   
                     MobileNumbers = MobileNumbers.Except(objc).ToList();
                    
                 }
+                //ErrorLogs.LogErrorData(" MobileNumbers.Count()>0" + MobileNumbers.Count().ToString(), objc.Count().ToString());
+
                 if (MobileNumbers.Count() > 0)
                 {
                     //DataTable dt = new DataTable();
@@ -678,6 +697,7 @@ namespace Analytics.Helpers.BO
                     int uid_ID_end = uid_ID + MobilenumberCount;
                     List<string> objh = dc.hashidlists.Where(h => h.PK_Hash_ID >= uid_ID_start && h.PK_Hash_ID < uid_ID_end).Select(x => x.HashID).ToList();
                     //List<int> pkuids = Enumerable.Range(uid_ID_start, MobilenumberCount).ToList();
+                    //ErrorLogs.LogErrorData(MobileNumbers.Count().ToString(), objh.Count().ToString());
                     if (MobileNumbers.Count() == objh.Count())
                     {
                         //foreach (string m in MobileNumbers)
@@ -810,11 +830,12 @@ namespace Analytics.Helpers.BO
                     //return "File already uploaded.";
                     return "Successfully Uploaded.";
                 }
+                //ErrorLogs.LogErrorData("something went wrong.", "returning null");
                 return null;
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                ErrorLogs.LogErrorData(ex.StackTrace +" " + ex.InnerException, ex.Message);
                 return null;
             }
         }

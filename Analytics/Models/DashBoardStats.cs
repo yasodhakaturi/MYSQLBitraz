@@ -59,6 +59,7 @@ namespace Analytics.Models
         public int visits { get; set; }
         public int users { get; set; }
         public bool status { get; set; }
+        public string campaignname { get; set; }
     }
     public class recentCampaigns1_stat
     {
@@ -71,6 +72,7 @@ namespace Analytics.Models
         public int visits { get; set; }
         public int users { get; set; }
         public bool status { get; set; }
+        public string campaignname { get; set; }
     }
     public class activities_stat
     {

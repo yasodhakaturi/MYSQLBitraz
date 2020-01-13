@@ -2018,12 +2018,14 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
 
 
                             List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
+                                                                 join r1 in dc.riddatas on r.FK_Rid equals r1.PK_Rid
                                                                  where r.FK_Rid!=0
                                                                orderby r.CreatedDate descending
                                                                select new recentCampaigns1_stat()
                                                                {
                                                                    id = r.PK_Stat,
-                                                                   rid = r.FK_Rid.ToString(),
+                                                                   rid = r1.ReferenceNumber,
+                                                                   campaignname=r1.CampaignName,
                                                                    visits = (int)r.TotalVisits,
                                                                    users = (int)r.TotalUsers,
                                                                    status = true,
@@ -2037,7 +2039,8 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                                                                select new recentCampaigns_stat()
                                                                {
                                                                    id = r.id,
-                                                                   rid = r.rid.ToString(),
+                                                                   rid = r.rid,
+                                                                   campaignname=r.campaignname,
                                                                    visits = (int)r.visits,
                                                                    users = (int)r.users,
                                                                    status = true,
@@ -2165,12 +2168,14 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
 
 
                     List<recentCampaigns1_stat> objr1 = (from r in dc.stat_counts
+                                                         join r1 in dc.riddatas on r.FK_Rid equals r1.PK_Rid
                                                          where r.FK_Rid != 0
                                                          orderby r.CreatedDate descending
                                                          select new recentCampaigns1_stat()
                                                          {
                                                              id = r.PK_Stat,
-                                                             rid = r.FK_Rid.ToString(),
+                                                             rid = r1.ReferenceNumber,
+                                                             campaignname = r1.CampaignName,
                                                              visits = (int)r.TotalVisits,
                                                              users = (int)r.TotalUsers,
                                                              status = true,
@@ -2185,6 +2190,7 @@ NoVisitsPercent_Month = r.Sum(x => x.NoVisitsPercent_Month),
                                                        {
                                                            id = r.id,
                                                            rid = r.rid.ToString(),
+                                                           campaignname = r.campaignname,
                                                            visits = (int)r.visits,
                                                            users = (int)r.users,
                                                            status = true,

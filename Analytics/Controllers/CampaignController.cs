@@ -358,17 +358,11 @@ namespace Analytics.Controllers
                         
                     }
                     ////stat_counts  --start
-                    int rid = dc.riddatas.Where(x => x.ReferenceNumber == ReferenceNumber && x.FK_ClientId == cid).Select(y => y.PK_Rid).SingleOrDefault();
-                    stat_counts objs = dc.stat_counts.Where(x => x.FK_Rid == rid).Select(y => y).SingleOrDefault();
-                    if (objs == null)
+                    //for admin case
+                    List<int> adminids = dc.clients.Where(x => x.Role == "admin").Select(x => x.PK_ClientID).ToList();
+                    foreach (int adminid in adminids)
                     {
-                        //for admin case
-                        //int clientid;
-                        //if (Helper.CurrentUserRole == "admin")
-                        //    clientid = Helper.CurrentUserId;
-                        //else
-                        //    clientid = cid;
-                        stat_counts objadmin = dc.stat_counts.Where(x => x.FK_ClientID == cid && x.FK_Rid == 0).Select(y => y).SingleOrDefault();
+                        stat_counts objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
                         if (objadmin != null)
                         {
                             DateTime todaysDate = DateTime.UtcNow.Date;
@@ -380,12 +374,28 @@ namespace Analytics.Controllers
                         }
                         else
                         {
-                            Add_Campaign_Record(0, cid);
+                            Add_Campaign_Record(0, adminid);
                         }
+                    }
+                    //for campaign
+                    int rid = dc.riddatas.Where(x => x.ReferenceNumber == ReferenceNumber && x.FK_ClientId == cid).Select(y => y.PK_Rid).SingleOrDefault();
+                    stat_counts objs = dc.stat_counts.Where(x => x.FK_Rid == rid).Select(y => y).SingleOrDefault();
+                    if (objs == null)
+                    {
+                        //for admin case
+                        //int clientid;
+                        //if (Helper.CurrentUserRole == "admin")
+                        //    clientid = Helper.CurrentUserId;
+                        //else
+                        //    clientid = cid;
+                        
                         //adding the campaign record
                         Add_Campaign_Record(rid, cid);
-   
                     }
+                        
+
+   
+                    
                     ////stat_counts --end
                         
                         obj_search = (from c in dc.riddatas
@@ -739,7 +749,8 @@ namespace Analytics.Controllers
                                           Mobilenumber=u.MobileNumber,
                                           ShortURL=s.Req_url,
                                           LongUrl=u.LongurlorMessage,
-                                          GoogleMapUrl = "https://www.google.com/maps?q=loc:"+s.Latitude+","+s.Longitude,
+                                          //GoogleMapUrl = "https://www.google.com/maps?q=loc:"+s.Latitude+","+s.Longitude,
+                                          GoogleMapUrl =(s.City_Latitude!=null || s.City_Longitude!="")?("https://www.google.com/maps?q=loc:" + s.City_Latitude + "," + s.City_Longitude):"",
                                           IPAddress=s.Ipv4,
                                           Browser=s.Browser,
                                           BrowserVersion=s.Browser_version,
@@ -762,6 +773,8 @@ namespace Analytics.Controllers
 
                                                        }
                                                          ).ToList();
+
+
                 string filename = objr.CampaignName + DateTime.UtcNow;
                 string attachment = "attachment; filename=" + filename + ".csv";
                 HttpContext.Response.Clear();
@@ -789,10 +802,14 @@ namespace Analytics.Controllers
              batchuploaddata objb = dc.batchuploaddatas.Where(x => x.PK_Batchid == BatchID).SingleOrDefault();
             if (objb != null)
             {
-                string batchidstr = '-' + BatchID.ToString() + ',';
-                string batchidstr1 = BatchID.ToString() + ',';
+                string batchidstr = '-' + BatchID.ToString() +',';
+                string batchidstr1 = BatchID.ToString()+',';
                 string host = ConfigurationManager.AppSettings["ShortenurlHost"].ToString();
-                List<BatchDownload> objd = (from u in dc.uiddatas
+                List<BatchDownload> objd = new List<BatchDownload>();
+                using(shortenurlEntities dc1=new shortenurlEntities())
+                {
+                    dc1.Database.CommandTimeout = 2 * 60;
+                objd = (from u in dc1.uiddatas
                                             where u.FK_Batchid == objb.PK_Batchid || u.ExistingUrlBatchIds.Contains(batchidstr) || u.ExistingUrlBatchIds.Contains(batchidstr1)
                                             select new BatchDownload()
                                             {
@@ -800,7 +817,7 @@ namespace Analytics.Controllers
                                                 ShortUrl = host + u.UniqueNumber
                                                 //ShortUrl="https://g0.pe/" + u.UniqueNumber
                                             }).ToList();
-                
+                }
 
                 //var grid = new System.Web.UI.WebControls.GridView();
                 string filename = objb.BatchName.Replace(" ", string.Empty);
@@ -835,7 +852,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                ErrorLogs.LogErrorData(ex.StackTrace + "\n"+ex.InnerException, ex.Message);
             }
         }
         
@@ -1075,7 +1092,6 @@ namespace Analytics.Controllers
              
             try
             {
-                ErrorLogs.LogErrorData("starting point", DateTime.UtcNow.ToString());
 
                 exportDataModel obje = new exportDataModel();
                 DateTime todaysDate = DateTime.UtcNow.Date;
@@ -1110,11 +1126,24 @@ namespace Analytics.Controllers
                                   select registree).SingleOrDefault();
                 if (type.ToLower() == "simple" && objrid != null )
                 {
+                    ErrorLogs.LogErrorData("starting point in Simple case upload data function", DateTime.UtcNow.ToString());
+
                     string mobilenumber = MobileNumbers[0];
                     uiddata objc = new uiddata();
-                    uiddata objc1 = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type==uploadtype).SingleOrDefault();
-                    if (objc1 == null)
+                    uiddata objc1=new uiddata();
+                    try {
+                        dc.Database.CommandTimeout = 2 * 60;
+                         objc1 = (from u in dc.uiddatas
+                                         where u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype
+                                         select u).SingleOrDefault();
+                                       
+                     //objc1 = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type==uploadtype).SingleOrDefault();
+                    }
+                    catch (Exception ex)
+                    { ErrorLogs.LogErrorData("error while querying uiddata table" + ex.InnerException + ex.StackTrace, DateTime.UtcNow.ToString()); }
+                        if (objc1 == null)
                     {
+                        
                         objc.MobileNumber= mobilenumber;
                         objc.ReferenceNumber = ReferenceNumber;
                         objc.LongurlorMessage = LongURLorMessage;
@@ -1126,14 +1155,17 @@ namespace Analytics.Controllers
                         objc.FK_RID = objrid.PK_Rid;
                         objc.CreatedDate = DateTime.UtcNow;
                         objc.CreatedBy = Helper.CurrentUserId;
+                        objc.ExistingUrlBatchIds = "0";
                         //objc.CreatedBy = 44;
                         objc.FK_Batchid=0;
                         dc.uiddatas.Add(objc);
                         dc.SaveChanges();
-                        ErrorLogs.LogErrorData("before starting query", DateTime.UtcNow.ToString());
 
-                        uiddata objuid = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype).SingleOrDefault();
-                        ErrorLogs.LogErrorData("after query", DateTime.UtcNow.ToString());
+                        //uiddata objuid = dc.uiddatas.Where(u => u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype).SingleOrDefault();
+                        uiddata objuid = (from u in dc.uiddatas
+                                 where u.MobileNumber == mobilenumber && u.ReferenceNumber == ReferenceNumber && u.LongurlorMessage == LongURLorMessage && u.Type == uploadtype
+                                 select u).SingleOrDefault();
+                            ErrorLogs.LogErrorData(" second time,after uidtable query", DateTime.UtcNow.ToString());
 
                         //Hashid = Helper.GetHashID(objuid.PK_Uid);
                         Hashid = dc.hashidlists.Where(h => h.PK_Hash_ID == objuid.PK_Uid).Select(x => x.HashID).SingleOrDefault();
@@ -1170,7 +1202,6 @@ namespace Analytics.Controllers
                             //objs.UrlTotal_Week = objs.UsersLast7days;
                             //objs.UrlTotal_Month = (objs.DaysCount_Month < daysinmonth) ? (objs.UrlTotal_Month + objs.UsersLast7days) : 0;
                             dc.SaveChanges();
-                            ErrorLogs.LogErrorData("after saving data", DateTime.UtcNow.ToString());
 
                         }
                         else
@@ -1182,9 +1213,11 @@ namespace Analytics.Controllers
                             stat_counts  objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
                             if (objadmin != null)
                             {
-                                objadmin.TotalUsers = objadmin.TotalUsers + 1;
+                                //objadmin.TotalUsers = objadmin.TotalUsers + 1;
+                                objadmin.TotalUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.TotalUsers).Sum();
                                 objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UniqueUsers).Sum();
-                                objadmin.UsersToday = objadmin.UsersToday + 1;
+                                //objadmin.UsersToday = objadmin.UsersToday + 1;
+                                objadmin.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UsersToday).Sum();
                                 objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UniqueUsersToday).Sum();
                                 //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
                                 //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
@@ -1202,7 +1235,7 @@ namespace Analytics.Controllers
                                 //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
                                 //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
                                 dc.SaveChanges();
-                                ErrorLogs.LogErrorData("after saving  admin data", DateTime.UtcNow.ToString());
+                                //ErrorLogs.LogErrorData("after saving  admin data", DateTime.UtcNow.ToString());
 
                             }
                             else
@@ -1217,7 +1250,7 @@ namespace Analytics.Controllers
                         obje.CreatedDate = objuid.CreatedDate;
                         obje.Status = "Successfully Uploaded.";
                         //return Json(obje, JsonRequestBehavior.AllowGet);
-                        ErrorLogs.LogErrorData("end point", DateTime.UtcNow.ToString());
+                        //ErrorLogs.LogErrorData("end point", DateTime.UtcNow.ToString());
 
                     }
                     else
@@ -1228,10 +1261,13 @@ namespace Analytics.Controllers
                         //return Json(obje, JsonRequestBehavior.AllowGet);
 
                     }
+                        ErrorLogs.LogErrorData("end point simple case in upload data function", DateTime.UtcNow.ToString());
 
                 }
                 else if (type.ToLower() == "advanced" && objrid != null)
                 {
+                    ErrorLogs.LogErrorData("start point advanced case in upload data function", DateTime.UtcNow.ToString());
+
                     string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
                                        "tmp_mysqluploader.txt");
                     string batchname = objrid.CampaignName + "_" + DateTime.UtcNow;
@@ -1239,7 +1275,7 @@ namespace Analytics.Controllers
                     List<string> MobileNumbers_List = MobileNumbers.ToList();
                         batchuploaddata objb = new batchuploaddata();
                         objb.ReferenceNumber = ReferenceNumber;
-                        objb.MobileNumber = formated_mobilenumbers;
+                        //objb.MobileNumber = formated_mobilenumbers;
                         objb.Longurl = LongURLorMessage;
                         objb.FK_ClientID = objrid.FK_ClientId;
                         objb.FK_RID = objrid.PK_Rid;
@@ -1340,9 +1376,11 @@ namespace Analytics.Controllers
                         stat_counts objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
                         if (objadmin != null)
                         {
-                            objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                            //objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                            objadmin.TotalUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.TotalUsers).Sum();
                             objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
-                            objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                            //objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                            objadmin.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UsersToday).Sum();
                             objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
                             //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
                             //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
@@ -1370,11 +1408,15 @@ namespace Analytics.Controllers
                                 Add_Campaign_Record_uploaddta(0, adminid);
                         }
                     }
-                    //stat_counts  --start
+                    //stat_counts  --end
+                    ErrorLogs.LogErrorData("end point advanced case in upload data function", DateTime.UtcNow.ToString());
+
                 }
                 else if (type.ToLower() == "upload"  && objrid != null)
               //else if (type.ToLower() == "upload" && UploadFile != null && UploadFile.ContentLength > 0 && objrid != null)
                 {
+                    ErrorLogs.LogErrorData("start point upload case in upload data function", DateTime.UtcNow.ToString());
+
                     string path = Path.Combine(Server.MapPath("~/UploadFiles"),
                                        Path.GetFileName(UploadFile.FileName));
                    // + Path.GetExtension(UploadFile.FileName)
@@ -1509,8 +1551,10 @@ namespace Analytics.Controllers
                             if (objadmin != null)
                             {
 
-                                objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
-                                objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                                //objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                                objadmin.TotalUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.TotalUsers).Sum();
+                                //objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                                objadmin.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UsersToday).Sum();
                                 objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
                                 objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
                                 //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
@@ -1630,12 +1674,14 @@ namespace Analytics.Controllers
                     //file.SaveAs(Server.MapPath("~/UploadFiles/" + fileName));
                     //file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                    }
+                ErrorLogs.LogErrorData("end point upload case in upload data function", DateTime.UtcNow.ToString());
+
                 return Json(obje, JsonRequestBehavior.AllowGet);
             }
                
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                ErrorLogs.LogErrorData(ex.InnerException+ ex.StackTrace, ex.Message);
                 return null;
             }
         }
@@ -1858,23 +1904,23 @@ namespace Analytics.Controllers
                 {
                     stat_counts objnew = new stat_counts();
                     dc.Database.CommandTimeout = 2 * 60;
-                    objnew.TotalUsers = dc.stat_counts.Where(x=>x.FK_Rid!=0 && x.FK_ClientID == FK_Clientid).Select(y=>y.TotalUsers).Sum();
+                    objnew.TotalUsers = dc.stat_counts.Where(x=>x.FK_Rid!=0 ).Select(y=>y.TotalUsers).Sum();
                     //        objnew.UsersToday = dc.uiddatas.Where(x => x.FK_RID == FK_Rid && x.CreatedDate.Value.Date==DateTime.Today).Select(y => y.PK_Uid).Count();
                     //        objnew.UniqueUsers = dc.uiddatas.Where(x => x.FK_RID == FK_Rid && x.CreatedDate.Value.Date == DateTime.Today).Select(y => y.MobileNumber).Distinct().Count(); 
                     objnew.TotalCamapigns = 1;
                     objnew.CampaignsLast7days = 1;
                     objnew.CampaignsMonth = 1;
-                    objnew.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.UniqueUsers).Sum();
-                    objnew.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.UniqueUsersToday).Sum();
-                    objnew.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.UsersToday).Sum();
+                    objnew.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
+                    objnew.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
+                    objnew.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UsersToday).Sum();
                     objnew.UniqueUsersYesterday = 0;
                     objnew.UsersYesterday = 0;
                     objnew.UniqueUsersLast7days = 0;
                     objnew.UsersLast7days = 0;
-                    objnew.TotalVisits = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.TotalVisits).Sum();
-                    objnew.UniqueVisits = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.UniqueVisits).Sum();
-                    objnew.VisitsToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.VisitsToday).Sum();
-                    objnew.UniqueVisitsToday = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.UniqueVisitsToday).Sum();
+                    objnew.TotalVisits = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.TotalVisits).Sum();
+                    objnew.UniqueVisits = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueVisits).Sum();
+                    objnew.VisitsToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.VisitsToday).Sum();
+                    objnew.UniqueVisitsToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueVisitsToday).Sum();
                     objnew.VisitsYesterday = 0;
                     objnew.UniqueVisitsYesterday = 0;
                     objnew.UniqueVisitsLast7day = 0;
@@ -1883,9 +1929,9 @@ namespace Analytics.Controllers
                     objnew.UrlPercent_Today = 0;
                     objnew.VisitsTotal_Today = objnew.VisitsToday;
                     objnew.VisitsPercent_Today = 0;
-                    objnew.RevisitsTotal_Today = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.RevisitsTotal_Today).Sum();
+                    objnew.RevisitsTotal_Today = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.RevisitsTotal_Today).Sum();
                     objnew.RevisitsPercent_Today = 0;
-                    objnew.NoVisitsTotal_Today = dc.stat_counts.Where(x => x.FK_Rid != 0 && x.FK_ClientID == FK_Clientid).Select(y => y.NoVisitsTotal_Today).Sum();
+                    objnew.NoVisitsTotal_Today = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.NoVisitsTotal_Today).Sum();
                     objnew.NoVisitsPercent_Today = 0;
                     objnew.UrlTotal_Week = 0;
                     objnew.UrlPercent_Week = 0;
@@ -1920,81 +1966,81 @@ namespace Analytics.Controllers
                 ErrorLogs.LogErrorData(" error in add_campaign_record" + ex.StackTrace, ex.Message);
             }
         }
-        public void UploadData1(string[] MobileNumbers,string LongURL,string ReferenceNumber,string type)
-         {
-            int clientid = 0; int rid = 0;
-            var mobilenumbers = "{\"MobileNumbers\":[\"8331877564\",\"9848745783\"]}";
-            ReferenceNumber = "50793";
-            LongURL = "google.com";
-            JavaScriptSerializer ser = new JavaScriptSerializer();
-            List<string> MobileNumbersList = new List<string>();
-            List<string> MobileNumbersFiltered_List = new List<string>();
+        //public void UploadData1(string[] MobileNumbers,string LongURL,string ReferenceNumber,string type)
+        // {
+        //    int clientid = 0; int rid = 0;
+        //    var mobilenumbers = "{\"MobileNumbers\":[\"8331877564\",\"9848745783\"]}";
+        //    ReferenceNumber = "50793";
+        //    LongURL = "google.com";
+        //    JavaScriptSerializer ser = new JavaScriptSerializer();
+        //    List<string> MobileNumbersList = new List<string>();
+        //    List<string> MobileNumbersFiltered_List = new List<string>();
 
-            List<string> shorturls = new List<string>();
-            List<string> outputdat = new List<string>();
-            List<int> pkuids = new List<int>();
-            string Hashid;
-            MobileNumbersList MobileNumbersList1 = ser.Deserialize<MobileNumbersList>(mobilenumbers);
-            MobileNumbersList = MobileNumbersList1.MobileNumbers;
-            //clientid = 2;
-            //rid = 41;
+        //    List<string> shorturls = new List<string>();
+        //    List<string> outputdat = new List<string>();
+        //    List<int> pkuids = new List<int>();
+        //    string Hashid;
+        //    MobileNumbersList MobileNumbersList1 = ser.Deserialize<MobileNumbersList>(mobilenumbers);
+        //    MobileNumbersList = MobileNumbersList1.MobileNumbers;
+        //    //clientid = 2;
+        //    //rid = 41;
            
-            riddata objrid = (from registree in dc.riddatas
-                              where registree.ReferenceNumber.Trim() == ReferenceNumber.Trim()
-                              select registree).SingleOrDefault();
-            if (objrid != null)
-            {
-                clientid = objrid.FK_ClientId;
-                rid = objrid.PK_Rid;
-                List<string> mobilenumberdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.MobileNumber).ToList();
-                if (mobilenumberdata.Count != 0)
-                {
-                    MobileNumbersFiltered_List = MobileNumbersList.Except(mobilenumberdata).ToList();
-                }
-                else
-                { MobileNumbersFiltered_List = MobileNumbersList; }
-                if (MobileNumbersFiltered_List.Count > 0)
-                {
-                    foreach (string m in MobileNumbersFiltered_List)
-                    {
-                        new DataInsertionBO().Insertuiddata(rid, clientid, ReferenceNumber,"", LongURL, m);
-                    }
+        //    riddata objrid = (from registree in dc.riddatas
+        //                      where registree.ReferenceNumber.Trim() == ReferenceNumber.Trim()
+        //                      select registree).SingleOrDefault();
+        //    if (objrid != null)
+        //    {
+        //        clientid = objrid.FK_ClientId;
+        //        rid = objrid.PK_Rid;
+        //        List<string> mobilenumberdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.MobileNumber).ToList();
+        //        if (mobilenumberdata.Count != 0)
+        //        {
+        //            MobileNumbersFiltered_List = MobileNumbersList.Except(mobilenumberdata).ToList();
+        //        }
+        //        else
+        //        { MobileNumbersFiltered_List = MobileNumbersList; }
+        //        if (MobileNumbersFiltered_List.Count > 0)
+        //        {
+        //            foreach (string m in MobileNumbersFiltered_List)
+        //            {
+        //                new DataInsertionBO().Insertuiddata(rid, clientid, ReferenceNumber,"", LongURL, m);
+        //            }
 
-                    pkuids = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersFiltered_List.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.PK_Uid).ToList();
-                    foreach (int uid in pkuids)
-                    {
-                        Hashid = "";
-                        Hashid = Helper.GetHashID(uid);
-                        objbo.UpdateHashid(uid, Hashid);
-                        // shorturls.Add("https://g0.pe/" + Hashid);
-                    }
-                }
-                List<exportDataModel> exportdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => new exportDataModel() { MobileNumber = r.MobileNumber, ShortenUrl = r.UniqueNumber }).ToList();
-                exportdata = exportdata.Select(x => { x.ShortenUrl = "https://g0.pe/" + x.ShortenUrl; return x; }).ToList();
-                //DataTable dt = new DataTable();
-                //dt.Columns.Add("Mobilenumber");
-                //dt.Columns.Add("ShortUrl");
-                //foreach (exportDataModel e in exportdata)
-                //{
-                //    dt.Rows.Add(e.MobileNumber, "https://g0.pe/" + e.ShortenUrl);
-                //}
+        //            pkuids = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersFiltered_List.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => r.PK_Uid).ToList();
+        //            foreach (int uid in pkuids)
+        //            {
+        //                Hashid = "";
+        //                Hashid = Helper.GetHashID(uid);
+        //                objbo.UpdateHashid(uid, Hashid);
+        //                // shorturls.Add("https://g0.pe/" + Hashid);
+        //            }
+        //        }
+        //        List<exportDataModel> exportdata = dc.uiddatas.AsNoTracking().Where(x => MobileNumbersList.Contains(x.MobileNumber) && x.ReferenceNumber == ReferenceNumber && x.FK_RID == rid && x.FK_ClientID == clientid && x.LongurlorMessage == LongURL).Select(r => new exportDataModel() { MobileNumber = r.MobileNumber, ShortenUrl = r.UniqueNumber }).ToList();
+        //        exportdata = exportdata.Select(x => { x.ShortenUrl = "https://g0.pe/" + x.ShortenUrl; return x; }).ToList();
+        //        //DataTable dt = new DataTable();
+        //        //dt.Columns.Add("Mobilenumber");
+        //        //dt.Columns.Add("ShortUrl");
+        //        //foreach (exportDataModel e in exportdata)
+        //        //{
+        //        //    dt.Rows.Add(e.MobileNumber, "https://g0.pe/" + e.ShortenUrl);
+        //        //}
 
-                var grid = new System.Web.UI.WebControls.GridView();
+        //        var grid = new System.Web.UI.WebControls.GridView();
 
-                grid.DataSource = exportdata;
-                grid.DataBind();
-                Response.ClearContent();
-                Response.AddHeader("content-disposition", "attachment; filename=ShortURLSList.xls");
-                Response.ContentType = "application/excel";
-                StringWriter sw = new StringWriter();
-                HtmlTextWriter htw = new HtmlTextWriter(sw);
-                grid.RenderControl(htw);
-                Response.Write(sw.ToString());
-                Response.End();
+        //        grid.DataSource = exportdata;
+        //        grid.DataBind();
+        //        Response.ClearContent();
+        //        Response.AddHeader("content-disposition", "attachment; filename=ShortURLSList.xls");
+        //        Response.ContentType = "application/excel";
+        //        StringWriter sw = new StringWriter();
+        //        HtmlTextWriter htw = new HtmlTextWriter(sw);
+        //        grid.RenderControl(htw);
+        //        Response.Write(sw.ToString());
+        //        Response.End();
 
-            }
+        //    }
 
-        }
+        //}
 
     }
 }

@@ -893,6 +893,9 @@
           </FunctionImport>
           <EntitySet Name="shorturlclickreferences" EntityType="shortenurlModel.shorturlclickreference" />
           <EntitySet Name="stat_counts" EntityType="shortenurlModel.stat_counts" />
+          <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="shortenurlModel.city_blocks_ipv4_geolite2" />
+          <EntitySet Name="city_locations_geolite2" EntityType="shortenurlModel.city_locations_geolite2" />
+          <EntitySet Name="batchuploaddatas" EntityType="shortenurlModel.batchuploaddata" />
           <EntitySet Name="uiddatas" EntityType="shortenurlModel.uiddata" />
           <AssociationSet Name="FK_UIDDATA_Client" Association="shortenurlModel.FK_UIDDATA_Client">
             <End Role="client" EntitySet="clients" />
@@ -906,9 +909,6 @@
             <End Role="uiddata" EntitySet="uiddatas" />
             <End Role="shorturldata" EntitySet="shorturldatas" />
           </AssociationSet>
-          <EntitySet Name="city_blocks_ipv4_geolite2" EntityType="shortenurlModel.city_blocks_ipv4_geolite2" />
-          <EntitySet Name="city_locations_geolite2" EntityType="shortenurlModel.city_locations_geolite2" />
-          <EntitySet Name="batchuploaddatas" EntityType="shortenurlModel.batchuploaddata" />
           </EntityContainer>
         <EntityType Name="campaignhookurl">
           <Key>
@@ -1177,6 +1177,61 @@
           <Property Name="RevisitsTotal_Yesterday" Type="Int32" />
           <Property Name="NoVisitsTotal_Yesterday" Type="Int32" />
         </EntityType>
+        <EntityType Name="city_blocks_ipv4_geolite2">
+          <Key>
+            <PropertyRef Name="PK_City_ID_IPV4" />
+          </Key>
+          <Property Name="PK_City_ID_IPV4" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="network" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Start_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="End_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Start_IP_num" Type="Int64" />
+          <Property Name="End_IP_num" Type="Int64" />
+          <Property Name="geoname_id" Type="Int32" />
+          <Property Name="registered_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="represented_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_anonymous_proxy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_satellite_provider" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="postal_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="accuracy_radius" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="city_locations_geolite2">
+          <Key>
+            <PropertyRef Name="PK_City_Location_ID" />
+          </Key>
+          <Property Name="PK_City_Location_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="geoname_id" Type="Int32" />
+          <Property Name="locale_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="continent_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="continent_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subdivision_1_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subdivision_1_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subdivision_2_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subdivision_2_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="metro_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="time_zone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="batchuploaddata">
+          <Key>
+            <PropertyRef Name="PK_Batchid" />
+          </Key>
+          <Property Name="PK_Batchid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReferenceNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Longurl" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="BatchName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="BatchCount" Type="Int32" />
+          <Property Name="FK_RID" Type="Int32" />
+          <Property Name="FK_ClientID" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" />
+        </EntityType>
         <EntityType Name="uiddata">
           <Key>
             <PropertyRef Name="PK_Uid" />
@@ -1234,61 +1289,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="city_blocks_ipv4_geolite2">
-          <Key>
-            <PropertyRef Name="PK_City_ID_IPV4" />
-          </Key>
-          <Property Name="PK_City_ID_IPV4" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="network" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Start_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="End_IPv4_address" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Start_IP_num" Type="Int64" />
-          <Property Name="End_IP_num" Type="Int64" />
-          <Property Name="geoname_id" Type="Int32" />
-          <Property Name="registered_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="represented_country_geoname_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="is_anonymous_proxy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="is_satellite_provider" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="postal_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="accuracy_radius" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="city_locations_geolite2">
-          <Key>
-            <PropertyRef Name="PK_City_Location_ID" />
-          </Key>
-          <Property Name="PK_City_Location_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="geoname_id" Type="Int32" />
-          <Property Name="locale_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="continent_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="continent_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="country_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="country_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="subdivision_1_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="subdivision_1_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="subdivision_2_iso_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="subdivision_2_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="city_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="metro_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="time_zone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="batchuploaddata">
-          <Key>
-            <PropertyRef Name="PK_Batchid" />
-          </Key>
-          <Property Name="PK_Batchid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReferenceNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Longurl" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="BatchName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="BatchCount" Type="Int32" />
-          <Property Name="FK_RID" Type="Int32" />
-          <Property Name="FK_ClientID" Type="Int32" />
-          <Property Name="CreatedBy" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1659,25 +1659,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="uiddatas">
-            <EntityTypeMapping TypeName="shortenurlModel.uiddata">
-              <MappingFragment StoreEntitySet="uiddata">
-                <ScalarProperty Name="ExistingUrlBatchIds" ColumnName="ExistingUrlBatchIds" />
-                <ScalarProperty Name="FK_Batchid" ColumnName="FK_Batchid" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UniqueNumber" ColumnName="UniqueNumber" />
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="LongurlorMessage" ColumnName="LongurlorMessage" />
-                <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
-                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
-                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
-                <ScalarProperty Name="PK_Uid" ColumnName="PK_Uid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="city_blocks_ipv4_geolite2">
             <EntityTypeMapping TypeName="shortenurlModel.city_blocks_ipv4_geolite2">
               <MappingFragment StoreEntitySet="city_blocks_ipv4_geolite2">
@@ -1733,6 +1714,25 @@
                 <ScalarProperty Name="Longurl" ColumnName="Longurl" />
                 <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
                 <ScalarProperty Name="PK_Batchid" ColumnName="PK_Batchid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uiddatas">
+            <EntityTypeMapping TypeName="shortenurlModel.uiddata">
+              <MappingFragment StoreEntitySet="uiddata">
+                <ScalarProperty Name="ExistingUrlBatchIds" ColumnName="ExistingUrlBatchIds" />
+                <ScalarProperty Name="FK_Batchid" ColumnName="FK_Batchid" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UniqueNumber" ColumnName="UniqueNumber" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="LongurlorMessage" ColumnName="LongurlorMessage" />
+                <ScalarProperty Name="ReferenceNumber" ColumnName="ReferenceNumber" />
+                <ScalarProperty Name="FK_ClientID" ColumnName="FK_ClientID" />
+                <ScalarProperty Name="FK_RID" ColumnName="FK_RID" />
+                <ScalarProperty Name="PK_Uid" ColumnName="PK_Uid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
