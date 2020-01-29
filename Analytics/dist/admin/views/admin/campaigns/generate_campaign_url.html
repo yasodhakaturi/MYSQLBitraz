@@ -189,7 +189,7 @@
                     </div>
                     <div id="upload" class="tab-pane fade" ng-class="{'in active': $ctrl.activeTab == 'upload'}">
                         <div style="min-height: 250px;padding-top: 20px;">
-                            <p>Generate Urls by a file upload only mobile numbers. </p>
+                            <p>Generate Urls by a file upload only mobile numbers.<br/> CSV First Column Name: mobile </p>
                             <ng-form class="form-horizontal" name="$ctrl.campaignForm['upload']" novalidate>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Type</label>
@@ -272,7 +272,7 @@
                     </div>
                     <div id="uploadMany" class="tab-pane fade" ng-class="{'in active': $ctrl.activeTab == 'uploadMany'}">
                         <div style="min-height: 250px;padding-top: 20px;">
-                            <p>Generate Urls by a file upload, file should have url/message for each mobile number.</p>
+                            <p>Generate Urls by a file upload, file should have url/message for each mobile number.<br/>CSV should have First Column Name: mobile, Second Column Name: Url</p>
                             <ng-form class="form-horizontal" name="$ctrl.campaignForm['uploadMany']" novalidate>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Type</label>
@@ -323,7 +323,6 @@
                                 </div>
                             </ng-form>
                         </div>
-
                     </div>
                 </div>
             </div>

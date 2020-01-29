@@ -411,7 +411,7 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                    </div>\n" +
     "                    <div id=\"upload\" class=\"tab-pane fade\" ng-class=\"{'in active': $ctrl.activeTab == 'upload'}\">\n" +
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
-    "                            <p>Generate Urls by a file upload only mobile numbers. </p>\n" +
+    "                            <p>Generate Urls by a file upload only mobile numbers.<br/> CSV First Column Name: mobile </p>\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['upload']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
@@ -494,7 +494,7 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                    </div>\n" +
     "                    <div id=\"uploadMany\" class=\"tab-pane fade\" ng-class=\"{'in active': $ctrl.activeTab == 'uploadMany'}\">\n" +
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
-    "                            <p>Generate Urls by a file upload, file should have url/message for each mobile number.</p>\n" +
+    "                            <p>Generate Urls by a file upload, file should have url/message for each mobile number.<br/>CSV should have First Column Name: mobile, Second Column Name: Url</p>\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['uploadMany']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
@@ -545,7 +545,6 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                                </div>\n" +
     "                            </ng-form>\n" +
     "                        </div>\n" +
-    "\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
