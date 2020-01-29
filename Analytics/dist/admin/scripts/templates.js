@@ -232,7 +232,7 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'simple'}\"><a data-toggle=\"tab\" data-target=\"#simple\" role=\"tab\" ng-click=\"$ctrl.activeTab='simple'\">Simple </a></li>\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'advanced'}\"><a data-toggle=\"tab\" data-target=\"#advanced\" role=\"tab\" ng-click=\"$ctrl.activeTab='advanced'\">Advanced</a></li>\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'upload'}\"><a data-toggle=\"tab\" data-target=\"#upload\" role=\"tab\" ng-click=\"$ctrl.activeTab='upload'\">Upload by 1 URI</a></li>\n" +
-    "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'uploadMany'}\"><a data-toggle=\"tab\" data-target=\"#upload\" role=\"tab\" ng-click=\"$ctrl.activeTab='uploadMany'\">Upload by Many URLs</a></li>\n" +
+    "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'uploadMany'}\"><a data-toggle=\"tab\" data-target=\"#uploadMany\" role=\"tab\" ng-click=\"$ctrl.activeTab='uploadMany'\">Upload by Many URLs</a></li>\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'list'}\"><a data-toggle=\"tab\" data-target=\"#list\" role=\"tab\" ng-click=\"$ctrl.activeTab='list'\">Download</a></li>\n" +
     "                </ul>\n" +
     "\n" +
