@@ -231,7 +231,8 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                <ul class=\"nav nav-tabs\">\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'simple'}\"><a data-toggle=\"tab\" data-target=\"#simple\" role=\"tab\" ng-click=\"$ctrl.activeTab='simple'\">Simple </a></li>\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'advanced'}\"><a data-toggle=\"tab\" data-target=\"#advanced\" role=\"tab\" ng-click=\"$ctrl.activeTab='advanced'\">Advanced</a></li>\n" +
-    "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'upload'}\"><a data-toggle=\"tab\" data-target=\"#upload\" role=\"tab\" ng-click=\"$ctrl.activeTab='upload'\">Upload</a></li>\n" +
+    "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'upload'}\"><a data-toggle=\"tab\" data-target=\"#upload\" role=\"tab\" ng-click=\"$ctrl.activeTab='upload'\">Upload by 1 URI</a></li>\n" +
+    "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'uploadMany'}\"><a data-toggle=\"tab\" data-target=\"#upload\" role=\"tab\" ng-click=\"$ctrl.activeTab='uploadMany'\">Upload by Many URLs</a></li>\n" +
     "                    <li  ng-class=\"{'active': $ctrl.activeTab == 'list'}\"><a data-toggle=\"tab\" data-target=\"#list\" role=\"tab\" ng-click=\"$ctrl.activeTab='list'\">Download</a></li>\n" +
     "                </ul>\n" +
     "\n" +
@@ -410,7 +411,7 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                    </div>\n" +
     "                    <div id=\"upload\" class=\"tab-pane fade\" ng-class=\"{'in active': $ctrl.activeTab == 'upload'}\">\n" +
     "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
-    "                            <p>Generate Urls by a file upload.</p>\n" +
+    "                            <p>Generate Urls by a file upload only mobile numbers. </p>\n" +
     "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['upload']\" novalidate>\n" +
     "                                <div class=\"form-group\">\n" +
     "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
@@ -491,9 +492,64 @@ angular.module("views/admin/campaigns/generate_campaign_url.html", []).run(["$te
     "                        </div>\n" +
     "\n" +
     "                    </div>\n" +
+    "                    <div id=\"uploadMany\" class=\"tab-pane fade\" ng-class=\"{'in active': $ctrl.activeTab == 'uploadMany'}\">\n" +
+    "                        <div style=\"min-height: 250px;padding-top: 20px;\">\n" +
+    "                            <p>Generate Urls by a file upload, file should have url/message for each mobile number.</p>\n" +
+    "                            <ng-form class=\"form-horizontal\" name=\"$ctrl.campaignForm['uploadMany']\" novalidate>\n" +
+    "                                <div class=\"form-group\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Type</label>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-9\">\n" +
+    "                                        <select  ng-required=\"true\" name=\"longurl\" placeholder=\"Select Type\"\n" +
+    "                                                 class=\"form-control\" ng-model=\"$ctrl.campaign.generator['uploadMany'].uploadType\">\n" +
+    "                                            <option value=\"url\">Long URL</option>\n" +
+    "                                            <option value=\"message\">Long Message</option>\n" +
+    "                                        </select>\n" +
+    "                                        <small class=\"form-text text-muted text-danger\"\n" +
+    "                                               ng-if=\"$ctrl.campaignForm['uploadMany'].uploadType.$invalid && $ctrl.campaignForm['uploadMany'].uploadType.$touched\">\n" +
+    "                                            <span ng-if=\"$ctrl.campaignForm['uploadMany'].uploadType.$error.required\">Type is required</span>\n" +
+    "                                        </small>\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\">\n" +
+    "                                    <label class=\"col-sm-3 control-label\">Upload File <br/><small>(txt, csv, tsv, xlx, xlsx)</small></label>\n" +
+    "\n" +
+    "                                    <div class=\"button btn btn-primary\" ngf-select ng-model=\"$ctrl.campaignForm['uploadMany'].file\" name=\"file\" ngf-pattern=\"'.csv,.tsv,.txt,.xls,.xlsx'\"\n" +
+    "                                         ngf-accept=\"'.csv,.tsv,.txt,.xls,.xlsx'\" ngf-max-size=\"5MB\" ngf-min-height=\"100\"\n" +
+    "                                         ngf-resize=\"{width: 100, height: 100}\">click here to select a file</div> {{$ctrl.campaignForm['uploadMany'].file.name }}\n" +
+    "\n" +
+    "                                    <small class=\"form-text text-muted text-danger block\" style=\"display: block\"\n" +
+    "                                           ng-if=\"$ctrl.campaignForm['uploadMany'].$dirty && $ctrl.campaignForm['uploadMany'].$invalid\">\n" +
+    "                                        <span ng-if=\"$ctrl.campaignForm['uploadMany'].$error.pattern\">Invalid file type. accepts only txt, csv, tsv, xlx, xlsx files</span>\n" +
+    "                                        <span ng-if=\"$ctrl.campaignForm['uploadMany'].$error.maxSize\">File size exceeded. max file size allowed is 5MB</span>\n" +
+    "                                    </small>\n" +
+    "                                </div>\n" +
+    "                                <div class=\"form-group\" ng-show=\"$ctrl.campaignForm['uploadMany'].Batch && $ctrl.campaignForm['uploadMany'].Batch.BatchID\">\n" +
+    "                                    <div class=\"col-sm-9 text-center\">\n" +
+    "                                        <h5 ng-if=\"($ctrl.campaignForm['uploadMany'].Batch && $ctrl.campaignForm['uploadMany'].Batch.Status != 'Completed') || $ctrl.generation\">\n" +
+    "                                            We're Processing Your Request. <span><i class=\"fa fa-spinner fa-spin\"></i> </span>\n" +
+    "                                            <br/><small>You can close this modal if required, later you can download the generated xls file from the download tab.</small>\n" +
+    "                                        </h5>\n" +
+    "                                        <h5 ng-if=\"$ctrl.campaignForm['uploadMany'].Batch && $ctrl.campaignForm['uploadMany'].Batch.Status == 'Completed'\">\n" +
+    "                                            Successfully Processed.\n" +
+    "                                        </h5>\n" +
+    "\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                    <div class=\"col-sm-3 text-right\">\n" +
+    "                                        <div class=\"btn btn-success btn-small right\" ng-if=\"$ctrl.campaignForm['uploadMany'].Batch && $ctrl.campaignForm['uploadMany'].Batch.Status == 'Completed'\" ng-click=\"$ctrl.campaignForm['uploadMany'].Batch.download()\">Download</div>\n" +
+    "                                        <!--<div class=\"btn btn-success btn-small right\" ng-if=\"($ctrl.campaignForm['advanced'].Batch && $ctrl.campaignForm['advanced'].Batch.Status != 'Completed')\" ng-click=\"$ctrl.enableNotification()\">Notify Me!</div>-->\n" +
+    "                                    </div>\n" +
+    "\n" +
+    "                                </div>\n" +
+    "                            </ng-form>\n" +
+    "                        </div>\n" +
+    "\n" +
+    "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"modal-footer\" ng-show=\"$ctrl.activeTab == 'upload' || $ctrl.activeTab == 'simple' || $ctrl.activeTab == 'advanced'\">\n" +
+    "            <div class=\"modal-footer\" ng-show=\"$ctrl.activeTab == 'uploadMany' || $ctrl.activeTab == 'upload' || $ctrl.activeTab == 'simple' || $ctrl.activeTab == 'advanced'\">\n" +
     "                <small class=\"text-danger\" ng-if=\"$ctrl.saveError\">Error: {{$ctrl.saveError}}</small>\n" +
     "                <button class=\"btn btn-default\"  ng-click=\"cancel()\">Cancel</button>\n" +
     "                <button class=\"btn btn-primary\" type=\"submit\" ng-class=\"{'disabled': !$ctrl.campaignForm[$ctrl.activeTab].$valid}\"\n" +

@@ -39,7 +39,7 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
         this.IsActive = data.IsActive || false;
         this.key = null;
       }
- 
+
       save(){
         var refDefer = $q.defer();
 
@@ -56,7 +56,7 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
             console.log('user save failed', err);
             refDefer.reject(err);
           });
-          
+
         }else{
           //update
           $http({
@@ -268,6 +268,54 @@ angular.module('app.models', ['app.models.common', "ngFileUpload"])
             refDefer.notify(evt);
              var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
              console.log('progress: ',evt);
+          });
+
+          // $http({
+          //   method: 'POST',
+          //   url: appConfig.apiEndPoint + '/Campaign/UploadData',
+          //   data: data
+          // }).then((campaignObj) => {
+          //   if(campaignObj.data.ShortenUrl){
+          //     refDefer.resolve(campaignObj.data);
+          //   }else if(campaignObj.data.BatchID){
+          //     var batch = new BatchModel(campaignObj.data);
+          //     this.batchList.push(batch);
+          //     refDefer.resolve(batch);
+          //   }
+          //
+          // }, (err) => {
+          //   console.log('campaign generation failed', err);
+          //   refDefer.reject(err);
+          // });
+          return refDefer.promise;
+        }
+
+        generateFromFileBatch(form, type) {
+
+          var refDefer = $q.defer();
+          var data = {ReferenceNumber:this.ReferenceNumber, CampaignID: this.Id, UploadFile: form.File, type:type, UploadType: form.UploadType};
+          var _that = this;
+          Upload.upload({
+            url: appConfig.apiEndPoint + '/Campaign/UploadBatchData',
+            data: data
+          }).then(function (campaignObj) {
+            if(campaignObj.data.ShortenUrl){
+              refDefer.resolve(campaignObj.data);
+            }else if(campaignObj.data.BatchID){
+              var batch = new BatchModel(campaignObj.data);
+              if(!_that.batchList){
+                _that.batchList = [];
+              }
+              _that.batchList.push(batch);
+              refDefer.resolve(batch);
+            }
+          }, function (err) {
+            console.log('campaign generation failed', err);
+            refDefer.reject(err);
+          }, function (evt) {
+            refDefer.notify(evt);
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ',evt);
           });
 
           // $http({

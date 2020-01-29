@@ -10,7 +10,7 @@ angular
   .controller('AppController', AppController)
   .controller('HeaderController', HeaderController)
   .controller('HomeController', HomeController)
-  
+
   .controller('CampaignsController', CampaignsController)
   .controller('UsersController', UsersController)
   .controller('ArchievesController', ArchievesController)
@@ -251,6 +251,26 @@ function CampaignsController($scope, $rootScope, $http, $uibModal, UsersCollecti
                       })
                   }
                   //todo
+                }else if(type == 'uploadMany'){
+                  $ctrl.generation = true;
+                  if ($ctrl.campaignForm[type].$valid) {
+                    $ctrl.campaign.generateFromFileBatch({UploadType: $ctrl.campaign.generator[type].uploadType, File: $ctrl.campaignForm[type].file}, type)
+                      .then((resp)=>{
+                        $ctrl.generation = false;
+                        if(resp.ShortenUrl){
+                          $ctrl.campaignForm[type].ShortenUrl = resp.ShortenUrl;
+                          var clipboard = new Clipboard('.url-copy-button');
+                        }else if(resp.BatchID){
+                          $ctrl.campaignForm[type].Batch = resp;
+                        }
+                      }, (err)=>{
+                        $ctrl.generation = false;
+                        $ctrl.saveError = err && err.message || "Failed to generate batch.";
+                      }, (change)=>{
+                        $ctrl.uploading = true;
+                      })
+                  }
+                  //todo
                 }
               }
 
@@ -399,7 +419,7 @@ function UsersController($scope, $http, $uibModal, UsersCollectionModel, UserMod
       ],
     data : []
     };
-  
+
   $scope.refreshData = function () {
     UsersCollectionModel.getAll().then(function(response) {
       $scope.userListOptions.data = response;
@@ -456,7 +476,7 @@ function UsersController($scope, $http, $uibModal, UsersCollectionModel, UserMod
       controller: function($scope) {
         var $ctrl = this;
         $scope.name = 'top';
-        
+
         $ctrl.newUser = new UserModel({})
 
         $scope.save = function () {
