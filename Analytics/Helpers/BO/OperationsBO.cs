@@ -861,6 +861,68 @@ namespace Analytics.Helpers.BO
             sw.Close();
             sw.Dispose();
         }
+
+
+        public void BulkUploaduiddata_multipleurls(string ReferenceNumber, string LongurlorMessage, int batchid, riddata objrid, string MobileNumber, string type)
+        {
+            try
+            {
+                //ErrorLogs.LogErrorData(" startin point" + MobileNumbers.Count().ToString(), batchid.ToString());
+
+                List<string> objc;
+                //objc = (from u in dc.uiddatas
+                //                    where u.ReferenceNumber == ReferenceNumber
+                //                    && u.Longurl == LongUrl
+                //                    && u.FK_ClientID == objrid.FK_ClientID
+                //                    && u.FK_RID == objrid.PK_Rid
+                //                    && MobileNumbers.Contains(u.MobileNumber)
+                //                    select u.MobileNumber).ToList();
+                uiddata objc_obj = (from u in dc.uiddatas
+                        where u.ReferenceNumber == ReferenceNumber
+                        && u.LongurlorMessage == LongurlorMessage
+                        && u.FK_ClientID == objrid.FK_ClientId
+                        && u.FK_RID == objrid.PK_Rid
+                        && u.Type == type 
+                        && u.MobileNumber == MobileNumber
+                        select u).SingleOrDefault();
+                if (objc_obj == null)
+                {
+                    int uid_ID = GetNEXTAutoIncrementedID();
+                    //int uid_ID_start = uid_ID + 1;
+                    int uid_ID_start = uid_ID;
+                    //int MobilenumberCount = MobileNumbers.Count();
+                    //int uid_ID_end = uid_ID + MobilenumberCount;
+                    string uniqueid = dc.hashidlists.Where(h => h.PK_Hash_ID == uid_ID_start).Select(x => x.HashID).SingleOrDefault();
+                    uiddata uidobj = new uiddata();
+                    uidobj.FK_RID = objrid.PK_Rid;
+                    uidobj.FK_ClientID = objrid.FK_ClientId;
+                    uidobj.ReferenceNumber = ReferenceNumber;
+                    uidobj.LongurlorMessage = LongurlorMessage;
+                    uidobj.MobileNumber = MobileNumber;
+                    uidobj.Type = "url";
+                    uidobj.CreatedDate = DateTime.UtcNow;
+                    uidobj.UniqueNumber = uniqueid;
+                    uidobj.CreatedBy = Helper.CurrentUserId;
+                    uidobj.FK_Batchid = batchid;
+                    uidobj.ExistingUrlBatchIds = batchid + ",";
+                    dc.uiddatas.Add(uidobj);
+                    dc.SaveChanges();
+
+                }
+                else
+                {
+                    objc_obj.ExistingUrlBatchIds = objc_obj.ExistingUrlBatchIds + batchid + ",";
+                    dc.SaveChanges();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace + " " + ex.InnerException, ex.Message);
+            }
+        }
+        
+        
         //public CountsData GetCountsData(SqlDataReader myReader,string filterBy,string DateFrom,string DateTo)
         //{
 

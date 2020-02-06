@@ -1687,6 +1687,182 @@ namespace Analytics.Controllers
         }
 
 
+
+
+
+        [System.Web.Http.HttpPost]
+        public JsonResult UploadBatchData( string ReferenceNumber, string type, string uploadtype, HttpPostedFileBase UploadFile)
+        {
+            exportDataModel obje = new exportDataModel();       
+            string path = Path.Combine(Server.MapPath("~/UploadFiles"),
+                                       Path.GetFileName(UploadFile.FileName));
+                   // + Path.GetExtension(UploadFile.FileName)
+                    if (System.IO.File.Exists(path))
+                        System.IO.File.Delete(path);
+
+                    UploadFile.SaveAs(path);
+                    
+            riddata objrid = (from registree in dc.riddatas
+                                  where registree.ReferenceNumber.Trim() == ReferenceNumber.Trim()
+                                  select registree).SingleOrDefault();
+                    //string path_tmp = Path.Combine(Server.MapPath("~/UploadFiles"),
+                    //                   "tmp_mysqluploader.txt");
+                    //// + Path.GetExtension(UploadFile.FileName)
+                    //System.IO.File.Create(path_tmp).Dispose();
+                    //string path = Server.MapPath("~/UploadFiles/971505878339_5K_MANGED1.txt");
+                    FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    byte[] data = new byte[fs.Length];
+                    fs.Read(data, 0, data.Length);
+                    fs.Close();
+                    if (data.Length > 0)
+                    {
+                        string fileData = System.Text.Encoding.UTF8.GetString(data);
+                        string nlpattern = @"\n";//here \s equals [ \f\n\r\t\v]
+                        string pattern = @",";
+                        //string pattern = @"\.*?\";
+                        if (Regex.IsMatch(fileData, nlpattern, RegexOptions.Multiline))
+                        {
+                            List<string> SplitedData = Regex.Split(fileData, nlpattern).ToList();
+
+                            SplitedData = SplitedData.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+                           
+                                SplitedData.Remove(SplitedData[0]);
+                            
+                            //var mobilenumbersstr = String.Join(",", SplitedData);
+                            string batchname = objrid.CampaignName + "_" + DateTime.UtcNow;
+
+                            batchuploaddata objb = new batchuploaddata();
+                            objb.ReferenceNumber = ReferenceNumber;
+                            //objb.MobileNumber = mobilenumbersstr;
+                            objb.Longurl = " ";
+                            objb.FK_ClientID = objrid.FK_ClientId;
+                            objb.FK_RID = objrid.PK_Rid;
+                            objb.CreatedDate = DateTime.UtcNow;
+                            objb.CreatedBy = Helper.CurrentUserId.ToString();
+                            objb.Status = "Not Started";
+                            objb.BatchName = batchname;
+                            objb.BatchCount = SplitedData.Count();
+                            dc.batchuploaddatas.Add(objb);
+                            dc.SaveChanges();
+                            batchuploaddata objo = dc.batchuploaddatas.Where(x => x.BatchName == batchname).SingleOrDefault();
+                            foreach( string spl in SplitedData)
+                            {
+                                List<string> mobile_url = Regex.Split(spl, pattern).ToList();
+
+                                objbo.BulkUploaduiddata_multipleurls(ReferenceNumber, mobile_url[1].Replace("\r", ""), objo.PK_Batchid, objrid, mobile_url[0], uploadtype);
+
+                            }
+                            //string result = objbo.BulkUploaduiddata_multipleurls(ReferenceNumber, LongURLorMessage, objo.PK_Batchid, objrid, SplitedData, path_tmp, uploadtype);
+                            //if (result == "Successfully Uploaded.")
+                            //{
+                                objo.Status = "Completed";
+                                dc.SaveChanges();
+
+                                System.IO.File.Delete(path);
+                                if (objo != null)
+                                {
+                                    //obje.Status = objo.BatchName + " Created.Revert Back to you once upload has done.";
+                                    obje.Status = objo.BatchName + " Completed.";
+                                    obje.BatchID = objo.PK_Batchid;
+                                    obje.CreatedDate = objo.CreatedDate;
+                                    
+                                }
+                                //stat_counts  --start
+                                int uniqueusers = 0; int uniqueusers_today = 0; DateTime? dttime = DateTime.UtcNow.Date;
+                                int? clientid;
+
+                               // if (Helper.CurrentUserRole == "admin")
+                                    clientid = objrid.FK_ClientId;
+                                //else
+                                  //  clientid = dc.clients.Where(x => x.Role == "admin").Select(y => y.PK_ClientID).SingleOrDefault();
+                                var lstuiddata = dc.uiddatas.Where(x => x.FK_RID == objrid.PK_Rid && x.FK_ClientID == clientid).Select(y => new { y.PK_Uid, y.MobileNumber, y.CreatedDate }).ToList();
+
+                                uniqueusers = lstuiddata.Select(x => x.MobileNumber).Distinct().Count();
+                                uniqueusers_today = lstuiddata.Where(x => x.CreatedDate.Value.Date == dttime).Select(x => x.MobileNumber).Distinct().Count();
+
+                                // int uniqueusers = dc.uiddatas.Where(x => x.FK_RID == objrid.PK_Rid && x.FK_ClientID == objrid.FK_ClientId).Select(y => y.MobileNumber).Distinct().Count();
+                                stat_counts objs = dc.stat_counts.Where(x => x.FK_Rid == objrid.PK_Rid).Select(y => y).SingleOrDefault();
+
+                                if (objs == null)
+                                {
+                                    
+                                    Add_Campaign_Record_uploaddta(objrid.PK_Rid, objrid.FK_ClientId);
+                                }
+                                else
+                                {
+                                    objs.TotalUsers = objs.TotalUsers + objb.BatchCount;
+                                    objs.UsersToday = objs.UsersToday + objb.BatchCount;
+                                    objs.UniqueUsers = uniqueusers;
+                                    objs.UniqueUsersToday = uniqueusers_today;
+                                    //objs.UsersLast7days = ((objs.DaysCount_Week < 2) ? (objs.UsersYesterday + objs.UsersToday) : 0)
+                                    //                  + ((objs.DaysCount_Week >= 2 && objs.DaysCount_Week < 7) ? (objs.UsersLast7days + objs.UsersYesterday + objs.UsersToday) : 0);
+                                    //objs.UniqueUsersLast7days = ((objs.DaysCount_Week < 2) ? (objs.UniqueUsersYesterday + uniqueusers_today) : 0)
+                                    //                      + ((objs.DaysCount_Week >= 2 && objs.DaysCount_Week < 7) ? (objs.UniqueUsersLast7days + objs.UniqueUsersYesterday + uniqueusers_today) : 0);
+
+                                    objs.UrlTotal_Today = objs.UsersToday;
+                                    objs.UrlPercent_Today = (objs.UsersYesterday == 0) ? 0 : ((objs.UsersToday - objs.UsersYesterday) / (objs.UsersYesterday));
+                                    //objs.NoVisitsTotal_Today =(objs.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objs.UsersToday - objs.UniqueVisitsToday):objs.UsersToday;
+                                    if ((objs.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objs.NoVisitsTotal_Today != (objs.UsersToday - objs.UniqueVisitsToday))))
+                                        objs.NoVisitsTotal_Today = objs.UsersToday - objs.UniqueVisitsToday;
+                                    else if (objs.UniqueVisitsToday == 0)
+                                        objs.NoVisitsTotal_Today = objs.UsersToday;
+                                    else
+                                        objs.NoVisitsTotal_Today = objs.NoVisitsTotal_Today;
+                                    //objs.UrlTotal_Week = objs.UsersLast7days;
+                                    //objs.UrlTotal_Month = (objs.DaysCount_Month < daysinmonth) ? (objs.UrlTotal_Month + objs.UsersLast7days) : 0;
+
+                                    dc.SaveChanges();
+                                }
+                                //for admin case
+
+                        List<int> adminids = dc.clients.Where(x => x.Role == "admin").Select(x => x.PK_ClientID).ToList();
+                        foreach (int adminid in adminids)
+                        {
+                            stat_counts objadmin = dc.stat_counts.Where(x => x.FK_Rid == 0 && x.FK_ClientID == adminid).Select(y => y).SingleOrDefault();
+                            if (objadmin != null)
+                            {
+
+                                //objadmin.TotalUsers = objadmin.TotalUsers + objb.BatchCount;
+                                objadmin.TotalUsers = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.TotalUsers).Sum();
+                                //objadmin.UsersToday = objadmin.UsersToday + objb.BatchCount;
+                                objadmin.UsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0).Select(y => y.UsersToday).Sum();
+                                objadmin.UniqueUsers = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsers).Sum();
+                                objadmin.UniqueUsersToday = dc.stat_counts.Where(x => x.FK_Rid != 0 ).Select(y => y.UniqueUsersToday).Sum();
+                                //objadmin.UsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UsersYesterday + objadmin.UsersToday) : 0)
+                                //                  + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UsersLast7days + objadmin.UsersYesterday + objadmin.UsersToday) : 0);
+                                //objadmin.UniqueUsersLast7days = ((objadmin.DaysCount_Week < 2) ? (objadmin.UniqueUsersYesterday + uniqueusers_today) : 0)
+                                //                      + ((objadmin.DaysCount_Week >= 2 && objadmin.DaysCount_Week < 7) ? (objadmin.UniqueUsersLast7days + objadmin.UniqueUsersYesterday + uniqueusers_today) : 0);
+
+                                objadmin.UrlTotal_Today = objadmin.UsersToday;
+                                objadmin.UrlPercent_Today = (objadmin.UsersYesterday == 0) ? 0 : ((objadmin.UsersToday - objadmin.UsersYesterday) / (objadmin.UsersYesterday));
+                                //objadmin.NoVisitsTotal_Today =(objadmin.UniqueVisitsToday >0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x=>x.Ref_ShorturlClickID).FirstOrDefault())))? ( objadmin.UsersToday - objadmin.UniqueVisitsToday):objadmin.UsersToday;
+                                if ((objadmin.UniqueVisitsToday > 0 && ((dc.shorturldatas.Max(x => x.PK_Shorturl)) > (dc.shorturlclickreferences.Select(x => x.Ref_ShorturlClickID).FirstOrDefault())) && (objadmin.NoVisitsTotal_Today != (objadmin.UsersToday - objadmin.UniqueVisitsToday))))
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday - objadmin.UniqueVisitsToday;
+                                else if (objadmin.UniqueVisitsToday == 0)
+                                    objadmin.NoVisitsTotal_Today = objadmin.UsersToday;
+                                else
+                                    objadmin.NoVisitsTotal_Today = objadmin.NoVisitsTotal_Today;
+
+                                //objadmin.UrlTotal_Week = objadmin.UsersLast7days;
+                                //objadmin.UrlTotal_Month = (objadmin.DaysCount_Month < daysinmonth) ? (objadmin.UrlTotal_Month + objadmin.UsersLast7days) : 0;
+
+                                dc.SaveChanges();
+                            }
+                            else
+                            {
+                                
+                                Add_Campaign_Record_uploaddta(0, adminid);
+                            }
+                        }
+                               //TotalUsers Stats --end
+                            }
+                    
+                    }
+                            
+                return Json(obje, JsonRequestBehavior.AllowGet);
+            
+        }
+
         //public void update_Stats_counts(int? FK_Rid, int? FK_ClientID, int? TotalUsers, int? UsersToday, int? UniqueUsers, int? UniqueUsersToday, int? UrlTotal_Today, int? UrlPercent_Today)
         //{
         //    stat_counts objs = dc.stat_counts.Where(x => x.FK_Rid == FK_Rid).Select(y => y).SingleOrDefault();
