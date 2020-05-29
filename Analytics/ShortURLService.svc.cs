@@ -35,6 +35,10 @@ namespace Analytics
             public string Message { get; set; }
             public int CampaignNumber { get; set; }
         }
+        public class ShortUrl2
+        {
+            public string shortUrl { get; set; }
+        }
         public class ShortUrl1
         {
             public string shortUrl { get; set; }
@@ -362,9 +366,114 @@ namespace Analytics
         //    }
         //}
 
+        public string GetShortUrl(string Email, string AuthKey, string CampaignId, string longurl, string mobilenumber)
+        {
+            try
+            {
+                
+
+                string Type = "url";
+                //client obj = new client();
+                client cl_obj = dc.clients.Where(c => c.Email == Email && c.APIKey == AuthKey).Select(x => x).SingleOrDefault();
+                //InMemoryInstances instance = InMemoryInstances.Instance;
+                //IncomingWebRequestContext woc = WebOperationContext.Current.IncomingRequest;
+                //string token = woc.Headers["token"];
+                int rid;
+                string Hashid = ""; int pk_uid = 0;
+                if (cl_obj != null)
+                {
+                    //string pkclientid = instance.GetClientIdFromToken(token);
+                    int pk_clientid = cl_obj.PK_ClientID;
+                    //client cl_obj = (from c in dc.clients
+                    //                 where c.PK_ClientID == pk_clientid
+                    //                 select c).SingleOrDefault();
+                    if (CampaignId.Trim() != "" && longurl.Trim() != "" && Type.Trim() != "" && mobilenumber.Trim() != "" && cl_obj != null)
+                    {
+                        rid = Convert.ToInt32(CampaignId);
+                        //check reference number in RID table
+                        riddata objrid = (from registree in dc.riddatas
+                                          where registree.ReferenceNumber == CampaignId && registree.FK_ClientId == pk_clientid
+                                          select registree).SingleOrDefault();
+
+                        if (objrid != null)
+                        {
+                            //check data in UID table
+                            Hashid = (from registree in dc.uiddatas
+                                      where registree.ReferenceNumber == objrid.ReferenceNumber &&
+                                      registree.LongurlorMessage == longurl &&
+                                      registree.MobileNumber == mobilenumber
+                                      select registree.UniqueNumber).SingleOrDefault();
+                            //if data found in uiddata insert data into uiddata
+                            if (Hashid == null)
+                            {
+                                //Uniqueid = Helper.GetRandomAlphanumericString(5);
+                                new DataInsertionBO().Insertuiddata(objrid.PK_Rid, objrid.FK_ClientId, objrid.ReferenceNumber, Type, longurl, mobilenumber);
+                                pk_uid = (from registree in dc.uiddatas
+                                          where registree.ReferenceNumber == objrid.ReferenceNumber &&
+                                          registree.LongurlorMessage == longurl &&
+                                          registree.MobileNumber == mobilenumber
+                                          select registree.PK_Uid).SingleOrDefault();
+                                //Hashid = Helper.GetHashID(pk_uid);
+                                Hashid = dc.hashidlists.Where(x => x.PK_Hash_ID == pk_uid).Select(y => y.HashID).SingleOrDefault();
+                                new OperationsBO().UpdateHashid(pk_uid, Hashid);
+                            }
 
 
-        public string GetShortUrl(string CampaignId, string Type,string longurlorMessage, string mobilenumber)
+                            //System.ServiceModel.Web.WebOperationContext ctx = System.ServiceModel.Web.WebOperationContext.Current;
+                            //ctx.OutgoingResponse.Headers.Add("token", token);
+                            //// return "http://g0.pe/" + Hashid;
+                            //string ShortUrl = "https://g0.pe/" + Hashid;
+                            string ShortUrl1 = ConfigurationManager.AppSettings["ShortenurlHost"].ToString() + Hashid;
+                            string ShortUrl = ShortUrl1;
+                            //string ShortUrl = "g0.ae/" + Hashid;
+                            //string ShortUrl = "vyu.im/" + Hashid;
+                            //uiddata uidrec = dc.uiddatas.Where(x => x.FK_RID == rid && x.UniqueNumber == Hashid).Select(y => y).SingleOrDefault();
+                            ShortUrl2 sobj = new ShortUrl2();
+                            sobj.shortUrl = ShortUrl;
+                            //sobj.ShortUrlId = uidrec.PK_Uid.ToString();
+                            //sobj.CampaignId = CampaignId;
+                            //sobj.ClientId = uidrec.FK_ClientID.ToString();
+                            return JsonConvert.SerializeObject(sobj);
+
+                        }
+                        else
+                        {
+                            error errobj = new error();
+                            errobj.message = "CamapignName not registered.";
+                            return JsonConvert.SerializeObject(errobj);
+                            //return "Referencenumber not valid";
+                        }
+                        //return "";
+                    }
+                    else
+                    {
+                        error errobj = new error();
+                        errobj.message = "Please pass all values.";
+                        return JsonConvert.SerializeObject(errobj);
+                        //return "Please pass all values.";
+                    }
+                }
+                else
+                {
+                    error errobj = new error();
+                    errobj.message = "Client Not Found.";
+                    return JsonConvert.SerializeObject(errobj);
+                    //return "Please Pass valid APiKey";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs.LogErrorData(ex.StackTrace + ex.InnerException, ex.Message);
+                error errobj = new error();
+                //UID_UIDRID = "NULL";
+                errobj.message = "Exception" + ex.Message;
+                return JsonConvert.SerializeObject(errobj);
+            }
+        }
+
+
+
+        public string GetShortUrl_token(string CampaignId, string Type, string longurlorMessage, string mobilenumber)
         {
             try
             {

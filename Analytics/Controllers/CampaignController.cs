@@ -736,44 +736,48 @@ namespace Analytics.Controllers
             try
             {
             riddata objr = dc.riddatas.Where(r => r.ReferenceNumber == ReferenceNumber).SingleOrDefault();
+            List<ExportAnalyticsData> objexport = new List<ExportAnalyticsData>();
             if(objr!=null)
             {
-                List<ExportAnalyticsData> objexport = (from s in dc.shorturldatas
-                                                       join u in dc.uiddatas on s.FK_Uid equals u.PK_Uid
-                                                       join r in dc.riddatas on u.FK_RID equals r.PK_Rid
-                                                       join c in dc.clients on r.FK_ClientId equals c.PK_ClientID
-                                                       where s.FK_RID == objr.PK_Rid && s.FK_ClientID == objr.FK_ClientId
-                                                       select new ExportAnalyticsData()
-                                                       {
-                                          CampaignName=r.CampaignName,
-                                          Mobilenumber=u.MobileNumber,
-                                          ShortURL=s.Req_url,
-                                          LongUrl=u.LongurlorMessage,
-                                          //GoogleMapUrl = "https://www.google.com/maps?q=loc:"+s.Latitude+","+s.Longitude,
-                                          GoogleMapUrl =(s.City_Latitude!=null || s.City_Longitude!="")?("https://www.google.com/maps?q=loc:" + s.City_Latitude + "," + s.City_Longitude):"",
-                                          IPAddress=s.Ipv4,
-                                          Browser=s.Browser,
-                                          BrowserVersion=s.Browser_version,
-                                          City=s.City,
-                                          Region=s.Region,
-                                          Country=s.Country,
-                                          CountryCode=s.CountryCode,
-                                          PostalCode=s.PostalCode,
-                                          Lattitude=s.Latitude,
-                                          Longitude=s.Longitude,
-                                          MetroCode=s.MetroCode,
-                                          DeviceName=s.DeviceName,
-                                          DeviceBrand=s.DeviceBrand,
-                                          OS_Name=s.OS_Name,
-                                          OS_Version=s.OS_Version,
-                                          IsMobileDevice=s.IsMobileDevice,
-                                          CreatedDate=s.CreatedDate.ToString(),
-                                          clientName=c.UserName
+                using (shortenurlEntities dc1 = new shortenurlEntities())
+                {
+                    dc1.Database.CommandTimeout = 2 * 60;
+                     objexport = (from s in dc1.shorturldatas
+                                                           join u in dc1.uiddatas on s.FK_Uid equals u.PK_Uid
+                                                           join r in dc1.riddatas on u.FK_RID equals r.PK_Rid
+                                                           join c in dc1.clients on r.FK_ClientId equals c.PK_ClientID
+                                                           where s.FK_RID == objr.PK_Rid && s.FK_ClientID == objr.FK_ClientId
+                                                           select new ExportAnalyticsData()
+                                                           {
+                                                               CampaignName = r.CampaignName,
+                                                               Mobilenumber = u.MobileNumber,
+                                                               ShortURL = s.Req_url,
+                                                               LongUrl = u.LongurlorMessage,
+                                                               //GoogleMapUrl = "https://www.google.com/maps?q=loc:"+s.Latitude+","+s.Longitude,
+                                                               GoogleMapUrl = (s.City_Latitude != null || s.City_Longitude != "") ? ("https://www.google.com/maps?q=loc:" + s.City_Latitude + "," + s.City_Longitude) : "",
+                                                               IPAddress = s.Ipv4,
+                                                               Browser = s.Browser,
+                                                               BrowserVersion = s.Browser_version,
+                                                               City = s.City,
+                                                               Region = s.Region,
+                                                               Country = s.Country,
+                                                               CountryCode = s.CountryCode,
+                                                               PostalCode = s.PostalCode,
+                                                               Lattitude = s.Latitude,
+                                                               Longitude = s.Longitude,
+                                                               MetroCode = s.MetroCode,
+                                                               DeviceName = s.DeviceName,
+                                                               DeviceBrand = s.DeviceBrand,
+                                                               OS_Name = s.OS_Name,
+                                                               OS_Version = s.OS_Version,
+                                                               IsMobileDevice = s.IsMobileDevice,
+                                                               CreatedDate = s.CreatedDate.ToString(),
+                                                               clientName = c.UserName
 
 
-                                                       }
-                                                         ).ToList();
-
+                                                           }
+                                                             ).ToList();
+                }
 
                 string filename = objr.CampaignName + DateTime.UtcNow;
                 string attachment = "attachment; filename=" + filename + ".csv";
@@ -793,7 +797,7 @@ namespace Analytics.Controllers
              }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace, ex.Message);
+                ErrorLogs.LogErrorData("ExportAnalytics :" +ex.StackTrace +"\n" + ex.InnerException, ex.Message);
             }
         }
         public void GetBatchDownloadedFile(int BatchID)
@@ -808,7 +812,8 @@ namespace Analytics.Controllers
                 List<BatchDownload> objd = new List<BatchDownload>();
                 using(shortenurlEntities dc1=new shortenurlEntities())
                 {
-                    dc1.Database.CommandTimeout = 2 * 60;
+                    //ErrorLogs.LogErrorData("before query", DateTime.UtcNow.ToString());
+                    dc1.Database.CommandTimeout = 3 * 60;
                 objd = (from u in dc1.uiddatas
                                             where u.FK_Batchid == objb.PK_Batchid || u.ExistingUrlBatchIds.Contains(batchidstr) || u.ExistingUrlBatchIds.Contains(batchidstr1)
                                             select new BatchDownload()
@@ -817,6 +822,7 @@ namespace Analytics.Controllers
                                                 ShortUrl = host + u.UniqueNumber
                                                 //ShortUrl="https://g0.pe/" + u.UniqueNumber
                                             }).ToList();
+                //ErrorLogs.LogErrorData("after query", DateTime.UtcNow.ToString());
                 }
 
                 //var grid = new System.Web.UI.WebControls.GridView();
@@ -852,7 +858,7 @@ namespace Analytics.Controllers
             }
             catch (Exception ex)
             {
-                ErrorLogs.LogErrorData(ex.StackTrace + "\n"+ex.InnerException, ex.Message);
+                ErrorLogs.LogErrorData("GetBatchDownloadedFile : " +ex.StackTrace + "\n"+ex.InnerException, ex.Message);
             }
         }
         
